@@ -1,0 +1,40 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"   # Chainlit UI
+      - "8501:8501"   # Streamlit dashboard
+      - "8080:8080"   # FastAPI + MCP server
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://retrofit:retrofit@db:5432/retrofitgpt
+    volumes:
+      - ./:/workspace
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: retrofit
+      POSTGRES_PASSWORD: retrofit
+      POSTGRES_DB: retrofitgpt
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U retrofit"]
+      interval: 5s
+      retries: 10
+
+  # Langfuse self-host is optional — default .env points at cloud.langfuse.com.
+  # Uncomment to self-host (see https://langfuse.com/self-hosting):
+  # langfuse:
+  #   image: langfuse/langfuse:latest
+  #   ports: ["3000:3000"]
+  #   depends_on: [db]
+
+volumes:
+  pgdata:

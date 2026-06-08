@@ -1,0 +1,38 @@
+# Core
+fastmcp
+fastapi
+uvicorn[standard]
+pydantic>=2.0
+python-dotenv
+
+# Agents
+langgraph
+langchain-core
+
+# LLM clients
+anthropic
+openai  # used as the OpenAI-compatible client for DeepSeek
+
+# RAG
+pgvector
+psycopg[binary]
+rank_bm25
+sentence-transformers  # bge-small embeddings + cross-encoder reranker
+
+# Observability & evals
+langfuse
+deepeval
+
+# UI
+chainlit
+streamlit
+
+# EnergyPlus interaction
+# pyenergyplus ships WITH the EnergyPlus install — not pip-installable.
+# The Dockerfile installs EnergyPlus and adds it to PYTHONPATH.
+eppy  # IDF parsing/manipulation
+
+# Utils
+httpx
+pandas
+pytest

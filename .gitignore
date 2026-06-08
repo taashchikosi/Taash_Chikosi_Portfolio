@@ -1,0 +1,30 @@
+# Secrets
+.env
+
+# Copyrighted / licensed documents — NEVER commit code PDFs
+data/codes/*
+!data/codes/README.md
+
+# Large simulation outputs
+data/reference_buildings/cached_results/*.eso
+*.eso
+*.err
+*.audit
+
+# Eval CI output (keep summary only)
+evals/results/*
+!evals/results/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Models downloaded at runtime
+.cache/

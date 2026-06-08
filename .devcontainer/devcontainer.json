@@ -1,0 +1,13 @@
+{
+  "name": "RetrofitGPT",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "pip install -r requirements.txt",
+  "forwardPorts": [8000, 8501, 8080],
+  "portsAttributes": {
+    "8000": { "label": "Chainlit UI", "onAutoForward": "openBrowser" },
+    "8501": { "label": "Streamlit Dashboard" },
+    "8080": { "label": "FastAPI / MCP" }
+  }
+}
