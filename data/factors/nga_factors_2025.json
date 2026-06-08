@@ -1,0 +1,16 @@
+{
+  "source": "DCCEEW National Greenhouse Accounts Factors (verify against latest workbook at dcceew.gov.au before demo — values below are indicative and MUST be confirmed)",
+  "status": "PLACEHOLDER — confirm each value against the published NGA workbook",
+  "year": 2025,
+  "electricity_scope2_kgco2e_per_kwh": {
+    "NSW": 0.66,
+    "VIC": 0.77,
+    "QLD": 0.71,
+    "SA": 0.25,
+    "WA": 0.51,
+    "TAS": 0.12,
+    "NT": 0.54,
+    "ACT": 0.66
+  },
+  "natural_gas_kgco2e_per_kwh": 0.185
+}

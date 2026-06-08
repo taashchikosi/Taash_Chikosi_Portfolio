@@ -3,11 +3,10 @@
   "dockerComposeFile": "../docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
-  "postCreateCommand": "pip install -r requirements.txt",
-  "forwardPorts": [8000, 8501, 8080],
+  "postCreateCommand": "pip install -r requirements.txt && cd frontend && npm install",
+  "forwardPorts": [3000, 8080],
   "portsAttributes": {
-    "8000": { "label": "Chainlit UI", "onAutoForward": "openBrowser" },
-    "8501": { "label": "Streamlit Dashboard" },
+    "3000": { "label": "Next.js UI", "onAutoForward": "openBrowser" },
     "8080": { "label": "FastAPI / MCP" }
   }
 }

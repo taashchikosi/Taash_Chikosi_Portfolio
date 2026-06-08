@@ -5,7 +5,7 @@
 
 Multi-agent AI system: upload a building energy model + 12 months of bills → physics-verified retrofit business case (savings %, payback, tCO₂e) built on Australian data (NABERS · NCC Section J · CDR tariffs · NGA carbon factors).
 
-**Stack:** LangGraph · FastMCP · EnergyPlus · Pydantic v2 · pgvector · Langfuse · DeepEval · Chainlit
+**Stack:** LangGraph · FastMCP · EnergyPlus · Pydantic v2 · pgvector · Langfuse · DeepEval · Next.js + assistant-ui
 
 ## Quick start
 ```bash

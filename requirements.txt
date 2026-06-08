@@ -23,9 +23,9 @@ sentence-transformers  # bge-small embeddings + cross-encoder reranker
 langfuse
 deepeval
 
-# UI
-chainlit
-streamlit
+# UI: Next.js + assistant-ui lives in frontend/ (npm) — no Python UI deps
+# (frontend talks to FastAPI via REST + SSE)
+sse-starlette
 
 # EnergyPlus interaction
 # pyenergyplus ships WITH the EnergyPlus install — not pip-installable.

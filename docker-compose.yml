@@ -2,9 +2,7 @@ services:
   app:
     build: .
     ports:
-      - "8000:8000"   # Chainlit UI
-      - "8501:8501"   # Streamlit dashboard
-      - "8080:8080"   # FastAPI + MCP server
+      - "8080:8080"   # FastAPI + MCP server (frontend: cd frontend && npm run dev → :3000)
     env_file: .env
     environment:
       DATABASE_URL: postgresql://retrofit:retrofit@db:5432/retrofitgpt
