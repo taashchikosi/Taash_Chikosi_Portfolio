@@ -27,16 +27,12 @@ DOWNLOADS = {
 }
 
 # Sydney TMYx weather (zip containing .epw) — climate.onebuilding.org.
-# Filenames on onebuilding change over time, so try several known candidates
-# and stop at the first that works.
-SYDNEY_ZIP_CANDIDATES = [
-    "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/AUS_Australia/"
-    "NSW_New_South_Wales/AUS_NSW_Sydney-Kingsford.Smith.Intl.AP.947670_TMYx.2009-2023.zip",
-    "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/AUS_Australia/"
-    "NSW_New_South_Wales/AUS_NSW_Sydney.Observatory.Hill.947680_TMYx.2009-2023.zip",
-    "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/AUS_Australia/"
-    "NSW_New_South_Wales/AUS_NSW_Sydney-Kingsford.Smith.Intl.AP.947670_TMYx.zip",
-]
+# Filenames change over time, so we DISCOVER the current Sydney file from the
+# NSW directory listing instead of hardcoding a name that breaks.
+NSW_INDEX = (
+    "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/"
+    "AUS_Australia/NSW_New_South_Wales/"
+)
 
 
 def fetch(url: str) -> bytes:
@@ -45,15 +41,21 @@ def fetch(url: str) -> bytes:
         return r.read()
 
 
-def fetch_first_ok(urls: list[str]) -> bytes | None:
-    """Try each URL; return the first that succeeds, else None."""
-    from urllib.error import HTTPError, URLError
-    for url in urls:
-        try:
-            return fetch(url)
-        except (HTTPError, URLError) as exc:
-            print(f"    ✗ {exc} — trying next…")
-    return None
+def discover_sydney_zip() -> str | None:
+    """Scrape the NSW index for a Sydney TMYx zip and return its full URL."""
+    import re
+    try:
+        html = fetch(NSW_INDEX).decode("latin-1", errors="ignore")
+    except Exception as exc:  # noqa: BLE001
+        print(f"    ✗ could not read index: {exc}")
+        return None
+    # Prefer the Sydney Airport station (947670), else any Sydney TMYx zip
+    names = re.findall(r'href="([^"]*Sydney[^"]*_TMYx[^"]*\.zip)"', html, re.I)
+    if not names:
+        return None
+    preferred = [n for n in names if "947670" in n] or names
+    name = sorted(preferred)[-1]  # newest TMYx period sorts last
+    return name if name.startswith("http") else NSW_INDEX + name.split("/")[-1]
 
 
 def main() -> None:
@@ -72,13 +74,13 @@ def main() -> None:
     if epws:
         print(f"✅ weather file already present: {epws[0].name}")
     else:
-        blob = fetch_first_ok(SYDNEY_ZIP_CANDIDATES)
+        url = discover_sydney_zip()
+        blob = fetch(url) if url else None
         if blob is None:
             print(
                 "\n⚠️  Could not auto-download the Sydney weather file.\n"
                 "   Manual (1 min): open\n"
-                "     https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/"
-                "AUS_Australia/NSW_New_South_Wales/\n"
+                f"     {NSW_INDEX}\n"
                 "   download any 'Sydney … TMYx … .zip', unzip it, and place the .epw at\n"
                 f"     {DATA / 'weather' / 'AUS_NSW_Sydney.epw'}\n"
             )
@@ -87,7 +89,7 @@ def main() -> None:
                 for name in zf.namelist():
                     if name.endswith(".epw"):
                         (DATA / "weather" / "AUS_NSW_Sydney.epw").write_bytes(zf.read(name))
-                        print("✅ AUS_NSW_Sydney.epw")
+                        print(f"✅ AUS_NSW_Sydney.epw  (from {url.split('/')[-1]})")
                         break
 
     print("\nDone. Next: pre-cache baseline runs →  python scripts/precache_baselines.py")
