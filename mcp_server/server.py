@@ -16,6 +16,7 @@ from mcp_server.tools.idf_tools import register_idf_tools
 from mcp_server.tools.simulation_tools import register_simulation_tools
 from mcp_server.tools.results_tools import register_results_tools
 from mcp_server.tools.reference_tools import register_reference_tools
+from mcp_server.tools.analysis_tools import register_analysis_tools
 
 mcp = FastMCP("EnergyPlus Retrofit Server")
 
@@ -40,12 +41,12 @@ def _energyplus_version() -> str:
         return "not installed"
 
 
-# ── Register tool groups (16 of 20 core tools live) ────────────────
+# ── Register tool groups (all 20 core tools live) ──────────────────
 register_idf_tools(mcp)          # 5 tools
 register_simulation_tools(mcp)   # 2 tools
 register_results_tools(mcp)      # 5 tools
 register_reference_tools(mcp)    # 4 tools
-# Phase 3: register_analysis_tools(mcp) — savings, payback, NPV, GL14 check (4 tools)
+register_analysis_tools(mcp)     # 4 tools  → 20 total
 
 
 if __name__ == "__main__":

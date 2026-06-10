@@ -22,6 +22,7 @@ from pydantic import BaseModel, Field
 from sse_starlette.sse import EventSourceResponse
 
 from agents import stubs
+from agents.analyzer import analyzer as real_analyzer
 from agents.reviewer import review
 from agents.supervisor import RunState
 
@@ -133,7 +134,17 @@ async def _drive_pipeline(run: dict) -> None:
             return
 
         state = stubs.sim_runner(state)
-        state = stubs.analyzer(state)
+        # Real deterministic analyzer (tested). Costs come from the modeler's
+        # scenarios; factors from the reference data (NSW grid, demo tariff).
+        state["analysis_context"] = {
+            "scenario_costs": {s.name: s.estimated_cost_aud
+                               for s in state["modeling_output"].scenarios},
+            "tariff_aud_per_kwh": 0.30,
+            "carbon_factor_kg_per_kwh": 0.66,
+            "tariff_source": "CDR Energy PRD (demo)",
+            "emission_factor_source": "NGA 2025 NSW",
+        }
+        state = real_analyzer(state)
 
         # ── Reviewer (real, deterministic) ─────────────────────────
         emit("reviewer", "started", {})
