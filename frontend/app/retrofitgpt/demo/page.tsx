@@ -99,7 +99,10 @@ export default function DemoPage() {
       }
 
       // Auto-approve the human-in-the-loop gate (kept visible, advanced for the demo).
+      // The Modeler's work is finished at the gate, so mark it done rather than
+      // leaving it spinning while the rest of the pipeline runs.
       if (agent === "modeler" && st === "awaiting_approval") {
+        setNode("modeler", "done");
         await fetch(`${API_BASE}/api/runs/${runId}/approve`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
