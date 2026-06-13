@@ -33,8 +33,7 @@ export const PROJECTS: Project[] = [
     blurb:
       "A four-agent LangGraph pipeline that flags high-risk contract clauses and cites the exact source span for every finding — or rejects it. Measured against CUAD (real lawyer labels): the verified citation anchorer lifts faithfulness +0.29 on a reproducible 102-contract benchmark. Built for Big-4 contract review.",
     tags: ["LangGraph", "Citation gate", "CUAD eval", "DeepSeek + Claude", "Next.js"],
-    // Flip to "live" once the backend is deployed and NEXT_PUBLIC_AUDITAGENT_API_BASE is set.
-    status: "in-progress",
+    status: "live",
     href: "/auditagent",
     repo: "https://github.com/taashchikosi/auditagent",
   },
