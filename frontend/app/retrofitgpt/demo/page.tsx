@@ -12,7 +12,7 @@
 
 import { useRef, useState } from "react";
 import {
-  ArrowRight, BadgeCheck, CheckCircle2, Info, Loader2, Play, XCircle,
+  ArrowRight, BadgeCheck, CheckCircle2, Clock, Info, Loader2, Play, XCircle,
 } from "lucide-react";
 import { AGENT_LABELS, type AgentName } from "@/lib/types";
 
@@ -169,6 +169,16 @@ export default function DemoPage() {
           )}
         </button>
       </div>
+
+      {/* What to expect — set timing expectations before the click. */}
+      <p className="mt-3 flex items-start gap-2 px-1 text-xs leading-relaxed text-zinc-500">
+        <Clock className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+        A full run takes <span className="text-zinc-400">~30–50s</span> — it runs real
+        EnergyPlus simulations (baseline + retrofit scenarios) plus live LLM calls, not a
+        cached result. That&apos;s genuine computation; it&apos;d be that slow on the 2nd
+        and 100th run too. The wait is the physics, not a cold start — the trace below
+        shows live progress.
+      </p>
 
       {/* Agent trace */}
       <div className="mt-6 space-y-2">

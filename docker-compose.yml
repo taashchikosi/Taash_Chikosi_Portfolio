@@ -1,6 +1,7 @@
 services:
   app:
     build: .
+    restart: unless-stopped   # survive VPS reboots / crashes — keep the public demo up
     platform: linux/amd64   # EnergyPlus is x86_64-only; force amd64 on Apple Silicon
     # Serve the public FastAPI app (in-memory MCP + EnergyPlus run in-process). The
     # Dockerfile's default CMD (python -m mcp_server.server) is for standalone MCP;
@@ -19,6 +20,7 @@ services:
 
   db:
     image: pgvector/pgvector:pg16
+    restart: unless-stopped   # bring the DB back automatically on reboot/crash
     environment:
       POSTGRES_USER: retrofit
       POSTGRES_PASSWORD: retrofit
