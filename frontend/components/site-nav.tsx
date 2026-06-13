@@ -14,6 +14,10 @@ const LINKS = [
 export function SiteNav() {
   const pathname = usePathname();
   const onHome = pathname === "/";
+  // Point the nav's demo CTA at whichever project the visitor is currently reading.
+  const demoHref = pathname.startsWith("/auditagent")
+    ? "/auditagent/demo"
+    : "/retrofitgpt/demo";
 
   return (
     <header className="sticky top-0 z-40 border-b border-surface-border bg-surface/80 backdrop-blur">
@@ -35,7 +39,7 @@ export function SiteNav() {
           ))}
           {!onHome && (
             <Link
-              href="/retrofitgpt/demo"
+              href={demoHref}
               className="ml-1 rounded-lg bg-accent px-3 py-1.5 font-medium text-black transition-opacity hover:opacity-90"
             >
               Live demo

@@ -101,7 +101,7 @@ const AGENTS = [
 ];
 
 const METRICS = [
-  { k: "125", v: "tests green", sub: "unit + eval, CI-gated" },
+  { k: "131", v: "tests green", sub: "unit + eval, run in Docker" },
   { k: "5 / 71", v: "golden cases / checks", sub: "Tier A regression gate" },
   { k: "GL14", v: "calibration", sub: "monthly 5% / 15%" },
   { k: "NCC J7D3", v: "real compliance", sub: "lighting + aggregate" },
