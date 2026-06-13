@@ -1,0 +1,85 @@
+{
+  "id": "school",
+  "description": "School / education building (Canberra, NCC zone 7), 4000 m². NCC J7D3a school learning-area limit is 4.5 W/m². Bands computed from the real analyzer output.",
+  "building": {"floor_area_m2": 4000, "ncc_climate_zone": 7},
+  "economics": {
+    "tariff_aud_per_kwh": 0.30,
+    "carbon_factor_kg_per_kwh": 0.66,
+    "tariff_source": "CDR Energy PRD (demo)",
+    "emission_factor_source": "NGA 2025 ACT"
+  },
+  "sim": {
+    "baseline": {"annual_energy_kwh": 480000, "annual_eui": 120.0},
+    "scenarios": [
+      {"name": "led_lighting", "cost_aud": 102000, "annual_energy_kwh": 420000, "annual_eui": 105.0},
+      {"name": "efficient_equipment", "cost_aud": 61500, "annual_energy_kwh": 452000, "annual_eui": 113.0}
+    ]
+  },
+  "calibration": "demo",
+  "expect": {
+    "reviewer_approved": true,
+    "review_route_to": "done",
+    "recommended": "led_lighting",
+    "nmbe_pct": {"min": -5.0, "max": 5.0},
+    "cvrmse_pct": {"min": 0.0, "max": 15.0},
+    "total_carbon_reduction_tco2e": {"min": 56.0, "max": 60.0},
+    "analyses": {
+      "led_lighting": {
+        "savings_pct": {"min": 11.5, "max": 13.5},
+        "payback_years": {"min": 5.2, "max": 6.2},
+        "carbon_tco2e": {"min": 38.0, "max": 41.0}
+      },
+      "efficient_equipment": {
+        "savings_pct": {"min": 5.0, "max": 6.5},
+        "payback_years": {"min": 6.8, "max": 7.8},
+        "carbon_tco2e": {"min": 17.0, "max": 20.0}
+      }
+    },
+    "ncc": {
+      "lighting": [
+        {"label": "baseline_lpd", "value_w_m2": 8.0, "space": "school_learning_area", "status": "non_compliant"},
+        {"label": "led_retrofit", "value_w_m2": 4.5, "space": "school_learning_area", "status": "compliant"}
+      ],
+      "components": [
+        {"component": "equipment_power_density", "status": "not_regulated"},
+        {"component": "glazing_u_value", "status": "requires_calculation"}
+      ],
+      "aggregate": {
+        "label": "baseline_floor_aggregate",
+        "spaces": [
+          {"space": "school_learning_area", "area_m2": 3000, "design_ipd_w_m2": 8.0},
+          {"space": "corridor", "area_m2": 600, "design_ipd_w_m2": 5.0},
+          {"space": "toilet_staff_room", "area_m2": 400, "design_ipd_w_m2": 3.0}
+        ],
+        "status": "non_compliant"
+      }
+    }
+  },
+  "llm_expect": {
+    "idf_meta": {
+      "zone_count": 20,
+      "floor_area_m2": 4000,
+      "hvac_objects": ["AirLoopHVAC", "ZoneHVAC:UnitVentilator", "Coil:Heating:Electric"],
+      "constructions": ["Classroom Partition Wall", "Gymnasium Roof Deck"],
+      "location": {"city": "Canberra"}
+    },
+    "classify": {
+      "building_type_allowed": ["school", "education", "educational"],
+      "hvac_nonempty": true
+    },
+    "select": {
+      "subset_of_catalog": true,
+      "min_count": 2,
+      "must_include": ["led_lighting"]
+    },
+    "stability": {
+      "min_identical_classify_pct": 1.0,
+      "min_select_jaccard": 0.6
+    },
+    "citation": {
+      "sources": ["EnergyPlus simulation output", "CDR Energy PRD tariff", "NGA 2025 ACT emission factor"],
+      "clean_claim": "The LED lighting retrofit reduces annual energy use by 12.5% (EnergyPlus simulation), saving about $18,000/yr at the CDR Energy PRD tariff and cutting 39.6 tCO2e/yr using the NGA 2025 ACT emission factor.",
+      "tampered_claim": "The LED lighting retrofit reduces annual energy use by 12.5% and qualifies the school for a $300,000 federal grant and a guaranteed government energy-star certification."
+    }
+  }
+}

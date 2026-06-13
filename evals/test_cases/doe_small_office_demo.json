@@ -1,0 +1,85 @@
+{
+  "id": "doe_small_office_demo",
+  "description": "DOE Small Office archetype (Sydney, NCC zone 5) — the happy-path capstone case. Pins the business-case numbers, the GL14 verdict, and the NCC Section J verdicts so none can silently regress.",
+  "building": {"floor_area_m2": 511, "ncc_climate_zone": 5},
+  "economics": {
+    "tariff_aud_per_kwh": 0.30,
+    "carbon_factor_kg_per_kwh": 0.66,
+    "tariff_source": "CDR Energy PRD (demo)",
+    "emission_factor_source": "NGA 2025 NSW"
+  },
+  "sim": {
+    "baseline": {"annual_energy_kwh": 68014, "annual_eui": 133.1},
+    "scenarios": [
+      {"name": "led_lighting", "cost_aud": 14775, "annual_energy_kwh": 56516, "annual_eui": 110.6},
+      {"name": "efficient_equipment", "cost_aud": 9165, "annual_energy_kwh": 60451, "annual_eui": 118.3}
+    ]
+  },
+  "calibration": "demo",
+  "expect": {
+    "reviewer_approved": true,
+    "review_route_to": "done",
+    "recommended": "efficient_equipment",
+    "nmbe_pct": {"min": -5.0, "max": 5.0},
+    "cvrmse_pct": {"min": 0.0, "max": 15.0},
+    "total_carbon_reduction_tco2e": {"min": 11.0, "max": 14.0},
+    "analyses": {
+      "led_lighting": {
+        "savings_pct": {"min": 15.0, "max": 18.5},
+        "payback_years": {"min": 3.5, "max": 5.0},
+        "carbon_tco2e": {"min": 7.0, "max": 8.2}
+      },
+      "efficient_equipment": {
+        "savings_pct": {"min": 10.0, "max": 12.0},
+        "payback_years": {"min": 3.5, "max": 4.6},
+        "carbon_tco2e": {"min": 4.5, "max": 5.5}
+      }
+    },
+    "ncc": {
+      "lighting": [
+        {"label": "baseline_lpd", "value_w_m2": 10.76, "space": "office_200lx_or_more", "status": "non_compliant"},
+        {"label": "led_retrofit", "value_w_m2": 4.5, "space": "office_200lx_or_more", "status": "compliant"}
+      ],
+      "components": [
+        {"component": "equipment_power_density", "status": "not_regulated"},
+        {"component": "glazing_u_value", "status": "requires_calculation"}
+      ],
+      "aggregate": {
+        "label": "baseline_floor_aggregate",
+        "spaces": [
+          {"space": "office_200lx_or_more", "area_m2": 430, "design_ipd_w_m2": 10.76},
+          {"space": "corridor", "area_m2": 51, "design_ipd_w_m2": 5.0},
+          {"space": "toilet_staff_room", "area_m2": 30, "design_ipd_w_m2": 3.0}
+        ],
+        "status": "non_compliant"
+      }
+    }
+  },
+  "llm_expect": {
+    "idf_meta": {
+      "zone_count": 5,
+      "floor_area_m2": 511,
+      "hvac_objects": ["AirLoopHVAC", "AirTerminal:SingleDuct:VAV:Reheat", "Coil:Cooling:DX:SingleSpeed", "Fan:VariableVolume"],
+      "constructions": ["ASHRAE 189.1-2009 ExtWall SteelFrame ClimateZone 5", "ASHRAE 189.1-2009 ExtRoof IEAD ClimateZone 2-8"],
+      "location": {"city": "Sydney"}
+    },
+    "classify": {
+      "building_type_allowed": ["small_office", "office"],
+      "hvac_nonempty": true
+    },
+    "select": {
+      "subset_of_catalog": true,
+      "min_count": 2,
+      "must_include": ["led_lighting"]
+    },
+    "stability": {
+      "min_identical_classify_pct": 1.0,
+      "min_select_jaccard": 0.6
+    },
+    "citation": {
+      "sources": ["EnergyPlus simulation output", "CDR Energy PRD tariff", "NGA 2025 NSW emission factor"],
+      "clean_claim": "The LED lighting retrofit reduces annual energy use by 16.9% (EnergyPlus simulation), saving about $3,449/yr at the CDR Energy PRD tariff and cutting 7.6 tCO2e/yr using the NGA 2025 NSW emission factor.",
+      "tampered_claim": "The LED lighting retrofit reduces annual energy use by 16.9% and automatically qualifies the building for a $50,000 federal clean-energy rebate and a guaranteed 5-star NABERS rating."
+    }
+  }
+}

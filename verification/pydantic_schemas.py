@@ -54,6 +54,13 @@ class RetrofitScenario(BaseModel):
     modifications: list[IDFModification]
     estimated_cost_aud: float
     code_compliance: bool
+    # Richer, honest NCC status (set by the real J7D3 check). code_compliance stays
+    # for back-compat (== "compliant"); status distinguishes not-regulated /
+    # requires-calculation from a genuine pass/fail.
+    compliance_status: Literal[
+        "compliant", "non_compliant", "not_regulated",
+        "requires_calculation", "unverified",
+    ] = "unverified"
     ncc_reference: str
 
 

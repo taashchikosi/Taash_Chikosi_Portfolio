@@ -14,14 +14,78 @@ REF_DIR = Path("data/reference_buildings")
 CACHE_DIR = REF_DIR / "cached_results"
 NGA_FACTORS = Path("data/factors/nga_factors_2025.json")
 
-# Minimal NCC Section J seed data (Phase 1). Phase 3 replaces lookups with RAG
-# over the full NCC Volume One. Values must be verified against NCC 2022.
-NCC_SEED = {
-    ("wall_r_value", 5): {"requirement": "R1.4 (total R-value, climate zone 5)",
-                          "clause": "NCC 2022 Vol One, J4D3 (VERIFY)"},
-    ("roof_r_value", 5): {"requirement": "R3.7 (total R-value, climate zone 5)",
-                          "clause": "NCC 2022 Vol One, J4D4 (VERIFY)"},
+# NCC Section J requirement values now live in verification/ncc_compliance.py
+# (primary-verified against NCC 2022 J7D3). get_ncc_requirement calls into it.
+
+# Capital-city / major-city → NCC 2022 climate zone (1–8). SEED — verify against
+# the ABCB climate-zone map (zones are defined per local government area, so a
+# city name or lat band is an approximation, not an authority).
+_NCC_ZONE_BY_CITY = {
+    "darwin": 1, "cairns": 1, "townsville": 1, "broome": 1,
+    "brisbane": 2, "gold coast": 2, "byron": 2,
+    "rockhampton": 3, "alice springs": 3, "longreach": 3,
+    "perth": 5, "adelaide": 5, "sydney": 5,
+    "melbourne": 6, "geelong": 6, "ballarat": 7,
+    "canberra": 7, "hobart": 7, "launceston": 7,
+    "thredbo": 8, "cooma": 8, "mount hotham": 8,
 }
+
+
+# State/territory → representative NCC zone (capital-city based; SEED, VERIFY).
+_NCC_ZONE_BY_STATE = {
+    "NSW": 5, "ACT": 7, "VIC": 6, "QLD": 2,
+    "SA": 5, "WA": 5, "TAS": 7, "NT": 1,
+}
+
+# Australia spans roughly 10°S–44°S. A latitude outside this band is NOT an
+# Australian site (e.g. a US prototype IDF at +41.8°) → must not map to a zone.
+_AU_LAT_MIN, _AU_LAT_MAX = -45.0, -9.0
+
+
+def _zone_by_latitude(lat: float):
+    """Rough NCC zone from Australian latitude (more negative = cooler). Returns
+    None if the latitude isn't within Australia, so a foreign coordinate can't
+    silently produce a real zone."""
+    if not (_AU_LAT_MIN <= lat <= _AU_LAT_MAX):
+        return None
+    if lat > -20:   # tropical north
+        return 1
+    if lat > -26:
+        return 2
+    if lat > -30:
+        return 3
+    if lat > -35:   # Sydney ≈ -33.9, Perth/Adelaide ≈ -32/-35
+        return 5
+    if lat > -38:   # Melbourne ≈ -37.8
+        return 6
+    return 7        # Tasmania / alpine fringe (zone 8 = alpine, needs the LGA map)
+
+
+def ncc_climate_zone(location_name: str = None, latitude: float = None,
+                     state: str = None) -> dict:
+    """Deterministic NCC 2022 climate-zone lookup from (in priority order) an
+    Australian state/territory, a city name, or an Australian latitude.
+
+    Returns {zone, basis, verified}. `verified=False` everywhere — this is seed
+    data; the authority is the ABCB climate-zone map (Phase 3 RAG).
+    """
+    if state:
+        zone = _NCC_ZONE_BY_STATE.get(state.strip().upper())
+        if zone is not None:
+            return {"zone": zone, "basis": f"state: {state.upper()}", "verified": False}
+    if location_name:
+        key = location_name.strip().lower()
+        for city, zone in _NCC_ZONE_BY_CITY.items():
+            if city in key:
+                return {"zone": zone, "basis": f"city match: {city}", "verified": False}
+    if latitude is not None:
+        zone = _zone_by_latitude(latitude)
+        if zone is not None:
+            return {"zone": zone,
+                    "basis": f"latitude {latitude:.1f}° approximation", "verified": False}
+        return {"zone": None,
+                "basis": f"latitude {latitude:.1f}° is outside Australia", "verified": False}
+    return {"zone": None, "basis": "insufficient location data", "verified": False}
 
 
 def register_reference_tools(mcp) -> None:
@@ -57,16 +121,20 @@ def register_reference_tools(mcp) -> None:
         })
 
     @mcp.tool()
-    def get_ncc_requirement(component: str, climate_zone: int) -> dict:
-        """NCC 2022 Section J minimum requirement (Phase 1 seed; Phase 3 = RAG)."""
-        hit = NCC_SEED.get((component, climate_zone))
-        if hit is None:
-            return wrap("get_ncc_requirement", {
-                "error": f"no seed data for {component} zone {climate_zone}",
-                "note": "full NCC lookup arrives with the RAG layer (Phase 3)",
-            })
-        return wrap("get_ncc_requirement", {"component": component,
-                                            "climate_zone": climate_zone, **hit})
+    def get_ncc_requirement(component: str, climate_zone: int,
+                            value: float | None = None) -> dict:
+        """Real NCC 2022 Section J check (Tier 1, primary-verified values).
+
+        Returns a compliance verdict for `component` (and `value` if numeric):
+        lighting → J7D3 numeric limit; equipment plug loads → not regulated;
+        glazing/fabric → requires the J4 façade calculation. Tier 2 (Phase 3)
+        swaps the values for RAG over the live NCC — this tool's contract is stable.
+        """
+        from verification.ncc_compliance import check_ncc_compliance
+        result = check_ncc_compliance(component, value, climate_zone)
+        return wrap("get_ncc_requirement", {
+            "component": component, "climate_zone": climate_zone, **result,
+        })
 
     @mcp.tool()
     def get_utility_rate(state: str = "NSW", tariff_type: str = "single rate") -> dict:

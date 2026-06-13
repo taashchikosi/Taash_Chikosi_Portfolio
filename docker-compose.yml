@@ -1,8 +1,13 @@
 services:
   app:
     build: .
+    platform: linux/amd64   # EnergyPlus is x86_64-only; force amd64 on Apple Silicon
+    # Serve the public FastAPI app (in-memory MCP + EnergyPlus run in-process). The
+    # Dockerfile's default CMD (python -m mcp_server.server) is for standalone MCP;
+    # `docker compose run app <cmd>` still overrides this for the capstone/verify scripts.
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8080
     ports:
-      - "8080:8080"   # FastAPI + MCP server (frontend: cd frontend && npm run dev → :3000)
+      - "8080:8080"   # FastAPI (frontend: cd frontend && npm run dev → :3000)
     env_file: .env
     environment:
       DATABASE_URL: postgresql://retrofit:retrofit@db:5432/retrofitgpt

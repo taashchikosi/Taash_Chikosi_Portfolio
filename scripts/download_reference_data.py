@@ -27,12 +27,19 @@ DOWNLOADS = {
 }
 
 # Sydney TMYx weather (zip containing .epw) — climate.onebuilding.org.
-# Filenames change over time, so we DISCOVER the current Sydney file from the
-# NSW directory listing instead of hardcoding a name that breaks.
+# Filenames change over time, so we DISCOVER the current file from the NSW
+# directory listing instead of hardcoding a name that breaks.
+#
+# KEY: onebuilding does NOT put "Sydney" in the filename — stations are named by
+# site + WMO code. We therefore search by the stable WMO code for Sydney Airport
+# (Kingsford Smith) = 947670; codes survive filename reformats. Fallbacks widen
+# the net to nearby Sydney-basin stations if the airport file is ever missing.
 NSW_INDEX = (
     "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/"
     "AUS_Australia/NSW_New_South_Wales/"
 )
+SYDNEY_PRIMARY_CODES = ("947670",)            # Sydney Airport (Kingsford Smith)
+SYDNEY_FALLBACK_CODES = ("947660", "947680")  # Canterbury Park, Observatory Hill basin
 
 
 def fetch(url: str) -> bytes:
@@ -41,21 +48,42 @@ def fetch(url: str) -> bytes:
         return r.read()
 
 
-def discover_sydney_zip() -> str | None:
-    """Scrape the NSW index for a Sydney TMYx zip and return its full URL."""
+def _zip_filenames(html: str) -> list[str]:
+    """All NSW TMYx zip filenames in the index.
+
+    Matches the bare filename, so it works whether the index serves relative
+    hrefs (raw Apache listing) or absolute URLs (proxied/rendered).
+    """
     import re
+    return re.findall(r"AUS_NSW_[^\"'<>)\s]*_TMYx[^\"'<>)\s]*\.zip", html)
+
+
+def discover_sydney_zip() -> str | None:
+    """Find the current Sydney TMYx zip on the NSW index; return its full URL."""
     try:
         html = fetch(NSW_INDEX).decode("latin-1", errors="ignore")
     except Exception as exc:  # noqa: BLE001
         print(f"    ✗ could not read index: {exc}")
         return None
-    # Prefer the Sydney Airport station (947670), else any Sydney TMYx zip
-    names = re.findall(r'href="([^"]*Sydney[^"]*_TMYx[^"]*\.zip)"', html, re.I)
+
+    names = [n.split("/")[-1] for n in _zip_filenames(html)]
     if not names:
         return None
-    preferred = [n for n in names if "947670" in n] or names
-    name = sorted(preferred)[-1]  # newest TMYx period sorts last
-    return name if name.startswith("http") else NSW_INDEX + name.split("/")[-1]
+
+    def pick(codes: tuple[str, ...]) -> str | None:
+        hits = sorted({n for n in names if any(c in n for c in codes)})
+        # The base "<station>_TMYx.zip" sorts last vs dated periods → canonical.
+        return hits[-1] if hits else None
+
+    name = (
+        pick(SYDNEY_PRIMARY_CODES)
+        or next((n for n in sorted(names) if "Sydney" in n), None)
+        or pick(SYDNEY_FALLBACK_CODES)
+    )
+    if not name:
+        return None
+    print(f"    → matched {name}")
+    return NSW_INDEX + name
 
 
 def main() -> None:

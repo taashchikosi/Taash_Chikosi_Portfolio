@@ -1,0 +1,25 @@
+# Keep the build context small + keep secrets out of image layers.
+
+.git
+**/__pycache__
+*.pyc
+.venv
+venv
+
+# Secrets — injected at runtime via compose env_file, must NOT be baked into the image
+.env
+frontend/.env.local
+
+# Frontend build artifacts
+frontend/node_modules
+frontend/.next
+
+# Large simulation outputs
+*.eso
+*.err
+*.audit
+
+# OS / editor cruft
+**/.DS_Store
+.idea
+.vscode

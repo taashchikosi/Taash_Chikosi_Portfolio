@@ -1,16 +1,41 @@
 {
-  "source": "DCCEEW National Greenhouse Accounts Factors (verify against latest workbook at dcceew.gov.au before demo — values below are indicative and MUST be confirmed)",
-  "status": "PLACEHOLDER — confirm each value against the published NGA workbook",
+  "source": "DCCEEW — Australian National Greenhouse Accounts Factors 2025, Table 1 (location-based electricity). Applies to the 2025–26 reporting year. GWP basis: IPCC AR5 (GWP-100), consistent with NGER.",
+  "edition": "NGA Factors 2025",
+  "applies_to_reporting_year": "2025-26",
+  "gwp_basis": "IPCC AR5 GWP-100 (NGER convention)",
+  "status": "PRIMARY-VERIFIED 2026-06-10. All 22 electricity Scope 2/3 values confirmed cell-by-cell against the official DCCEEW NGA Factors 2025 XLSX (Table 1). Natural gas confirmed against Table 5 ('Natural gas distributed in a pipeline' = 51.53 kg CO2e/GJ combined).",
   "year": 2025,
+  "_notes": {
+    "wa_grids": "WA has two grids with different factors: SWIS (Perth/SW, default for 'WA') and NWIS (Pilbara). Use WA_NWIS for Pilbara sites.",
+    "act": "ACT shares the NSW grid factor.",
+    "scope2_vs_scope3": "Scope 2 = generation/combustion at the power station. Scope 3 = upstream fuel extraction/transport + transmission & distribution losses (~10%). Report separately; do not sum into one line for NGER/ASRS.",
+    "natural_gas": "0.185 kg CO2e/kWh = Scope 1 combustion. NGA Table 5 'Natural gas distributed in a pipeline' = 51.53 kg CO2e/GJ combined (51.4 CO2 + 0.1 CH4 + 0.03 N2O). Convert: 51.53 kg/GJ x 3.6 GJ/MWh = 185.5 kg/MWh = 0.185 kg/kWh. Scope 3 (extraction + distribution) not yet included here — add before quoting full lifecycle gas emissions."
+  },
   "electricity_scope2_kgco2e_per_kwh": {
-    "NSW": 0.66,
-    "VIC": 0.77,
-    "QLD": 0.71,
-    "SA": 0.25,
-    "WA": 0.51,
-    "TAS": 0.12,
-    "NT": 0.54,
-    "ACT": 0.66
+    "NSW": 0.64,
+    "ACT": 0.64,
+    "VIC": 0.78,
+    "QLD": 0.67,
+    "SA": 0.22,
+    "WA": 0.50,
+    "WA_SWIS": 0.50,
+    "WA_NWIS": 0.56,
+    "TAS": 0.20,
+    "NT": 0.56,
+    "NATIONAL": 0.62
+  },
+  "electricity_scope3_kgco2e_per_kwh": {
+    "NSW": 0.03,
+    "ACT": 0.03,
+    "VIC": 0.09,
+    "QLD": 0.09,
+    "SA": 0.04,
+    "WA": 0.06,
+    "WA_SWIS": 0.06,
+    "WA_NWIS": 0.09,
+    "TAS": 0.03,
+    "NT": 0.09,
+    "NATIONAL": 0.07
   },
   "natural_gas_kgco2e_per_kwh": 0.185
 }

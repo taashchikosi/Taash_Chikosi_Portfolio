@@ -1,0 +1,84 @@
+{
+  "id": "retail",
+  "description": "Retail store (Brisbane, NCC zone 2), 1500 m². Energy-intensive, different NCC lighting limit (retail max 14 W/m²). Bands computed from the real analyzer output.",
+  "building": {"floor_area_m2": 1500, "ncc_climate_zone": 2},
+  "economics": {
+    "tariff_aud_per_kwh": 0.30,
+    "carbon_factor_kg_per_kwh": 0.66,
+    "tariff_source": "CDR Energy PRD (demo)",
+    "emission_factor_source": "NGA 2025 QLD"
+  },
+  "sim": {
+    "baseline": {"annual_energy_kwh": 420000, "annual_eui": 280.0},
+    "scenarios": [
+      {"name": "led_lighting", "cost_aud": 39500, "annual_energy_kwh": 375000, "annual_eui": 250.0},
+      {"name": "efficient_equipment", "cost_aud": 24000, "annual_energy_kwh": 402000, "annual_eui": 268.0}
+    ]
+  },
+  "calibration": "demo",
+  "expect": {
+    "reviewer_approved": true,
+    "review_route_to": "done",
+    "recommended": "led_lighting",
+    "nmbe_pct": {"min": -5.0, "max": 5.0},
+    "cvrmse_pct": {"min": 0.0, "max": 15.0},
+    "total_carbon_reduction_tco2e": {"min": 40.0, "max": 44.0},
+    "analyses": {
+      "led_lighting": {
+        "savings_pct": {"min": 10.0, "max": 12.0},
+        "payback_years": {"min": 2.5, "max": 3.3},
+        "carbon_tco2e": {"min": 28.0, "max": 31.0}
+      },
+      "efficient_equipment": {
+        "savings_pct": {"min": 3.8, "max": 5.0},
+        "payback_years": {"min": 4.0, "max": 5.0},
+        "carbon_tco2e": {"min": 11.0, "max": 13.0}
+      }
+    },
+    "ncc": {
+      "lighting": [
+        {"label": "baseline_lpd", "value_w_m2": 16.0, "space": "retail", "status": "non_compliant"},
+        {"label": "led_retrofit", "value_w_m2": 4.5, "space": "retail", "status": "compliant"}
+      ],
+      "components": [
+        {"component": "equipment_power_density", "status": "not_regulated"},
+        {"component": "glazing_u_value", "status": "requires_calculation"}
+      ],
+      "aggregate": {
+        "label": "baseline_floor_aggregate",
+        "spaces": [
+          {"space": "retail", "area_m2": 1200, "design_ipd_w_m2": 16.0},
+          {"space": "storage", "area_m2": 300, "design_ipd_w_m2": 1.0}
+        ],
+        "status": "non_compliant"
+      }
+    }
+  },
+  "llm_expect": {
+    "idf_meta": {
+      "zone_count": 4,
+      "floor_area_m2": 1500,
+      "hvac_objects": ["PackagedRooftopUnit", "Coil:Cooling:DX:TwoSpeed", "Fan:ConstantVolume"],
+      "constructions": ["Retail Shopfront Display Glazing", "Sales Floor Slab"],
+      "location": {"city": "Brisbane"}
+    },
+    "classify": {
+      "building_type_allowed": ["retail", "store", "commercial_retail"],
+      "hvac_nonempty": true
+    },
+    "select": {
+      "subset_of_catalog": true,
+      "min_count": 2,
+      "must_include": ["led_lighting"]
+    },
+    "stability": {
+      "min_identical_classify_pct": 1.0,
+      "min_select_jaccard": 0.6
+    },
+    "citation": {
+      "sources": ["EnergyPlus simulation output", "CDR Energy PRD tariff", "NGA 2025 QLD emission factor"],
+      "clean_claim": "The LED lighting retrofit reduces annual energy use by 10.7% (EnergyPlus simulation), saving about $13,500/yr at the CDR Energy PRD tariff and cutting 29.7 tCO2e/yr using the NGA 2025 QLD emission factor.",
+      "tampered_claim": "The LED lighting retrofit reduces annual energy use by 10.7% and comes with a manufacturer guarantee of a $200,000 sales uplift and exemption from all council energy levies."
+    }
+  }
+}

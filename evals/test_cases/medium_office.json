@@ -1,0 +1,85 @@
+{
+  "id": "medium_office",
+  "description": "Medium office (Melbourne, NCC zone 6), 3000 m². Adds a second office archetype so the gate isn't tuned to one building. Bands computed from the real analyzer output.",
+  "building": {"floor_area_m2": 3000, "ncc_climate_zone": 6},
+  "economics": {
+    "tariff_aud_per_kwh": 0.30,
+    "carbon_factor_kg_per_kwh": 0.66,
+    "tariff_source": "CDR Energy PRD (demo)",
+    "emission_factor_source": "NGA 2025 VIC"
+  },
+  "sim": {
+    "baseline": {"annual_energy_kwh": 450000, "annual_eui": 150.0},
+    "scenarios": [
+      {"name": "led_lighting", "cost_aud": 77000, "annual_energy_kwh": 396000, "annual_eui": 132.0},
+      {"name": "efficient_equipment", "cost_aud": 46500, "annual_energy_kwh": 420000, "annual_eui": 140.0}
+    ]
+  },
+  "calibration": "demo",
+  "expect": {
+    "reviewer_approved": true,
+    "review_route_to": "done",
+    "recommended": "led_lighting",
+    "nmbe_pct": {"min": -5.0, "max": 5.0},
+    "cvrmse_pct": {"min": 0.0, "max": 15.0},
+    "total_carbon_reduction_tco2e": {"min": 53.0, "max": 58.0},
+    "analyses": {
+      "led_lighting": {
+        "savings_pct": {"min": 11.0, "max": 13.0},
+        "payback_years": {"min": 4.3, "max": 5.3},
+        "carbon_tco2e": {"min": 34.0, "max": 37.0}
+      },
+      "efficient_equipment": {
+        "savings_pct": {"min": 6.0, "max": 7.5},
+        "payback_years": {"min": 4.7, "max": 5.7},
+        "carbon_tco2e": {"min": 19.0, "max": 21.0}
+      }
+    },
+    "ncc": {
+      "lighting": [
+        {"label": "baseline_lpd", "value_w_m2": 10.0, "space": "office_200lx_or_more", "status": "non_compliant"},
+        {"label": "led_retrofit", "value_w_m2": 4.5, "space": "office_200lx_or_more", "status": "compliant"}
+      ],
+      "components": [
+        {"component": "equipment_power_density", "status": "not_regulated"},
+        {"component": "glazing_u_value", "status": "requires_calculation"}
+      ],
+      "aggregate": {
+        "label": "baseline_floor_aggregate",
+        "spaces": [
+          {"space": "office_200lx_or_more", "area_m2": 2500, "design_ipd_w_m2": 10.0},
+          {"space": "corridor", "area_m2": 300, "design_ipd_w_m2": 5.0},
+          {"space": "toilet_staff_room", "area_m2": 200, "design_ipd_w_m2": 3.0}
+        ],
+        "status": "non_compliant"
+      }
+    }
+  },
+  "llm_expect": {
+    "idf_meta": {
+      "zone_count": 15,
+      "floor_area_m2": 3000,
+      "hvac_objects": ["AirLoopHVAC", "AirTerminal:SingleDuct:VAV:Reheat", "Chiller:Electric:EIR", "Boiler:HotWater"],
+      "constructions": ["Curtain Wall Glazing", "Open-Plan Office Floor Slab"],
+      "location": {"city": "Melbourne"}
+    },
+    "classify": {
+      "building_type_allowed": ["medium_office", "office"],
+      "hvac_nonempty": true
+    },
+    "select": {
+      "subset_of_catalog": true,
+      "min_count": 2,
+      "must_include": ["led_lighting"]
+    },
+    "stability": {
+      "min_identical_classify_pct": 1.0,
+      "min_select_jaccard": 0.6
+    },
+    "citation": {
+      "sources": ["EnergyPlus simulation output", "CDR Energy PRD tariff", "NGA 2025 VIC emission factor"],
+      "clean_claim": "The LED lighting retrofit reduces annual energy use by 12.0% (EnergyPlus simulation), saving about $16,200/yr at the CDR Energy PRD tariff and cutting 35.6 tCO2e/yr using the NGA 2025 VIC emission factor.",
+      "tampered_claim": "The LED lighting retrofit reduces annual energy use by 12.0% and is guaranteed to halve the building's insurance premium and unlock a $120,000 state efficiency grant."
+    }
+  }
+}

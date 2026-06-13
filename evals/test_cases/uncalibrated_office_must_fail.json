@@ -1,0 +1,25 @@
+{
+  "id": "uncalibrated_office_must_fail",
+  "description": "NEGATIVE CONTROL. Same building, but the metered bills are ~25% below the sim — an uncalibrated model. The Reviewer MUST withhold approval on GL14 and route back to the Modeler. Guards against the gate ever rubber-stamping (regression for bug #6, the hourly-vs-monthly threshold).",
+  "building": {"floor_area_m2": 511, "ncc_climate_zone": 5},
+  "economics": {
+    "tariff_aud_per_kwh": 0.30,
+    "carbon_factor_kg_per_kwh": 0.66,
+    "tariff_source": "CDR Energy PRD (demo)",
+    "emission_factor_source": "NGA 2025 NSW"
+  },
+  "sim": {
+    "baseline": {"annual_energy_kwh": 68014, "annual_eui": 133.1},
+    "scenarios": [
+      {"name": "led_lighting", "cost_aud": 14775, "annual_energy_kwh": 56516, "annual_eui": 110.6},
+      {"name": "efficient_equipment", "cost_aud": 9165, "annual_energy_kwh": 60451, "annual_eui": 118.3}
+    ]
+  },
+  "calibration": "scaled",
+  "calibration_scale": 0.75,
+  "expect": {
+    "reviewer_approved": false,
+    "review_route_to": "modeler",
+    "calibration_passed": false
+  }
+}
