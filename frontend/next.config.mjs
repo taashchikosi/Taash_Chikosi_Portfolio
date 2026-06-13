@@ -1,14 +1,12 @@
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async rewrites() {
-    // Proxy API calls to FastAPI in dev (avoids CORS)
-    return [
-      {
-        source: "/api/:path*",
-        destination: `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080"}/api/:path*`,
-      },
-    ];
-  },
+  // Pin the tracing root to this app (a stray lockfile in $HOME otherwise confuses Next).
+  outputFileTracingRoot: __dirname,
 };
 
 export default nextConfig;

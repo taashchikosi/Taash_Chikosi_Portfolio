@@ -1,14 +1,12 @@
 "use client";
 
 /**
- * /retrofitgpt — recruiter-facing case-study page (the unified-platform template:
- * hero + live status → problem → architecture → live demo → eval metrics →
- * technical decisions (ADR) → links). Includes the mandatory "About the model"
- * panel + "Demo calibration" badge so the green verdict is never mistaken for a
- * real-building calibration (see docs/ARCHETYPE_AND_CALIBRATION.md §6).
+ * /retrofitgpt — recruiter-facing case study: hero + live status → problem →
+ * architecture → eval metrics → technical decisions (ADR) → links. Includes the
+ * mandatory "About the model" panel + "Demo calibration" badge so the green verdict
+ * is never mistaken for a real-building calibration (docs/ARCHETYPE_AND_CALIBRATION.md §6).
  *
- * Self-contained: only Tailwind tokens + lucide-react (both already in the app).
- * Live status dot hits NEXT_PUBLIC_API_BASE/health (the VPS container, :8001).
+ * Live status dot hits NEXT_PUBLIC_API_BASE/health (the VPS container behind Caddy TLS).
  */
 
 import { useEffect, useState } from "react";
@@ -17,8 +15,8 @@ import {
   FlaskConical, Gauge, GitBranch, Github, Info, Leaf, ShieldCheck, Building2,
 } from "lucide-react";
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8001";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8080";
+const REPO = "https://github.com/taashchikosi/Taash_Chikosi_Portfolio";
 
 type Health = {
   status: string;
@@ -59,7 +57,7 @@ function StatusDot() {
   const color = ok ? "bg-accent" : failed ? "bg-red-500" : "bg-amber-400";
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-surface-border bg-surface-raised px-3 py-1 text-xs text-zinc-300">
-      <span className={`relative flex h-2 w-2`}>
+      <span className="relative flex h-2 w-2">
         {ok && (
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
         )}
@@ -131,13 +129,15 @@ export default function RetrofitGPTCaseStudy() {
       </p>
       <div className="mt-7 flex flex-wrap gap-3">
         <a
-          href="/"
+          href="/retrofitgpt/demo"
           className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-black transition-opacity hover:opacity-90"
         >
           Run the live demo <ArrowRight className="h-4 w-4" />
         </a>
         <a
-          href="https://github.com/"
+          href={REPO}
+          target="_blank"
+          rel="noreferrer"
           className="inline-flex items-center gap-2 rounded-lg border border-surface-border bg-surface-raised px-4 py-2.5 text-sm font-medium text-zinc-200 hover:border-accent/50"
         >
           <Github className="h-4 w-4" /> Source
@@ -280,10 +280,15 @@ export default function RetrofitGPTCaseStudy() {
 
       {/* ── Footer links ─────────────────────────────────────────────── */}
       <div className="mt-16 flex flex-wrap items-center gap-4 border-t border-surface-border pt-6 text-sm">
-        <a href="/" className="inline-flex items-center gap-1.5 text-accent hover:underline">
+        <a href="/retrofitgpt/demo" className="inline-flex items-center gap-1.5 text-accent hover:underline">
           <Activity className="h-4 w-4" /> Live demo
         </a>
-        <a href="https://github.com/" className="inline-flex items-center gap-1.5 text-zinc-300 hover:text-white">
+        <a
+          href={REPO}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-1.5 text-zinc-300 hover:text-white"
+        >
           <Github className="h-4 w-4" /> GitHub
         </a>
         <a href="#about-model" className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-200">

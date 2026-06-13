@@ -1,5 +1,5 @@
 {
-  "name": "retrofitgpt-frontend",
+  "name": "taash-portfolio",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,12 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@assistant-ui/react": "^0.10.0",
     "lucide-react": "^0.460.0",
     "next": "^15.1.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "recharts": "^2.15.0"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@types/node": "^22",

@@ -1,4 +1,4 @@
-// Frontend ↔ backend contract (see project plan §8)
+// Frontend ↔ RetrofitGPT backend contract (mirrors the API's SSE event shape).
 
 export type AgentName =
   | "retriever"
@@ -6,20 +6,6 @@ export type AgentName =
   | "sim_runner"
   | "analyzer"
   | "reviewer";
-
-export type AgentStatus =
-  | "queued"
-  | "started"
-  | "progress"
-  | "awaiting_approval"
-  | "completed"
-  | "failed";
-
-export type AgentEvent = {
-  agent: AgentName;
-  status: AgentStatus;
-  payload: Record<string, unknown>; // validated upstream by Pydantic
-};
 
 export const AGENT_LABELS: Record<AgentName, { label: string; emoji: string }> = {
   retriever: { label: "Retriever", emoji: "🔍" },
