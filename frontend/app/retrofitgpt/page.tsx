@@ -111,23 +111,32 @@ export default function RetrofitGPTCaseStudy() {
   return (
     <div className="mx-auto max-w-4xl px-6 py-14">
       {/* ── Hero ─────────────────────────────────────────────────────── */}
-      <div className="flex items-center gap-3">
+      <div className="animate-rise flex items-center gap-3">
         <StatusDot />
         <span className="text-xs text-zinc-600">RetrofitGPT · live agent</span>
       </div>
-      <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight text-white">
+      <h1
+        className="animate-rise mt-5 text-4xl font-semibold leading-[1.1] tracking-tight text-white"
+        style={{ animationDelay: "80ms" }}
+      >
         An autonomous multi-agent system that turns a building energy model into an
         audit-ready{" "}
         <span className="text-accent">decarbonisation business case</span>.
       </h1>
-      <p className="mt-4 max-w-2xl text-base leading-relaxed text-zinc-400">
+      <p
+        className="animate-rise mt-4 max-w-2xl text-base leading-relaxed text-zinc-400"
+        style={{ animationDelay: "160ms" }}
+      >
         Upload a <span className="text-zinc-200">.idf</span> model + 12 months of
         bills → five agents run <span className="text-zinc-200">real EnergyPlus</span>{" "}
         retrofit simulations and return savings %, payback, NPV and tCO₂e — verified
         against ASHRAE Guideline 14, an OWASP-LLM06 guardrail, and real NCC 2022
         Section J code compliance.
       </p>
-      <div className="mt-7 flex flex-wrap gap-3">
+      <div
+        className="animate-rise mt-7 flex flex-wrap gap-3"
+        style={{ animationDelay: "240ms" }}
+      >
         <a
           href="/retrofitgpt/demo"
           className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-black transition-opacity hover:opacity-90"
@@ -197,7 +206,11 @@ export default function RetrofitGPTCaseStudy() {
           {AGENTS.map((a, i) => (
             <div
               key={a.name}
-              className="relative rounded-lg border border-surface-border bg-surface-raised p-3"
+              className="flow-card relative rounded-lg border border-surface-border bg-surface-raised p-3"
+              style={{
+                animation: "flowPulse 3.4s ease-in-out infinite",
+                animationDelay: `${i * 0.45}s`,
+              }}
             >
               <a.icon className="h-5 w-5 text-accent" />
               <p className="mt-2 text-sm font-medium text-zinc-200">{a.name}</p>
@@ -206,7 +219,13 @@ export default function RetrofitGPTCaseStudy() {
                 {a.model}
               </p>
               {i < AGENTS.length - 1 && (
-                <ArrowRight className="absolute -right-2.5 top-1/2 hidden h-4 w-4 -translate-y-1/2 text-surface-border sm:block" />
+                <ArrowRight
+                  className="flow-arrow absolute -right-2.5 top-1/2 hidden h-4 w-4 -translate-y-1/2 text-accent sm:block"
+                  style={{
+                    animation: "flowArrow 3.4s ease-in-out infinite",
+                    animationDelay: `${i * 0.45 + 0.22}s`,
+                  }}
+                />
               )}
             </div>
           ))}
