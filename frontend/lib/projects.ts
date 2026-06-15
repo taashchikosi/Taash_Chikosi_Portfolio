@@ -48,4 +48,15 @@ export const PROJECTS: Project[] = [
     href: "/onboarding-builder",
     repo: "https://github.com/taashchikosi/onboarding-builder",
   },
+  {
+    slug: "doc-intelligence",
+    title: "Invoice Document Intelligence",
+    tagline: "Reads invoices, catches duplicate-payment fraud",
+    blurb:
+      "A confidence-gated invoice pipeline: extracts vendor fields, checks the maths, and catches duplicate-payment fraud — escalating anything it isn't sure of to a human instead of posting a wrong number. 94.3% fair field-F1 (vs a 30.8% regex baseline) on 28 real invoices across 19 vendors, at $0.00022/invoice. FastAPI + DeepSeek, CPU-only — no GPU.",
+    tags: ["FastAPI", "DeepSeek", "Document AI", "Fraud detection", "Next.js"],
+    status: "live",
+    href: "/doc-intelligence",
+    repo: "https://github.com/taashchikosi/doc-intelligence",
+  },
 ];
