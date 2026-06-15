@@ -42,3 +42,4 @@ venv/
 
 # CI workflow needs a workflow-scoped PAT to push; tracked separately
 .github/workflows/ci.yml
+.vercel

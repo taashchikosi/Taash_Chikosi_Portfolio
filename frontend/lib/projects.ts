@@ -37,4 +37,15 @@ export const PROJECTS: Project[] = [
     href: "/auditagent",
     repo: "https://github.com/taashchikosi/auditagent",
   },
+  {
+    slug: "onboarding-builder",
+    title: "Onboarding Auto-Builder",
+    tagline: "Onboarding-as-code: a signed SOW becomes an audited, reversible build",
+    blurb:
+      "Compiles a signed SOW into a typed desired-state workspace config (live DeepSeek), previews it as a terraform-plan diff, gates on a human approval, then applies it idempotently — with dependency ordering, retries, and rollback — against a real HubSpot sandbox, and reconciles plan-vs-actual. Injected attacks are refused; objects HubSpot can't API-provision surface as honest manual steps, never faked.",
+    tags: ["FastAPI", "DeepSeek", "HubSpot sandbox", "plan/approve/apply", "Next.js"],
+    status: "live",
+    href: "/onboarding-builder",
+    repo: "https://github.com/taashchikosi/onboarding-builder",
+  },
 ];
