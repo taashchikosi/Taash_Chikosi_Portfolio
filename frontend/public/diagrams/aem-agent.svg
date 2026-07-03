@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 980" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e0a35b"/>
+    </marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="900" height="980" fill="#0d1117"/>
+
+  <!-- ===== spine edges ===== -->
+  <g stroke="#8b949e" stroke-width="1.5" fill="none">
+    <line x1="450" y1="114" x2="450" y2="156" marker-end="url(#arrow)"/>
+    <line x1="450" y1="234" x2="450" y2="276" marker-end="url(#arrow)"/>
+    <line x1="450" y1="354" x2="450" y2="396" marker-end="url(#arrow)"/>
+    <line x1="450" y1="474" x2="450" y2="516" marker-end="url(#arrow)"/>
+    <line x1="450" y1="594" x2="450" y2="636" marker-end="url(#arrow)"/>
+    <line x1="450" y1="714" x2="450" y2="756" marker-end="url(#arrow)"/>
+  </g>
+  <g font-size="12" fill="#8b949e" text-anchor="middle">
+    <text x="450" y="141">the run starts</text>
+    <text x="450" y="261">building type + HVAC</text>
+    <text x="450" y="381">the measure plan</text>
+    <text x="450" y="501">approved &#8594; run the physics</text>
+    <text x="450" y="621">EUI / kWh per scenario</text>
+    <text x="450" y="741">the draft business case</text>
+  </g>
+
+  <!-- ===== Reviewer fork ===== -->
+  <g stroke="#8b949e" stroke-width="1.5" fill="none">
+    <line x1="450" y1="834" x2="322" y2="870" marker-end="url(#arrow)"/>
+    <line x1="450" y1="834" x2="578" y2="870" marker-end="url(#arrow)"/>
+  </g>
+  <g font-size="12" font-weight="600" text-anchor="middle">
+    <text x="352" y="858" fill="#3fb950">in cohort &#10003;</text>
+    <text x="548" y="858" fill="#f0a35b">outside &#10007;</text>
+  </g>
+
+  <!-- ===== return loop (withhold -> inputs) ===== -->
+  <path d="M 730 907 H 812 V 75 H 734" fill="none" stroke="#e0a35b" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrowAmber)"/>
+  <text x="828" y="490" transform="rotate(90 828 490)" text-anchor="middle" font-size="12" fill="#e0a35b">route back to the inputs &#183; adjust + re-run</text>
+
+  <!-- ===== nodes ===== -->
+  <!-- Inputs -->
+  <rect x="170" y="36" width="560" height="78" rx="13" fill="#1a2230" stroke="#6b7685" stroke-width="2"/>
+  <text x="450" y="68" text-anchor="middle" font-size="16" font-weight="600" fill="#c9d3e0">&#128229; Inputs</text>
+  <text x="450" y="92" text-anchor="middle" font-size="12.5" font-style="italic" fill="#c9d3e0" opacity="0.82">pre-loaded building + city + 9 editable model inputs</text>
+
+  <!-- Retriever -->
+  <rect x="170" y="156" width="560" height="78" rx="13" fill="#13283f" stroke="#4c8dff" stroke-width="2"/>
+  <text x="450" y="188" text-anchor="middle" font-size="16" font-weight="600" fill="#dce9ff">&#128269; Retriever</text>
+  <text x="450" y="212" text-anchor="middle" font-size="12.5" font-style="italic" fill="#dce9ff" opacity="0.85">LLM classifies type + HVAC &#183; area / EUI / zone are deterministic</text>
+
+  <!-- Modeler -->
+  <rect x="170" y="276" width="560" height="78" rx="13" fill="#241a3d" stroke="#a371f7" stroke-width="2"/>
+  <text x="450" y="308" text-anchor="middle" font-size="16" font-weight="600" fill="#ecdfff">&#128295; Modeler</text>
+  <text x="450" y="332" text-anchor="middle" font-size="12.5" font-style="italic" fill="#ecdfff" opacity="0.85">LLM selects measures &#183; cost / NCC / IDF edits are deterministic</text>
+
+  <!-- HITL gate -->
+  <rect x="170" y="396" width="560" height="78" rx="13" fill="#3a2412" stroke="#f0883e" stroke-width="2"/>
+  <text x="450" y="428" text-anchor="middle" font-size="16" font-weight="600" fill="#ffd9b3">&#128587; Human approval gate</text>
+  <text x="450" y="452" text-anchor="middle" font-size="12.5" font-style="italic" fill="#ffd9b3" opacity="0.9">approve the plan &#8212; before any physics runs (API-enforced)</text>
+
+  <!-- Sim Runner -->
+  <rect x="170" y="516" width="560" height="78" rx="13" fill="#13301d" stroke="#3fb950" stroke-width="2"/>
+  <text x="450" y="548" text-anchor="middle" font-size="16" font-weight="600" fill="#caf0d2">&#9881;&#65039; Sim Runner</text>
+  <text x="450" y="572" text-anchor="middle" font-size="12.5" font-style="italic" fill="#caf0d2" opacity="0.85">real EnergyPlus 24.2 over MCP &#183; per scenario &#183; no LLM</text>
+
+  <!-- Analyzer -->
+  <rect x="170" y="636" width="560" height="78" rx="13" fill="#0f2b2a" stroke="#2dd4bf" stroke-width="2"/>
+  <text x="450" y="668" text-anchor="middle" font-size="16" font-weight="600" fill="#ccfbf1">&#128202; Analyzer</text>
+  <text x="450" y="692" text-anchor="middle" font-size="12.5" font-style="italic" fill="#ccfbf1" opacity="0.85">savings &#183; payback &#183; NPV &#183; carbon &#183; no LLM</text>
+
+  <!-- Reviewer -->
+  <rect x="170" y="756" width="560" height="78" rx="13" fill="#332813" stroke="#d6a01f" stroke-width="2"/>
+  <text x="450" y="788" text-anchor="middle" font-size="16" font-weight="600" fill="#f3e3b0">&#128737;&#65039; Reviewer &#8212; the gate</text>
+  <text x="450" y="812" text-anchor="middle" font-size="12.5" font-style="italic" fill="#f3e3b0" opacity="0.9">baseline inside CBD cohort p25&#8211;p75? + LLM06 guardrail + citations</text>
+
+  <!-- Approved outcome -->
+  <rect x="170" y="872" width="270" height="70" rx="13" fill="#13301d" stroke="#3fb950" stroke-width="2"/>
+  <text x="305" y="902" text-anchor="middle" font-size="15" font-weight="600" fill="#caf0d2">&#10003; Approved</text>
+  <text x="305" y="924" text-anchor="middle" font-size="12" font-style="italic" fill="#caf0d2" opacity="0.85">business case released</text>
+
+  <!-- Withhold outcome -->
+  <rect x="460" y="872" width="270" height="70" rx="13" fill="#3a201c" stroke="#f85149" stroke-width="2"/>
+  <text x="595" y="902" text-anchor="middle" font-size="15" font-weight="600" fill="#ffc9c2">&#10007; Outside cohort</text>
+  <text x="595" y="924" text-anchor="middle" font-size="12" font-style="italic" fill="#ffc9c2" opacity="0.85">withheld &#8212; nothing shipped</text>
+</svg>

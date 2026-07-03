@@ -14,6 +14,7 @@ helpers below extract *site delivered energy* only, and are unit-tested against 
 synthetic CSV that reproduces those trap columns.
 """
 import json
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -27,7 +28,7 @@ J_TO_KWH = 1 / 3.6e6
 # or the Purchased/Net/Surplus electricity variants (which duplicate Electricity).
 SITE_FUEL_METERS = ("Electricity:Facility", "NaturalGas:Facility")
 _END_USES = ("Heating", "Cooling", "InteriorLights", "InteriorEquipment",
-             "Fans", "Pumps", "WaterSystems", "ExteriorLights")
+             "Fans", "Pumps", "HeatRejection", "WaterSystems", "ExteriorLights")
 # Reporting-frequency preference: pick ONE column per meter so we never sum the
 # same meter twice (e.g. its Hourly and Monthly variants both appear in the CSV).
 _FREQ_PREF = ("(Hourly)", "(Timestep)", "(Detailed)", "(RunPeriod)", "(Annual)")
@@ -105,6 +106,79 @@ def end_uses_kwh(df: pd.DataFrame) -> dict:
     return out
 
 
+# ── Authoritative floor area (Bug #12 fix) ─────────────────────────────────
+def _to_float(value, default=None):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _eio_col_name(token: str) -> str:
+    """Normalise an .eio column descriptor → a stable lookup key.
+
+    'Floor Area {m2}' → 'floor area' · '! <Zone Information>' → 'zone information'
+    · ' Part of Total Building Area' → 'part of total building area'.
+    """
+    token = token.strip()
+    if "{" in token:                       # strip a trailing unit, e.g. {m2}
+        token = token[: token.index("{")].strip()
+    return token.strip("!").strip().strip("<>").strip().lower()
+
+
+def net_conditioned_area_from_eio(eio_text: str):
+    """Authoritative building floor area (m²) from EnergyPlus' .eio Zone Information.
+
+    Sums each zone's reported `Floor Area {m2}` × Zone Multiplier × Zone List
+    Multiplier over zones flagged `Part of Total Building Area = Yes`. This is
+    EnergyPlus' OWN computed area — geometry-derived even when the IDF declares a
+    zone's Floor_Area as `autocalculate` — and it counts zone FLOORS, not
+    surfaces, so it never double-counts inter-floor slabs (the Bug #12 trap that a
+    naïve geometry summation falls into).
+
+    Header-driven: column positions are read from the `! <Zone Information>`
+    descriptor line, never hardcoded — EnergyPlus versions reorder these fields,
+    so a fixed index is exactly the kind of version-coupled constant that §11
+    warns against. Returns {area_m2, zones:[...]} or None if absent.
+    """
+    cols: dict[str, int] = {}
+    zones: list[dict] = []
+    for line in eio_text.splitlines():
+        if line.lstrip().startswith("! <Zone Information>"):
+            cols = {_eio_col_name(t): i for i, t in enumerate(line.split(","))}
+            continue
+        if not cols or not line.lstrip().startswith("Zone Information,"):
+            continue
+        parts = line.split(",")
+
+        def field(name, default=None):
+            idx = cols.get(name)
+            return parts[idx].strip() if idx is not None and idx < len(parts) else default
+
+        fa = _to_float(field("floor area"))
+        if fa is None:
+            continue
+        mult = (_to_float(field("zone multiplier"), 1.0)
+                * _to_float(field("zone list multiplier"), 1.0))
+        included = (field("part of total building area", "") or "").lower() == "yes"
+        zones.append({"zone": field("zone name"), "floor_area_m2": fa,
+                      "multiplier": mult, "included": included})
+    if not zones:
+        return None
+    area = round(sum(z["floor_area_m2"] * z["multiplier"]
+                     for z in zones if z["included"]), 1)
+    return {"area_m2": area, "zones": zones}
+
+
+def area_from_tabular_htm(html: str):
+    """Fallback: the 'Net Conditioned Building Area' value from eplustbl.htm."""
+    for label in ("Net Conditioned Building Area", "Total Building Area"):
+        m = re.search(label + r"\s*</td>\s*<td[^>]*>\s*([0-9][0-9.,]*)", html, re.I)
+        if m:
+            return _to_float(m.group(1).replace(",", ""))
+    return None
+
+
 # ── MCP tools (thin wrappers over the helpers) ─────────────────────────────
 def register_results_tools(mcp) -> None:
     @mcp.tool()
@@ -119,7 +193,7 @@ def register_results_tools(mcp) -> None:
 
     @mcp.tool()
     def get_monthly_energy(output_dir: str) -> dict:
-        """Monthly electricity profile (12 kWh values) — used for GL14 calibration."""
+        """Monthly electricity profile (12 kWh values) — feeds the guardrail's traceable-value set."""
         df = _csv(output_dir)
         if df is None:
             return wrap("get_monthly_energy", {"error": "eplusout.csv not found"})
@@ -140,6 +214,38 @@ def register_results_tools(mcp) -> None:
         return wrap("get_eui", {"eui_kwh_m2": round(total / floor_area_m2, 1),
                                 "total_kwh": total,
                                 "floor_area_m2": floor_area_m2})
+
+    @mcp.tool()
+    def get_building_area(output_dir: str) -> dict:
+        """Authoritative net conditioned floor area (m²) from EnergyPlus output.
+
+        Primary: eplusout.eio Zone Information (always written; geometry-derived;
+        counts zone floors, not surfaces). Fallback: the Net Conditioned Building
+        Area row in eplustbl.htm. Fixes Bug #12 — the DOE Medium Office declares
+        every zone Floor_Area as `autocalculate`, so a pre-sim read returns
+        nothing and a wrong fallback area gives a ~10× EUI. After the baseline
+        sim, the true area is known and the Sim Runner reconciles against it.
+        """
+        out = Path(output_dir)
+        eio = out / "eplusout.eio"
+        if eio.exists():
+            parsed = net_conditioned_area_from_eio(eio.read_text(errors="ignore"))
+            if parsed and parsed["area_m2"] > 0:
+                return wrap("get_building_area", {
+                    "net_conditioned_area_m2": parsed["area_m2"],
+                    "source": "eplusout.eio Zone Information "
+                              "(Part of Total Building Area = Yes)",
+                    "zones": [z for z in parsed["zones"] if z["included"]],
+                })
+        htm = out / "eplustbl.htm"
+        if htm.exists():
+            area = area_from_tabular_htm(htm.read_text(errors="ignore"))
+            if area and area > 0:
+                return wrap("get_building_area", {
+                    "net_conditioned_area_m2": round(area, 1),
+                    "source": "eplustbl.htm Net Conditioned Building Area"})
+        return wrap("get_building_area",
+                    {"error": f"no authoritative area source in {output_dir}"})
 
     @mcp.tool()
     def get_energy_end_uses(output_dir: str) -> dict:

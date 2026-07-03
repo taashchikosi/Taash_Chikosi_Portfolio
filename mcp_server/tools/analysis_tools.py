@@ -1,14 +1,13 @@
-"""Analysis tools (4 of the 20 core tools) — completes the v1 MCP surface.
+"""Analysis tools — deterministic finance/physics math (no LLM).
 
-calculate_savings · calculate_payback · calculate_npv · ashrae_calibration_check
+calculate_savings · calculate_payback · calculate_npv
 
-Pure deterministic finance/physics math. No LLM. Every figure an agent reports
-must come from one of these — that's what the Reviewer's LLM06 guardrail enforces.
+Every figure an agent reports must come from one of these — that's what the
+Reviewer's LLM06 guardrail enforces.
 """
 from __future__ import annotations
 
 from mcp_server.schemas.tool_schemas import wrap
-from verification.ashrae_checks import calibration_report
 
 
 def register_analysis_tools(mcp) -> None:
@@ -51,10 +50,3 @@ def register_analysis_tools(mcp) -> None:
             "years": years, "discount_rate": discount_rate,
             "present_value_of_savings_aud": round(pv, 2),
         })
-
-    @mcp.tool()
-    def ashrae_calibration_check(simulated_monthly: list[float],
-                                 measured_monthly: list[float]) -> dict:
-        """NMBE + CV(RMSE) vs measured bills (ASHRAE GL14, 12 monthly values)."""
-        return wrap("ashrae_calibration_check",
-                    calibration_report(simulated_monthly, measured_monthly))

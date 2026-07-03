@@ -1,5 +1,22 @@
 # 🤝 RetrofitGPT — Session Handoff (pick up here in a new chat)
 
+> ### 🆕 25 Jun 2026 — Multi-city scope added (Medium + Large Office × 4 cities)
+> The demo now opens with a **Step-1 building + city selector** (Perth · Sydney ·
+> Melbourne · Brisbane). New/changed:
+> - `data/reference_buildings/catalog.json` + `frontend/lib/energy-modeller-catalog.ts`
+>   — single source of truth (buildings, cities, NCC zones, grid factors, EPW names).
+> - `scripts/download_reference_data.py` — now fetches Large Office IDF + 4 city EPWs.
+> - `scripts/build_cbd_cohorts.py` — now builds **per-city** cohorts → keyed JSON.
+> - `api/main.py` — emission factor follows the **selected city's grid** (derived
+>   from the EPW state: WA 0.50 · NSW 0.64 · QLD 0.67 · VIC 0.78), not hardcoded NSW.
+> - `frontend/app/energy-modeller/demo.tsx` — selector + characteristics card.
+> - Tests: `tests/test_city_carbon_factor.py` (11). Suite **142 green**; frontend `tsc` clean.
+> - **Scope is deliberately offices-only** — see `docs/ARCHETYPE_AND_CALIBRATION.md` §1.5.
+> - **TODO on Mac:** run `download_reference_data.py` (gets the EPWs + Large IDF) and
+>   `build_cbd_cohorts.py` against the real CBD register, then paste the verified
+>   medians into `COHORTS` (see `docs/RUN_CBD_COHORTS.md`).
+
+
 > **Read order:** this file first → `docs/ARCHETYPE_AND_CALIBRATION.md` (the model +
 > calibration decision) → `HANDOFF.md` (full changelog history) →
 > `RetrofitGPT_Project_Plan.md` (technical spec).

@@ -25,9 +25,12 @@ import asyncio
 import json
 from typing import Any, Awaitable, Callable, Optional
 
+from agents.model_inputs import apply_model_inputs
+from agents.retrofit_catalog import CATALOG
 from agents.supervisor import RunState
+from verification.cohort_benchmark import office_band_for_area
 from verification.pydantic_schemas import (
-    ModelingOutput, SimRunnerOutput, SimulationResult,
+    ModelingOutput, ModelInputs, SimRunnerOutput, SimulationResult,
 )
 
 # An async tool caller: (tool_name, **kwargs) -> the tool's *unwrapped* data dict.
@@ -109,8 +112,8 @@ class FastMCPCaller:
 def _failed(name: str, reason: str, emit, runtime: float = 0.0) -> SimulationResult:
     """A schema-valid SimulationResult marking a scenario that did not complete.
 
-    Zeros (not faked monthly values) so the Reviewer's GL14 calibration can't be
-    fooled by a sim that never produced a real profile.
+    Zeros (not faked monthly values) so the Reviewer's realism gate + the LLM06
+    guardrail can't be fooled by a sim that never produced a real profile.
     """
     if emit:
         emit("sim_runner", "progress",
@@ -139,31 +142,48 @@ async def _poll(call: ToolCaller, job_id: str,
 
 
 async def _simulate(call: ToolCaller, base_idf: str, epw: str,
-                    scenario, floor_area: float, emit) -> SimulationResult:
+                    scenario, floor_area: float, emit,
+                    model_inputs: Optional[ModelInputs] = None,
+                    run_tag: Optional[str] = None
+                    ) -> tuple[SimulationResult, Optional[str]]:
+    """Run one scenario. Returns (result, output_dir). output_dir is None on any
+    failure before a successful sim, else the EnergyPlus job dir — the Sim Runner
+    reads the baseline's dir for the authoritative floor area (Bug #12 fix).
+
+    model_inputs (when present) are applied to the clone FIRST — they set the
+    building's operating point — then the scenario's own measure modifications,
+    so an efficiency measure (e.g. LED) correctly overrides an edited input.
+
+    run_tag scopes this run's working IDFs so concurrent visitors don't collide.
+    """
     name = scenario.name
 
-    cloned = await call("clone_idf", idf_path=base_idf, scenario_name=name)
+    cloned = await call("clone_idf", idf_path=base_idf, scenario_name=name,
+                        run_tag=run_tag)
     if "error" in cloned or "cloned_path" not in cloned:
-        return _failed(name, f"clone_idf: {cloned.get('error', 'no cloned_path')}", emit)
+        return _failed(name, f"clone_idf: {cloned.get('error', 'no cloned_path')}", emit), None
     work_idf = cloned["cloned_path"]
+
+    if model_inputs is not None and model_inputs.has_any_edit():
+        await apply_model_inputs(call, work_idf, model_inputs)
 
     for m in scenario.modifications:  # baseline has none → no-op
         res = await call("modify_idf_component", idf_path=work_idf,
                          object_type=m.object_type, object_name=m.object_name,
                          field=m.field, new_value=str(m.new_value))
         if "error" in res:
-            return _failed(name, f"modify {m.object_name}.{m.field}: {res['error']}", emit)
+            return _failed(name, f"modify {m.object_name}.{m.field}: {res['error']}", emit), None
 
     started = await call("run_simulation", idf_path=work_idf,
                          epw_path=epw, scenario_name=name)
     if "error" in started or "job_id" not in started:
-        return _failed(name, f"run_simulation: {started.get('error', 'no job_id')}", emit)
+        return _failed(name, f"run_simulation: {started.get('error', 'no job_id')}", emit), None
 
     status = await _poll(call, started["job_id"])
     runtime = float(status.get("runtime_seconds") or 0.0)
     if status.get("status") != "success":
         return _failed(name, f"sim {status.get('status')}: {status.get('error')}",
-                       emit, runtime=runtime)
+                       emit, runtime=runtime), None
     out_dir = status.get("output_dir")
 
     annual = await call("get_annual_energy", output_dir=out_dir)
@@ -173,9 +193,10 @@ async def _simulate(call: ToolCaller, base_idf: str, epw: str,
 
     monthly_kwh = monthly.get("monthly_kwh")
     if not isinstance(monthly_kwh, list) or len(monthly_kwh) != 12:
-        # A success status but no 12-month profile = useless for calibration.
+        # A success status but no 12-month profile = useless downstream (the
+        # guardrail reads the monthly shape; a partial profile is garbage in).
         return _failed(name, f"monthly extraction: {monthly.get('error', 'len != 12')}",
-                       emit, runtime=runtime)
+                       emit, runtime=runtime), out_dir
 
     result = SimulationResult(
         scenario_name=name,
@@ -192,7 +213,73 @@ async def _simulate(call: ToolCaller, base_idf: str, epw: str,
              {"scenario": name, "status": "success",
               "annual_kwh": result.annual_energy_kwh,
               "eui": result.annual_eui, "runtime_s": runtime})
-    return result
+    return result, out_dir
+
+
+async def _authoritative_area(call: ToolCaller, out_dir: Optional[str],
+                              fallback: float) -> tuple[float, bool]:
+    """Read EnergyPlus' own net conditioned area from a finished sim's output.
+
+    Returns (area, reconciled). reconciled is True only when a real, materially
+    different area was found — so under test fakes (which don't implement
+    get_building_area) nothing changes and the provisional area stands.
+    """
+    if not out_dir:
+        return fallback, False
+    res = await call("get_building_area", output_dir=out_dir)
+    try:
+        area = float(res.get("net_conditioned_area_m2")) if isinstance(res, dict) else None
+    except (TypeError, ValueError):
+        area = None
+    if area is None or area <= 0 or abs(area - fallback) <= 1.0:
+        return fallback, False
+    return round(area, 1), True
+
+
+def _reconcile_floor_area(state: RunState, area: float, emit,
+                          user_override: bool = False) -> None:
+    """Correct the run context once the authoritative area is known (Bug #12).
+
+    area → size band → EUI, and re-cost every measure at the true area. The
+    Modeler costed measures against the provisional (possibly 10×-wrong) area;
+    the Analyzer reads these costs after the sim, so re-costing here flows
+    straight through to payback / NPV. Mutates context + modeling scenarios in
+    place; the LLM authors none of it (pure arithmetic + catalog lookups).
+    """
+    ctx = state.get("building_context")
+    if ctx is not None:
+        ctx.floor_area_m2 = area
+        annual_kwh = getattr(getattr(ctx, "utility_data", None), "annual_kwh", None)
+        if annual_kwh:
+            ctx.current_eui = round(annual_kwh / area, 1)
+        # Deterministic size band from the true area (no LLM): the Retriever may
+        # have classified on a wrong fallback area (medium read as small).
+        # The band boundaries MUST match the cohort/abuse-guard definition
+        # (SIZE_BANDS_M2): the real CBD medium-office cohort spans 2,500–10,000 m².
+        # A hardcoded 5,000 cutoff here misclassified a 5,001–10,000 m² medium
+        # office (a valid, slider-reachable medium size) as "large_office" — for
+        # which no verified cohort exists (n=0 in most cities) — so the Reviewer's
+        # realism gate silently fell back to "illustrative" and an out-of-cohort
+        # baseline was APPROVED instead of rejected. Use the cohort's own medium
+        # upper bound so the gate applies across the whole medium band.
+        btype = (ctx.building_type or "")
+        if btype.endswith("_office") or btype == "office":
+            ctx.building_type = office_band_for_area(area)
+
+    modeling = state.get("modeling_output")
+    if modeling is not None:
+        for s in modeling.scenarios:
+            if s.name in CATALOG:
+                s.estimated_cost_aud = CATALOG[s.name].estimate_cost(area)
+
+    if emit:
+        note = ("user-asserted floor area (overrides authoritative reconciliation)"
+                if user_override
+                else "authoritative area from EnergyPlus output (Bug #12)")
+        emit("sim_runner", "progress",
+             {"status": "reconciled_area", "floor_area_m2": area,
+              "building_type": getattr(ctx, "building_type", None),
+              "user_override": user_override, "note": note})
 
 
 async def _run_all(state: RunState, call: ToolCaller) -> SimRunnerOutput:
@@ -204,17 +291,82 @@ async def _run_all(state: RunState, call: ToolCaller) -> SimRunnerOutput:
     emit = state.get("emit")
     baseline_name = modeling.baseline_scenario.name
 
+    raw_mi = state.get("model_inputs")
+    mi = raw_mi if isinstance(raw_mi, ModelInputs) else None
+
+    # Scope this run's WORKING IDFs (localized/profiled/per-scenario clones) with the
+    # run id so two concurrent visitors on the same city/scenario don't overwrite each
+    # other's in-flight working files. Sim OUTPUT dirs are already uuid-safe (job ids).
+    run_tag = state.get("run_id") or None
+
+    # Localize the model to its weather file ONCE per run (Site:Location, design
+    # days, ground temps), then clone every scenario from the localized copy — so
+    # "EPW location-matched" is genuinely true, not Chicago-with-AU-weather. Fakes
+    # without this tool return {} → base_idf unchanged (back-compatible).
+    localized = await call("localize_idf", idf_path=base_idf, epw_path=epw,
+                           run_tag=run_tag)
+    if isinstance(localized, dict) and localized.get("localized_path"):
+        base_idf = localized["localized_path"]
+        if emit:
+            emit("sim_runner", "progress",
+                 {"status": "localized", "site": localized.get("site_name"),
+                  "epw": epw.split("/")[-1],
+                  "note": "Site:Location + design days + ground temps matched to the EPW"})
+
+    # Make the default model a realistic AU WHOLE building before any scenario:
+    # add the base-building / central-services loads NABERS whole-building includes
+    # but the DOE tenancy model omits, so the baseline sits in the real cohort
+    # range rather than the idealised top quartile. Applied to the shared base so
+    # EVERY clone (the baseline + every measure scenario) inherits it.
+    if state.get("au_profile", True):
+        profiled = await call("apply_au_office_profile", idf_path=base_idf,
+                              run_tag=run_tag)
+        if isinstance(profiled, dict) and profiled.get("profiled_path"):
+            base_idf = profiled["profiled_path"]
+            if emit:
+                emit("sim_runner", "progress",
+                     {"status": "au_profile",
+                      "plug_w_m2": profiled.get("plug_w_m2"),
+                      "base_services_w_m2": profiled.get("base_services_w_m2"),
+                      "note": "AU whole-building loads added (tenant plug + 24/7 "
+                              "central services) — adjusts inputs to AU norms"})
+
     # Sequential on purpose: EnergyPlus is heavy and runs under x86 emulation on
     # the Apple-Silicon Mac mini — parallel sims would thrash it. One at a time,
-    # streaming per-scenario progress to the SSE trace.
+    # streaming per-scenario progress to the SSE trace. The baseline runs FIRST
+    # so its authoritative floor area is known before the measure scenarios — the
+    # whole run is then costed and EUI'd against the real area (Bug #12).
+    ordered = sorted(modeling.scenarios, key=lambda s: s.name != baseline_name)
     results: list[SimulationResult] = []
-    for scenario in modeling.scenarios:
+    for scenario in ordered:
         if emit:
             emit("sim_runner", "progress", {"scenario": scenario.name, "status": "running"})
-        results.append(await _simulate(call, base_idf, epw, scenario, floor_area, emit))
+        result, out_dir = await _simulate(call, base_idf, epw, scenario, floor_area,
+                                          emit, model_inputs=mi, run_tag=run_tag)
+
+        if scenario.name == baseline_name and result.simulation_status == "success":
+            auth_area, reconciled = await _authoritative_area(call, out_dir, floor_area)
+            # Floor area is now baked into the GEOMETRY (scale_floor_area), so the
+            # authoritative Net Conditioned Area EnergyPlus reports already reflects
+            # any resize. Reconcile to it (Bug #12) — no denominator override.
+            if reconciled and abs(auth_area - floor_area) > 1.0:
+                floor_area = auth_area
+                _reconcile_floor_area(state, floor_area, emit)
+                # Baseline EUI was computed against the provisional area — recompute
+                # from the area-independent annual kWh. Measures run AFTER this with
+                # the corrected area already.
+                result = result.model_copy(update={
+                    "annual_eui": round(result.annual_energy_kwh / floor_area, 1)})
+        results.append(result)
 
     baseline_result = next(
         (r for r in results if r.scenario_name == baseline_name), results[0])
+
+    # The Reviewer's gate is the CBD cohort range check on this baseline EUI (see
+    # agents/reviewer.py) — no measured-profile reference is needed, so an edited
+    # baseline simply lands where the physics puts it and is judged against the
+    # real cohort. (Editing an energy input off-default that pushes EUI outside
+    # the cohort p25–p75 is what the Reviewer rejects.)
     return SimRunnerOutput(results=results, baseline_result=baseline_result)
 
 

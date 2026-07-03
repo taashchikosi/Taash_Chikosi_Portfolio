@@ -35,7 +35,7 @@ class IDFSummary(BaseModel):
 
 
 class UtilityData(BaseModel):
-    """12 months of utility bills — required for ASHRAE GL14 calibration."""
+    """12 months of energy use (kWh) — used for the current-EUI read."""
 
     monthly_kwh: list[float] = Field(..., min_length=12, max_length=12)
     annual_cost_aud: float

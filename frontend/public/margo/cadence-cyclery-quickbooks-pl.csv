@@ -1,0 +1,392 @@
+Cadence Cyclery
+Profit and Loss Detail
+"January 1 - December 31, 2025"
+
+,Date,Transaction Type,Num,Name,Memo/Description,Split,Amount
+Income,,,,,,,
+Bike Sales,,,,,,,
+,01/31/2025,Sales Receipt,1001,,Bike sale,Checking,"4,917.68"
+,01/13/2025,Sales Receipt,1002,,Bike sale,Checking,"3,023.71"
+,01/15/2025,Sales Receipt,1003,,Bike sale,Checking,"4,601.55"
+,02/16/2025,Sales Receipt,1004,,Bike sale,Checking,"2,448.44"
+,02/21/2025,Sales Receipt,1005,,Bike sale,Checking,"3,538.01"
+,02/10/2025,Sales Receipt,1006,,Bike sale,Checking,"2,252.02"
+,02/04/2025,Sales Receipt,1007,,Bike sale,Checking,"2,399.85"
+,02/03/2025,Sales Receipt,1008,,Bike sale,Checking,"3,298.28"
+,03/29/2025,Sales Receipt,1009,,Bike sale,Checking,"4,436.21"
+,03/09/2025,Sales Receipt,1010,,Bike sale,Checking,"5,393.52"
+,03/06/2025,Sales Receipt,1011,,Bike sale,Checking,"2,823.19"
+,03/27/2025,Sales Receipt,1012,,Bike sale,Checking,"4,232.51"
+,03/20/2025,Sales Receipt,1013,,Bike sale,Checking,"4,855.67"
+,04/19/2025,Sales Receipt,1014,,Bike sale,Checking,"7,277.14"
+,04/09/2025,Sales Receipt,1015,,Bike sale,Checking,"14,200.72"
+,04/06/2025,Sales Receipt,1016,,Bike sale,Checking,"7,510.28"
+,05/30/2025,Sales Receipt,1017,,Bike sale,Checking,"10,485.35"
+,05/08/2025,Sales Receipt,1018,,Bike sale,Checking,"10,708.67"
+,05/04/2025,Sales Receipt,1019,,Bike sale,Checking,"12,811.30"
+,06/20/2025,Sales Receipt,1020,,Bike sale,Checking,"17,628.24"
+,06/02/2025,Sales Receipt,1021,,Bike sale,Checking,"16,098.35"
+,07/01/2025,Sales Receipt,1022,,Bike sale,Checking,"11,346.47"
+,07/21/2025,Sales Receipt,1023,,Bike sale,Checking,"8,015.44"
+,07/24/2025,Sales Receipt,1024,,Bike sale,Checking,"10,741.16"
+,08/21/2025,Sales Receipt,1025,,Bike sale,Checking,"9,199.01"
+,08/05/2025,Sales Receipt,1026,,Bike sale,Checking,"7,842.17"
+,08/02/2025,Sales Receipt,1027,,Bike sale,Checking,"10,553.29"
+,09/25/2025,Sales Receipt,1028,,Bike sale,Checking,"9,343.05"
+,09/29/2025,Sales Receipt,1029,,Bike sale,Checking,"15,185.37"
+,10/19/2025,Sales Receipt,1030,,Bike sale,Checking,"11,339.97"
+,10/13/2025,Sales Receipt,1031,,Bike sale,Checking,"9,286.21"
+,11/12/2025,Sales Receipt,1032,,Bike sale,Checking,"10,335.29"
+,11/15/2025,Sales Receipt,1033,,Bike sale,Checking,"5,831.17"
+,12/15/2025,Sales Receipt,1034,,Bike sale,Checking,"4,616.47"
+,12/19/2025,Sales Receipt,1035,,Bike sale,Checking,"4,342.61"
+,12/15/2025,Sales Receipt,1036,,Bike sale,Checking,"5,813.72"
+,07/31/2025,Refund,1037,,Customer refund,Checking,(214.12)
+Total for Bike Sales,,,,,,,"278,517.97"
+Service & Labor,,,,,,,
+,01/20/2025,Sales Receipt,1038,,Shop service,Checking,906.98
+,01/08/2025,Sales Receipt,1039,,Shop service,Checking,"1,661.85"
+,01/02/2025,Sales Receipt,1040,,Shop service,Checking,865.25
+,01/23/2025,Sales Receipt,1041,,Shop service,Checking,"1,774.75"
+,02/08/2025,Sales Receipt,1042,,Shop service,Checking,"1,110.66"
+,02/12/2025,Sales Receipt,1043,,Shop service,Checking,"1,174.83"
+,02/12/2025,Sales Receipt,1044,,Shop service,Checking,898.77
+,02/10/2025,Sales Receipt,1045,,Shop service,Checking,"1,248.97"
+,02/23/2025,Sales Receipt,1046,,Shop service,Checking,"1,354.36"
+,03/04/2025,Sales Receipt,1047,,Shop service,Checking,"1,374.97"
+,03/26/2025,Sales Receipt,1048,,Shop service,Checking,"2,373.76"
+,03/19/2025,Sales Receipt,1049,,Shop service,Checking,"1,500.19"
+,03/09/2025,Sales Receipt,1050,,Shop service,Checking,"1,913.90"
+,03/09/2025,Sales Receipt,1051,,Shop service,Checking,"1,865.84"
+,04/03/2025,Sales Receipt,1052,,Shop service,Checking,"3,794.12"
+,04/13/2025,Sales Receipt,1053,,Shop service,Checking,"4,824.49"
+,04/28/2025,Sales Receipt,1054,,Shop service,Checking,"3,419.59"
+,05/08/2025,Sales Receipt,1055,,Shop service,Checking,"3,203.91"
+,05/25/2025,Sales Receipt,1056,,Shop service,Checking,"2,406.56"
+,05/02/2025,Sales Receipt,1057,,Shop service,Checking,"3,037.38"
+,05/04/2025,Sales Receipt,1058,,Shop service,Checking,"2,866.16"
+,05/20/2025,Sales Receipt,1059,,Shop service,Checking,"2,607.72"
+,06/14/2025,Sales Receipt,1060,,Shop service,Checking,"3,863.79"
+,06/13/2025,Sales Receipt,1061,,Shop service,Checking,"2,178.48"
+,06/06/2025,Sales Receipt,1062,,Shop service,Checking,"1,761.62"
+,06/11/2025,Sales Receipt,1063,,Shop service,Checking,"2,424.38"
+,06/08/2025,Sales Receipt,1064,,Shop service,Checking,"3,777.70"
+,07/03/2025,Sales Receipt,1065,,Shop service,Checking,"4,716.23"
+,07/13/2025,Sales Receipt,1066,,Shop service,Checking,"4,770.66"
+,07/09/2025,Sales Receipt,1067,,Shop service,Checking,"3,014.31"
+,08/06/2025,Sales Receipt,1068,,Shop service,Checking,"4,079.87"
+,08/29/2025,Sales Receipt,1069,,Shop service,Checking,"3,564.22"
+,08/17/2025,Sales Receipt,1070,,Shop service,Checking,"3,815.35"
+,09/11/2025,Sales Receipt,1071,,Shop service,Checking,"5,503.95"
+,09/20/2025,Sales Receipt,1072,,Shop service,Checking,"4,682.21"
+,10/07/2025,Sales Receipt,1073,,Shop service,Checking,"2,474.59"
+,10/26/2025,Sales Receipt,1074,,Shop service,Checking,"1,520.59"
+,10/02/2025,Sales Receipt,1075,,Shop service,Checking,"2,279.29"
+,10/15/2025,Sales Receipt,1076,,Shop service,Checking,"2,291.17"
+,11/29/2025,Sales Receipt,1077,,Shop service,Checking,"3,527.73"
+,11/05/2025,Sales Receipt,1078,,Shop service,Checking,"3,185.88"
+,12/20/2025,Sales Receipt,1079,,Shop service,Checking,"3,480.01"
+,12/20/2025,Sales Receipt,1080,,Shop service,Checking,"2,654.84"
+Total for Service & Labor,,,,,,,"115,751.88"
+Accessory Sales,,,,,,,
+,01/18/2025,Sales Receipt,1081,,Accessories,Checking,"2,553.31"
+,01/12/2025,Sales Receipt,1082,,Accessories,Checking,"1,903.00"
+,02/02/2025,Sales Receipt,1083,,Accessories,Checking,"1,199.39"
+,02/23/2025,Sales Receipt,1084,,Accessories,Checking,"1,055.00"
+,02/24/2025,Sales Receipt,1085,,Accessories,Checking,"1,416.04"
+,02/06/2025,Sales Receipt,1086,,Accessories,Checking,"1,281.03"
+,03/03/2025,Sales Receipt,1087,,Accessories,Checking,"1,644.62"
+,03/31/2025,Sales Receipt,1088,,Accessories,Checking,"1,554.17"
+,03/29/2025,Sales Receipt,1089,,Accessories,Checking,"1,387.25"
+,03/04/2025,Sales Receipt,1090,,Accessories,Checking,"1,391.53"
+,03/13/2025,Sales Receipt,1091,,Accessories,Checking,"1,746.70"
+,04/17/2025,Sales Receipt,1092,,Accessories,Checking,"2,474.53"
+,04/15/2025,Sales Receipt,1093,,Accessories,Checking,"2,808.44"
+,04/22/2025,Sales Receipt,1094,,Accessories,Checking,"2,552.79"
+,04/01/2025,Sales Receipt,1095,,Accessories,Checking,"2,463.26"
+,05/01/2025,Sales Receipt,1096,,Accessories,Checking,"3,467.41"
+,05/09/2025,Sales Receipt,1097,,Accessories,Checking,"5,425.42"
+,05/09/2025,Sales Receipt,1098,,Accessories,Checking,"3,188.72"
+,06/02/2025,Sales Receipt,1099,,Accessories,Checking,"2,031.82"
+,06/21/2025,Sales Receipt,1100,,Accessories,Checking,"2,728.34"
+,06/01/2025,Sales Receipt,1101,,Accessories,Checking,"1,933.53"
+,06/03/2025,Sales Receipt,1102,,Accessories,Checking,"2,766.57"
+,06/06/2025,Sales Receipt,1103,,Accessories,Checking,"2,522.27"
+,07/28/2025,Sales Receipt,1104,,Accessories,Checking,"6,226.23"
+,07/29/2025,Sales Receipt,1105,,Accessories,Checking,"4,468.91"
+,08/09/2025,Sales Receipt,1106,,Accessories,Checking,"2,956.65"
+,08/02/2025,Sales Receipt,1107,,Accessories,Checking,"1,927.20"
+,08/17/2025,Sales Receipt,1108,,Accessories,Checking,"2,574.11"
+,08/23/2025,Sales Receipt,1109,,Accessories,Checking,"2,345.93"
+,09/09/2025,Sales Receipt,1110,,Accessories,Checking,"2,655.60"
+,09/19/2025,Sales Receipt,1111,,Accessories,Checking,"1,493.56"
+,09/03/2025,Sales Receipt,1112,,Accessories,Checking,"2,192.41"
+,09/27/2025,Sales Receipt,1113,,Accessories,Checking,"2,372.99"
+,10/22/2025,Sales Receipt,1114,,Accessories,Checking,"2,175.99"
+,10/14/2025,Sales Receipt,1115,,Accessories,Checking,"2,587.34"
+,10/24/2025,Sales Receipt,1116,,Accessories,Checking,"2,564.83"
+,11/20/2025,Sales Receipt,1117,,Accessories,Checking,"1,167.16"
+,11/19/2025,Sales Receipt,1118,,Accessories,Checking,"1,470.17"
+,11/03/2025,Sales Receipt,1119,,Accessories,Checking,"1,751.04"
+,11/04/2025,Sales Receipt,1120,,Accessories,Checking,"1,355.31"
+,12/20/2025,Sales Receipt,1121,,Accessories,Checking,"1,323.87"
+,12/07/2025,Sales Receipt,1122,,Accessories,Checking,"2,328.72"
+,12/24/2025,Sales Receipt,1123,,Accessories,Checking,"1,595.96"
+,06/18/2025,Refund,1124,,Customer refund,Checking,(231.35)
+Total for Accessory Sales,,,,,,,"98,797.77"
+Apparel Sales,,,,,,,
+,01/13/2025,Sales Receipt,1125,,Apparel,Checking,"1,462.06"
+,01/15/2025,Sales Receipt,1126,,Apparel,Checking,784.61
+,01/28/2025,Sales Receipt,1127,,Apparel,Checking,"1,240.99"
+,02/23/2025,Sales Receipt,1128,,Apparel,Checking,"1,121.94"
+,02/24/2025,Sales Receipt,1129,,Apparel,Checking,892.55
+,02/26/2025,Sales Receipt,1130,,Apparel,Checking,737.91
+,02/28/2025,Sales Receipt,1131,,Apparel,Checking,589.48
+,02/24/2025,Sales Receipt,1132,,Apparel,Checking,533.31
+,03/06/2025,Sales Receipt,1133,,Apparel,Checking,"2,373.66"
+,03/24/2025,Sales Receipt,1134,,Apparel,Checking,"1,298.22"
+,03/15/2025,Sales Receipt,1135,,Apparel,Checking,"2,373.42"
+,04/11/2025,Sales Receipt,1136,,Apparel,Checking,"1,826.95"
+,04/12/2025,Sales Receipt,1137,,Apparel,Checking,"2,739.04"
+,04/09/2025,Sales Receipt,1138,,Apparel,Checking,"3,494.41"
+,05/14/2025,Sales Receipt,1139,,Apparel,Checking,"3,235.07"
+,05/07/2025,Sales Receipt,1140,,Apparel,Checking,"3,149.40"
+,05/09/2025,Sales Receipt,1141,,Apparel,Checking,"3,070.99"
+,06/15/2025,Sales Receipt,1142,,Apparel,Checking,"4,073.77"
+,06/13/2025,Sales Receipt,1143,,Apparel,Checking,"5,304.19"
+,07/10/2025,Sales Receipt,1144,,Apparel,Checking,"2,016.17"
+,07/25/2025,Sales Receipt,1145,,Apparel,Checking,"1,485.41"
+,07/09/2025,Sales Receipt,1146,,Apparel,Checking,"1,404.77"
+,07/18/2025,Sales Receipt,1147,,Apparel,Checking,"1,252.09"
+,07/29/2025,Sales Receipt,1148,,Apparel,Checking,"2,211.97"
+,08/30/2025,Sales Receipt,1149,,Apparel,Checking,"2,582.07"
+,08/01/2025,Sales Receipt,1150,,Apparel,Checking,"2,077.52"
+,08/17/2025,Sales Receipt,1151,,Apparel,Checking,"1,506.28"
+,08/28/2025,Sales Receipt,1152,,Apparel,Checking,"1,507.00"
+,09/20/2025,Sales Receipt,1153,,Apparel,Checking,"1,526.83"
+,09/08/2025,Sales Receipt,1154,,Apparel,Checking,"1,356.12"
+,09/03/2025,Sales Receipt,1155,,Apparel,Checking,"1,435.81"
+,09/06/2025,Sales Receipt,1156,,Apparel,Checking,"2,501.59"
+,10/19/2025,Sales Receipt,1157,,Apparel,Checking,"2,744.68"
+,10/02/2025,Sales Receipt,1158,,Apparel,Checking,"1,491.76"
+,10/29/2025,Sales Receipt,1159,,Apparel,Checking,"1,498.84"
+,11/10/2025,Sales Receipt,1160,,Apparel,Checking,"2,271.00"
+,11/29/2025,Sales Receipt,1161,,Apparel,Checking,"2,224.22"
+,12/31/2025,Sales Receipt,1162,,Apparel,Checking,964.39
+,12/04/2025,Sales Receipt,1163,,Apparel,Checking,"1,086.06"
+,12/24/2025,Sales Receipt,1164,,Apparel,Checking,632.99
+,12/21/2025,Sales Receipt,1165,,Apparel,Checking,593.25
+,12/02/2025,Sales Receipt,1166,,Apparel,Checking,831.01
+Total for Apparel Sales,,,,,,,"77,503.80"
+Component Sales,,,,,,,
+,01/10/2025,Sales Receipt,1167,,Parts,Checking,478.24
+,01/12/2025,Sales Receipt,1168,,Parts,Checking,439.27
+,01/24/2025,Sales Receipt,1169,,Parts,Checking,536.69
+,01/06/2025,Sales Receipt,1170,,Parts,Checking,711.87
+,01/18/2025,Sales Receipt,1171,,Parts,Checking,583.72
+,02/14/2025,Sales Receipt,1172,,Parts,Checking,832.05
+,02/18/2025,Sales Receipt,1173,,Parts,Checking,532.56
+,02/27/2025,Sales Receipt,1174,,Parts,Checking,851.47
+,02/23/2025,Sales Receipt,1175,,Parts,Checking,839.23
+,03/11/2025,Sales Receipt,1176,,Parts,Checking,"1,500.82"
+,03/26/2025,Sales Receipt,1177,,Parts,Checking,813.59
+,03/13/2025,Sales Receipt,1178,,Parts,Checking,"1,213.87"
+,03/09/2025,Sales Receipt,1179,,Parts,Checking,"1,238.01"
+,04/03/2025,Sales Receipt,1180,,Parts,Checking,"1,490.54"
+,04/20/2025,Sales Receipt,1181,,Parts,Checking,"1,115.28"
+,04/28/2025,Sales Receipt,1182,,Parts,Checking,896.56
+,04/09/2025,Sales Receipt,1183,,Parts,Checking,"1,362.89"
+,04/29/2025,Sales Receipt,1184,,Parts,Checking,"1,489.78"
+,05/27/2025,Sales Receipt,1185,,Parts,Checking,"2,884.84"
+,05/09/2025,Sales Receipt,1186,,Parts,Checking,"2,668.75"
+,05/23/2025,Sales Receipt,1187,,Parts,Checking,"1,901.37"
+,06/05/2025,Sales Receipt,1188,,Parts,Checking,"4,233.00"
+,06/01/2025,Sales Receipt,1189,,Parts,Checking,"3,160.86"
+,07/01/2025,Sales Receipt,1190,,Parts,Checking,"1,127.33"
+,07/13/2025,Sales Receipt,1191,,Parts,Checking,816.30
+,07/01/2025,Sales Receipt,1192,,Parts,Checking,"1,489.76"
+,07/26/2025,Sales Receipt,1193,,Parts,Checking,"1,638.67"
+,07/07/2025,Sales Receipt,1194,,Parts,Checking,"1,527.41"
+,08/23/2025,Sales Receipt,1195,,Parts,Checking,"2,309.04"
+,08/12/2025,Sales Receipt,1196,,Parts,Checking,"3,740.48"
+,09/19/2025,Sales Receipt,1197,,Parts,Checking,982.15
+,09/19/2025,Sales Receipt,1198,,Parts,Checking,"1,087.47"
+,09/01/2025,Sales Receipt,1199,,Parts,Checking,"1,232.80"
+,09/10/2025,Sales Receipt,1200,,Parts,Checking,"1,067.01"
+,09/15/2025,Sales Receipt,1201,,Parts,Checking,"1,007.93"
+,10/10/2025,Sales Receipt,1202,,Parts,Checking,838.88
+,10/25/2025,Sales Receipt,1203,,Parts,Checking,946.21
+,10/14/2025,Sales Receipt,1204,,Parts,Checking,878.24
+,10/10/2025,Sales Receipt,1205,,Parts,Checking,915.28
+,10/03/2025,Sales Receipt,1206,,Parts,Checking,943.25
+,11/15/2025,Sales Receipt,1207,,Parts,Checking,669.50
+,11/19/2025,Sales Receipt,1208,,Parts,Checking,644.38
+,11/14/2025,Sales Receipt,1209,,Parts,Checking,663.89
+,11/02/2025,Sales Receipt,1210,,Parts,Checking,986.82
+,11/20/2025,Sales Receipt,1211,,Parts,Checking,579.58
+,12/31/2025,Sales Receipt,1212,,Parts,Checking,537.00
+,12/17/2025,Sales Receipt,1213,,Parts,Checking,737.05
+,12/13/2025,Sales Receipt,1214,,Parts,Checking,752.30
+,12/02/2025,Sales Receipt,1215,,Parts,Checking,418.47
+,12/04/2025,Sales Receipt,1216,,Parts,Checking,793.80
+Total for Component Sales,,,,,,,"61,106.26"
+Total for Income,,,,,,,"631,677.68"
+Cost of Goods Sold,,,,,,,
+Inventory Purchases,,,,,,,
+,01/08/2025,Bill,PO-4401,Quality Bicycle Products,Restock order,Accounts Payable,"19,172.74"
+,02/19/2025,Bill,PO-4402,BTI Distributing,Restock order,Accounts Payable,"18,018.97"
+,02/16/2025,Bill,PO-4403,Specialized Riders Club,Restock order,Accounts Payable,"11,890.50"
+,03/23/2025,Bill,PO-4404,J&B Importers,Restock order,Accounts Payable,"13,810.83"
+,03/29/2025,Bill,PO-4405,BTI Distributing,Restock order,Accounts Payable,"11,101.18"
+,03/12/2025,Bill,PO-4406,Hawley-Lambert,Restock order,Accounts Payable,"14,967.28"
+,04/01/2025,Bill,PO-4407,BTI Distributing,Restock order,Accounts Payable,"17,655.21"
+,04/25/2025,Bill,PO-4408,Quality Bicycle Products,Restock order,Accounts Payable,"15,627.91"
+,04/27/2025,Bill,PO-4409,J&B Importers,Restock order,Accounts Payable,"13,498.35"
+,05/27/2025,Bill,PO-4410,Trek Bicycle Corp,Restock order,Accounts Payable,"46,398.02"
+,06/14/2025,Bill,PO-4411,Hawley-Lambert,Restock order,Accounts Payable,"12,839.82"
+,06/25/2025,Bill,PO-4412,J&B Importers,Restock order,Accounts Payable,"14,465.31"
+,06/02/2025,Bill,PO-4413,Quality Bicycle Products,Restock order,Accounts Payable,"14,107.98"
+,07/26/2025,Bill,PO-4414,Trek Bicycle Corp,Restock order,Accounts Payable,"15,213.66"
+,07/17/2025,Bill,PO-4415,BTI Distributing,Restock order,Accounts Payable,"22,748.35"
+,08/01/2025,Bill,PO-4416,Hawley-Lambert,Restock order,Accounts Payable,"13,582.93"
+,08/07/2025,Bill,PO-4417,Quality Bicycle Products,Restock order,Accounts Payable,"9,209.97"
+,08/22/2025,Bill,PO-4418,Trek Bicycle Corp,Restock order,Accounts Payable,"10,951.11"
+,09/24/2025,Bill,PO-4419,Trek Bicycle Corp,Restock order,Accounts Payable,"8,854.30"
+,09/02/2025,Bill,PO-4420,Quality Bicycle Products,Restock order,Accounts Payable,"9,441.98"
+,09/22/2025,Bill,PO-4421,Specialized Riders Club,Restock order,Accounts Payable,"10,079.37"
+,10/06/2025,Bill,PO-4422,Hawley-Lambert,Restock order,Accounts Payable,"12,739.07"
+,10/23/2025,Bill,PO-4423,Quality Bicycle Products,Restock order,Accounts Payable,"9,501.31"
+,11/11/2025,Bill,PO-4424,BTI Distributing,Restock order,Accounts Payable,"20,323.10"
+,12/30/2025,Bill,PO-4425,Quality Bicycle Products,Restock order,Accounts Payable,"7,536.17"
+,12/01/2025,Bill,PO-4426,Quality Bicycle Products,Restock order,Accounts Payable,"9,719.29"
+,06/18/2025,Vendor Credit,CM-4427,Quality Bicycle Products,Return: defective hubs,Accounts Payable,(742.50)
+Total for Inventory Purchases,,,,,,,"382,712.21"
+Total for Cost of Goods Sold,,,,,,,"382,712.21"
+Gross Profit,,,,,,,"248,965.47"
+Expenses,,,,,,,
+Rent,,,,,,,
+,01/22/2025,Bill,,Riverside Property Mgmt,Storefront lease,Accounts Payable,"4,600.00"
+,02/05/2025,Bill,,Riverside Property Mgmt,Storefront lease,Accounts Payable,"4,600.00"
+,03/03/2025,Bill,,Riverside Property Mgmt,Storefront lease,Accounts Payable,"4,600.00"
+,04/03/2025,Bill,,Riverside Property Mgmt,Storefront lease,Accounts Payable,"4,600.00"
+,05/19/2025,Bill,,Riverside Property Mgmt,Storefront lease,Accounts Payable,"4,600.00"
+,06/04/2025,Bill,,Riverside Property Mgmt,Storefront lease,Accounts Payable,"4,600.00"
+,07/29/2025,Bill,,Riverside Property Mgmt,Storefront lease,Accounts Payable,"4,600.00"
+,08/14/2025,Bill,,Riverside Property Mgmt,Storefront lease,Accounts Payable,"4,600.00"
+,09/10/2025,Bill,,Riverside Property Mgmt,Storefront lease,Accounts Payable,"4,600.00"
+,10/29/2025,Bill,,Riverside Property Mgmt,Storefront lease,Accounts Payable,"4,600.00"
+,11/23/2025,Bill,,Riverside Property Mgmt,Storefront lease,Accounts Payable,"4,600.00"
+,12/02/2025,Bill,,Riverside Property Mgmt,Storefront lease,Accounts Payable,"4,600.00"
+Total for Rent,,,,,,,"55,200.00"
+Payroll Expenses,,,,,,,
+,01/15/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"4,623.84"
+,01/31/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"4,804.91"
+,02/15/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"4,608.83"
+,02/28/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"4,673.00"
+,03/15/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,032.19"
+,03/31/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,015.80"
+,04/15/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,485.35"
+,04/30/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,449.38"
+,05/15/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,394.50"
+,05/31/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,400.72"
+,06/15/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,591.96"
+,06/30/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,456.24"
+,07/15/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,516.25"
+,07/31/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,352.31"
+,08/15/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,366.24"
+,08/31/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,166.66"
+,09/15/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,226.10"
+,09/30/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,000.78"
+,10/15/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"4,958.84"
+,10/31/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"5,083.27"
+,11/15/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"4,798.71"
+,11/30/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"4,850.35"
+,12/15/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"4,888.12"
+,12/31/2025,Payroll Check,,Payroll,Wages & payroll taxes,Payroll Liabilities,"4,638.37"
+Total for Payroll Expenses,,,,,,,"122,382.72"
+Merchant Fees,,,,,,,
+,01/31/2025,Expense,,Square Inc.,Card processing fees,Checking,739.06
+,02/28/2025,Expense,,Square Inc.,Card processing fees,Checking,821.18
+,03/31/2025,Expense,,Square Inc.,Card processing fees,Checking,"1,281.04"
+,04/30/2025,Expense,,Square Inc.,Card processing fees,Checking,"1,708.06"
+,05/31/2025,Expense,,Square Inc.,Card processing fees,Checking,"2,003.68"
+,06/30/2025,Expense,,Square Inc.,Card processing fees,Checking,"1,987.26"
+,07/31/2025,Expense,,Square Inc.,Card processing fees,Checking,"1,773.75"
+,08/31/2025,Expense,,Square Inc.,Card processing fees,Checking,"1,625.94"
+,09/30/2025,Expense,,Square Inc.,Card processing fees,Checking,"1,445.28"
+,10/31/2025,Expense,,Square Inc.,Card processing fees,Checking,"1,215.35"
+,11/30/2025,Expense,,Square Inc.,Card processing fees,Checking,952.57
+,12/31/2025,Expense,,Square Inc.,Card processing fees,Checking,870.45
+Total for Merchant Fees,,,,,,,"16,423.62"
+Utilities,,,,,,,
+,01/31/2025,Expense,,City Power & Water,Electric / water,Checking,699.56
+,02/28/2025,Expense,,City Power & Water,Electric / water,Checking,700.36
+,03/31/2025,Expense,,City Power & Water,Electric / water,Checking,616.02
+,04/30/2025,Expense,,City Power & Water,Electric / water,Checking,593.48
+,05/31/2025,Expense,,City Power & Water,Electric / water,Checking,591.00
+,06/30/2025,Expense,,City Power & Water,Electric / water,Checking,735.81
+,07/31/2025,Expense,,City Power & Water,Electric / water,Checking,592.29
+,08/31/2025,Expense,,City Power & Water,Electric / water,Checking,501.13
+,09/30/2025,Expense,,City Power & Water,Electric / water,Checking,703.44
+,10/31/2025,Expense,,City Power & Water,Electric / water,Checking,588.67
+,11/30/2025,Expense,,City Power & Water,Electric / water,Checking,737.98
+,12/31/2025,Expense,,City Power & Water,Electric / water,Checking,528.11
+Total for Utilities,,,,,,,"7,587.85"
+POS & Software,,,,,,,
+,01/31/2025,Expense,,Lightspeed Retail,POS subscription,Checking,289.00
+,02/28/2025,Expense,,Lightspeed Retail,POS subscription,Checking,289.00
+,03/31/2025,Expense,,Lightspeed Retail,POS subscription,Checking,289.00
+,04/30/2025,Expense,,Lightspeed Retail,POS subscription,Checking,289.00
+,05/31/2025,Expense,,Lightspeed Retail,POS subscription,Checking,289.00
+,06/30/2025,Expense,,Lightspeed Retail,POS subscription,Checking,289.00
+,07/31/2025,Expense,,Lightspeed Retail,POS subscription,Checking,289.00
+,08/31/2025,Expense,,Lightspeed Retail,POS subscription,Checking,289.00
+,09/30/2025,Expense,,Lightspeed Retail,POS subscription,Checking,289.00
+,10/31/2025,Expense,,Lightspeed Retail,POS subscription,Checking,289.00
+,11/30/2025,Expense,,Lightspeed Retail,POS subscription,Checking,289.00
+,12/31/2025,Expense,,Lightspeed Retail,POS subscription,Checking,289.00
+Total for POS & Software,,,,,,,"3,468.00"
+Advertising & Marketing,,,,,,,
+,02/05/2025,Expense,,Google Ads,Seasonal campaign,Checking,"1,400.00"
+,03/02/2025,Expense,,Meta Platforms,Seasonal campaign,Checking,"2,600.00"
+,04/01/2025,Expense,,Google Ads,Seasonal campaign,Checking,"3,100.00"
+,06/24/2025,Expense,,Google Ads,Seasonal campaign,Checking,"2,200.00"
+,09/16/2025,Expense,,Meta Platforms,Seasonal campaign,Checking,"1,800.00"
+,11/23/2025,Expense,,Google Ads,Seasonal campaign,Checking,"3,400.00"
+Total for Advertising & Marketing,,,,,,,"14,500.00"
+Insurance,,,,,,,
+,01/05/2025,Bill,,Cyclepath Insurance Co.,Liability & property premium,Accounts Payable,"1,725.00"
+,04/18/2025,Bill,,Cyclepath Insurance Co.,Liability & property premium,Accounts Payable,"1,725.00"
+,07/12/2025,Bill,,Cyclepath Insurance Co.,Liability & property premium,Accounts Payable,"1,725.00"
+,10/07/2025,Bill,,Cyclepath Insurance Co.,Liability & property premium,Accounts Payable,"1,725.00"
+Total for Insurance,,,,,,,"6,900.00"
+Shop Supplies,,,,,,,
+,01/27/2025,Bill,,Park Tool / Uline,Workshop consumables,Accounts Payable,909.96
+,04/06/2025,Bill,,Park Tool / Uline,Workshop consumables,Accounts Payable,"1,049.54"
+,07/06/2025,Bill,,Park Tool / Uline,Workshop consumables,Accounts Payable,"1,018.23"
+,10/01/2025,Bill,,Park Tool / Uline,Workshop consumables,Accounts Payable,"1,092.73"
+Total for Shop Supplies,,,,,,,"4,070.46"
+Freight & Shipping,,,,,,,
+,01/25/2025,Bill,,FedEx Freight,Inbound freight,Accounts Payable,302.97
+,03/08/2025,Bill,,FedEx Freight,Inbound freight,Accounts Payable,250.28
+,05/05/2025,Bill,,FedEx Freight,Inbound freight,Accounts Payable,395.04
+,07/22/2025,Bill,,FedEx Freight,Inbound freight,Accounts Payable,410.95
+,09/03/2025,Bill,,FedEx Freight,Inbound freight,Accounts Payable,288.01
+,11/10/2025,Bill,,FedEx Freight,Inbound freight,Accounts Payable,457.59
+Total for Freight & Shipping,,,,,,,"2,104.84"
+Bank Charges,,,,,,,
+,01/31/2025,Expense,,First Cascade Bank,Account fees,Checking,29.73
+,02/28/2025,Expense,,First Cascade Bank,Account fees,Checking,36.05
+,03/31/2025,Expense,,First Cascade Bank,Account fees,Checking,31.10
+,04/30/2025,Expense,,First Cascade Bank,Account fees,Checking,33.40
+,05/31/2025,Expense,,First Cascade Bank,Account fees,Checking,40.67
+,06/30/2025,Expense,,First Cascade Bank,Account fees,Checking,29.22
+,07/31/2025,Expense,,First Cascade Bank,Account fees,Checking,32.70
+,08/31/2025,Expense,,First Cascade Bank,Account fees,Checking,37.68
+,09/30/2025,Expense,,First Cascade Bank,Account fees,Checking,28.81
+,10/31/2025,Expense,,First Cascade Bank,Account fees,Checking,40.51
+,11/30/2025,Expense,,First Cascade Bank,Account fees,Checking,37.58
+,12/31/2025,Expense,,First Cascade Bank,Account fees,Checking,36.25
+Total for Bank Charges,,,,,,,413.70
+Total for Expenses,,,,,,,"233,051.19"
+Net Income,,,,,,,"15,914.28"

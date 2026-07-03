@@ -1,6 +1,13 @@
 """Model router — sends each task to the right model tier (project plan §6).
 
-90% DeepSeek V4 Flash · 8% DeepSeek V4 Pro · 2% Claude Sonnet (Reviewer only).
+Eval-gated, cost-tiered routing (LLM_PROVIDER unset = deploy default):
+  · retrieval (building-type/HVAC classification) → Claude Sonnet — Tier-B eval
+    showed DeepSeek mis-classifies building type, so classify runs on Claude.
+  · modelling / extraction / formatting (Modeler measure select, default)
+    → DeepSeek V4 Flash (deepseek-chat); hard analysis at complexity ≥0.7 → Pro.
+  · verification maps to Claude Sonnet here, but the Reviewer is DETERMINISTIC
+    (no-LLM cohort gate — see agents/reviewer.py), so no LLM call is actually made
+    for it in the live pipeline.
 
 DeepSeek is called via the OpenAI-compatible client (base_url swap).
 Claude is called via the Anthropic SDK.
@@ -57,10 +64,48 @@ def _record_tokens(n: int) -> None:
         _TOKEN_HITS.append((time.monotonic(), max(0, int(n))))
 
 
+# ── Rolling 24h USD cost counter (parallel to the token window) ────────────────
+# AEM mixes two priced models per run (Sonnet for classify/review, DeepSeek for
+# select), so a flat tokens×blended-rate estimate is wrong. We price each call by
+# its real provider+model and accumulate the same way the token window does, so the
+# demo can report a REAL per-run cost as the delta of this counter across a run.
+# Prices are approximate USD per 1M tokens (cache-miss), overridable.
+_PRICE_PER_MTOK = {
+    "claude-sonnet-4-6": {"in": 3.0, "out": 15.0},
+    "claude-haiku-4-5": {"in": 1.0, "out": 5.0},
+    "deepseek-chat": {"in": 0.14, "out": 0.28},
+    "deepseek-v4-flash": {"in": 0.14, "out": 0.28},
+    "deepseek-v4-pro": {"in": 0.435, "out": 0.87},
+}
+_PROVIDER_DEFAULT_PRICE = {
+    "anthropic": {"in": 3.0, "out": 15.0},
+    "deepseek": {"in": 0.14, "out": 0.28},
+}
+_COST_HITS: deque[tuple[float, float]] = deque()   # (monotonic_ts, usd)
+
+
+def _record_cost(provider: str, model: str, input_tokens: int, output_tokens: int) -> None:
+    price = _PRICE_PER_MTOK.get(model) or _PROVIDER_DEFAULT_PRICE.get(provider)
+    if not price:
+        return
+    usd = (input_tokens * price["in"] + output_tokens * price["out"]) / 1_000_000
+    with _TOKEN_LOCK:
+        _COST_HITS.append((time.monotonic(), max(0.0, usd)))
+
+
+def cost_used_last_day() -> float:
+    with _TOKEN_LOCK:
+        now = time.monotonic()
+        while _COST_HITS and now - _COST_HITS[0][0] > _TOKEN_WINDOW_S:
+            _COST_HITS.popleft()
+        return round(sum(c for _, c in _COST_HITS), 6)
+
+
 def reset_token_budget() -> None:
     """Clear the budget window (tests / manual ops)."""
     with _TOKEN_LOCK:
         _TOKEN_HITS.clear()
+        _COST_HITS.clear()
 
 
 @dataclass
@@ -156,6 +201,7 @@ def complete(
             messages=[{"role": "user", "content": user}],
         )
         _record_tokens(resp.usage.input_tokens + resp.usage.output_tokens)
+        _record_cost("anthropic", choice.model, resp.usage.input_tokens, resp.usage.output_tokens)
         return {
             "text": resp.content[0].text,
             "model": choice.model,
@@ -173,6 +219,7 @@ def complete(
         ],
     )
     _record_tokens(resp.usage.prompt_tokens + resp.usage.completion_tokens)
+    _record_cost("deepseek", choice.model, resp.usage.prompt_tokens, resp.usage.completion_tokens)
     return {
         "text": resp.choices[0].message.content,
         "model": choice.model,

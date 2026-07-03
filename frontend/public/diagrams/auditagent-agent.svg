@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 720" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#e0a35b"/>
+    </marker>
+    <marker id="arrowTeal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2dd4bf"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="720" fill="#0d1117"/>
+
+  <!-- ===== spine edges ===== -->
+  <g stroke="#8b949e" stroke-width="1.5" fill="none">
+    <line x1="450" y1="128" x2="450" y2="170" marker-end="url(#arrow)"/>
+    <line x1="450" y1="256" x2="450" y2="298" marker-end="url(#arrow)"/>
+    <line x1="450" y1="384" x2="450" y2="426" marker-end="url(#arrow)"/>
+    <line x1="450" y1="512" x2="450" y2="554" marker-end="url(#arrow)"/>
+  </g>
+  <g font-size="12" fill="#8b949e" text-anchor="middle">
+    <text x="450" y="155">next finding to judge</text>
+    <text x="450" y="283">verdict + chosen path</text>
+    <text x="450" y="411">selected action</text>
+    <text x="450" y="539">anchored quote OR miss</text>
+  </g>
+
+  <!-- ===== retry loop: Act -> Reason (left) ===== -->
+  <path d="M 170 470 H 96 V 214 H 168" fill="none" stroke="#e0a35b" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrowAmber)"/>
+  <text x="80" y="342" transform="rotate(-90 80 342)" text-anchor="middle" font-size="12" fill="#e0a35b">citation failed &#8594; reflect &#183; retry &#8804; 1</text>
+
+  <!-- ===== reflect loop: Memory -> Perceive (right) ===== -->
+  <path d="M 730 598 H 818 V 86 H 732" fill="none" stroke="#2dd4bf" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrowTeal)"/>
+  <text x="834" y="342" transform="rotate(90 834 342)" text-anchor="middle" font-size="12" fill="#2dd4bf">reflect &#183; prior attempts &#8594; next finding</text>
+
+  <!-- ===== nodes ===== -->
+  <!-- Perceive -->
+  <rect x="170" y="44" width="560" height="84" rx="13" fill="#13283f" stroke="#4c8dff" stroke-width="2"/>
+  <text x="450" y="80" text-anchor="middle" font-size="16" font-weight="600" fill="#dce9ff">&#9312; Perceive</text>
+  <text x="450" y="104" text-anchor="middle" font-size="12.5" font-style="italic" fill="#dce9ff" opacity="0.85">contract &#8594; the next candidate finding to judge</text>
+
+  <!-- Reason -->
+  <rect x="170" y="172" width="560" height="84" rx="13" fill="#3a2412" stroke="#f0883e" stroke-width="2"/>
+  <text x="450" y="208" text-anchor="middle" font-size="16" font-weight="600" fill="#ffd9b3">&#9313; Reason &#8212; the LLM decides</text>
+  <text x="450" y="232" text-anchor="middle" font-size="12.5" font-style="italic" fill="#ffd9b3" opacity="0.9">real clause? is the citation exact? high-risk?</text>
+
+  <!-- Tool select -->
+  <rect x="170" y="300" width="560" height="84" rx="13" fill="#13301d" stroke="#3fb950" stroke-width="2"/>
+  <text x="450" y="336" text-anchor="middle" font-size="16" font-weight="600" fill="#caf0d2">&#9314; Tool select</text>
+  <text x="450" y="360" text-anchor="middle" font-size="12.5" font-style="italic" fill="#caf0d2" opacity="0.85">anchor-verify &#183; re-extract &#183; reject</text>
+
+  <!-- Act -->
+  <rect x="170" y="428" width="560" height="84" rx="13" fill="#241a3d" stroke="#a371f7" stroke-width="2"/>
+  <text x="450" y="464" text-anchor="middle" font-size="16" font-weight="600" fill="#ecdfff">&#9315; Act</text>
+  <text x="450" y="488" text-anchor="middle" font-size="12.5" font-style="italic" fill="#ecdfff" opacity="0.85">run the chosen tool on the raw contract text</text>
+
+  <!-- Memory / reflect -->
+  <rect x="170" y="556" width="560" height="84" rx="13" fill="#332813" stroke="#d6a01f" stroke-width="2"/>
+  <text x="450" y="592" text-anchor="middle" font-size="16" font-weight="600" fill="#f3e3b0">&#9317; Memory / reflect</text>
+  <text x="450" y="616" text-anchor="middle" font-size="12.5" font-style="italic" fill="#f3e3b0" opacity="0.9">ReviewAttempt trace + hash-chained audit log</text>
+</svg>

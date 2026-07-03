@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 792" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="792" fill="#0d1117"/>
+
+  <!-- ===== edges ===== -->
+  <g stroke="#8b949e" stroke-width="1.5" fill="none">
+    <line x1="450" y1="130" x2="450" y2="182" marker-end="url(#arrow)"/>
+    <!-- brain splits to the two action calls -->
+    <line x1="450" y1="298" x2="290" y2="356" marker-end="url(#arrow)"/>
+    <line x1="450" y1="298" x2="610" y2="356" marker-end="url(#arrow)"/>
+    <!-- both actions converge to the store -->
+    <line x1="290" y1="448" x2="450" y2="506" marker-end="url(#arrow)"/>
+    <line x1="610" y1="448" x2="450" y2="506" marker-end="url(#arrow)"/>
+    <line x1="450" y1="622" x2="450" y2="674" marker-end="url(#arrow)"/>
+  </g>
+  <g font-size="12.5" fill="#8b949e" text-anchor="middle">
+    <text x="450" y="162">contract text</text>
+    <text x="232" y="332">clause-detection prompts</text>
+    <text x="668" y="332">parse / chunk request</text>
+    <text x="450" y="486">clause hits + offset-exact spans</text>
+    <text x="450" y="656">risk memo — every finding re-slices the contract</text>
+  </g>
+
+  <!-- ===== nodes ===== -->
+  <!-- input -->
+  <rect x="140" y="42" width="620" height="88" rx="14" fill="#13283f" stroke="#4c8dff" stroke-width="2"/>
+  <text x="450" y="80" text-anchor="middle" font-size="17" font-weight="600" fill="#dce9ff">&#128100; User / recruiter submits a contract</text>
+  <text x="450" y="106" text-anchor="middle" font-size="13" font-style="italic" fill="#dce9ff" opacity="0.82">paste a real SEC-filed agreement, or try a planted prompt-injection</text>
+
+  <!-- brain -->
+  <rect x="140" y="182" width="620" height="116" rx="14" fill="#241a3d" stroke="#a371f7" stroke-width="2"/>
+  <text x="450" y="216" text-anchor="middle" font-size="17" font-weight="600" fill="#ecdfff">&#129504; AuditAgent service &#8212; FastAPI + LangGraph</text>
+  <text x="450" y="242" text-anchor="middle" font-size="13" font-style="italic" fill="#ecdfff" opacity="0.85">Extractor &#8594; Classifier &#8594; Risk &#8594; Reviewer citation-gate</text>
+  <text x="450" y="264" text-anchor="middle" font-size="13" font-style="italic" fill="#ecdfff" opacity="0.85">returns a risk memo &#8212; every accepted finding is exact-cited</text>
+
+  <!-- two action calls, side by side -->
+  <rect x="140" y="356" width="296" height="92" rx="14" fill="#13301d" stroke="#3fb950" stroke-width="2"/>
+  <text x="288" y="392" text-anchor="middle" font-size="16" font-weight="600" fill="#caf0d2">&#129302; LLM API</text>
+  <text x="288" y="416" text-anchor="middle" font-size="12.5" font-style="italic" fill="#caf0d2" opacity="0.85">DeepSeek V4 Flash &#183; Claude (gate)</text>
+
+  <rect x="464" y="356" width="296" height="92" rx="14" fill="#13301d" stroke="#3fb950" stroke-width="2"/>
+  <text x="612" y="392" text-anchor="middle" font-size="16" font-weight="600" fill="#caf0d2">&#128295; Contract tools</text>
+  <text x="612" y="416" text-anchor="middle" font-size="12.5" font-style="italic" fill="#caf0d2" opacity="0.85">parse &#183; chunk &#183; get_span_text</text>
+
+  <!-- infra / store -->
+  <rect x="140" y="506" width="620" height="116" rx="14" fill="#332813" stroke="#d6a01f" stroke-width="2"/>
+  <text x="450" y="540" text-anchor="middle" font-size="17" font-weight="600" fill="#f3e3b0">&#128450;&#65039; Postgres &#183; SHA-256 audit log</text>
+  <text x="450" y="566" text-anchor="middle" font-size="13" font-style="italic" fill="#f3e3b0" opacity="0.85">hash-chained &#8212; tampering breaks the chain</text>
+  <text x="450" y="588" text-anchor="middle" font-size="13" font-style="italic" fill="#f3e3b0" opacity="0.85">VPS &#183; Docker &#183; Caddy TLS &#183; Langfuse traces</text>
+
+  <!-- output -->
+  <rect x="140" y="674" width="620" height="88" rx="14" fill="#0f2b2a" stroke="#2dd4bf" stroke-width="2"/>
+  <text x="450" y="712" text-anchor="middle" font-size="17" font-weight="600" fill="#ccfbf1">&#128203; Audit-ready risk memo</text>
+  <text x="450" y="738" text-anchor="middle" font-size="13" font-style="italic" fill="#ccfbf1" opacity="0.85">high-risk clauses, each anchored to its exact contract span</text>
+</svg>

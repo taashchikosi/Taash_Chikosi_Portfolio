@@ -1,8 +1,8 @@
-"""One-click demo plumbing: disclosed demo-calibration + the result endpoint.
+"""One-click demo plumbing: the validation flag + the result endpoint contract.
 
 The live pipeline (EnergyPlus + LLM) only runs on a real host, so here we pin the
-deterministic seams the UI depends on: the demo bills calibrate (GL14 passes), the
-run carries the flag, and /result has the right contract.
+deterministic seams the UI depends on: the run carries the `validate` flag (the
+"Run without validation" toggle), and /result has the right contract.
 """
 from __future__ import annotations
 
@@ -10,9 +10,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 from api import main
-from api.main import app, demo_bills_from_baseline
+from api.main import app
 from router import model_router
-from verification.ashrae_checks import calibration_report
 
 client = TestClient(app)
 
@@ -31,29 +30,16 @@ def _clean():
     model_router.reset_token_budget()
 
 
-def test_demo_bills_calibrate_against_baseline():
-    # Synthesised bills must pass GL14 monthly (NMBE≈0, CV-RMSE≈5%) — that's what
-    # makes the disclosed demo run green honestly.
-    baseline = [5000.0, 4800, 4200, 3600, 3100, 2900,
-                3000, 3200, 3500, 3900, 4300, 4700]
-    bills = demo_bills_from_baseline(baseline)
-    report = calibration_report(baseline, bills)
-    assert report["passed"] is True
-    assert report["resolution"] == "monthly"
-    assert abs(report["nmbe"]["nmbe_pct"]) <= 5.0
-    assert report["cvrmse"]["cvrmse_pct"] <= 15.0
-
-
-def test_create_run_records_demo_calibrate_flag():
-    r = client.post("/api/runs", json={**VALID_BODY, "demo_calibrate": True})
+def test_create_run_records_validate_flag_off():
+    r = client.post("/api/runs", json={**VALID_BODY, "validate_realism": False})
     assert r.status_code == 200
     run_id = r.json()["run_id"]
-    assert main._RUNS[run_id]["demo_calibrate"] is True
+    assert main._RUNS[run_id]["validate"] is False
 
 
-def test_create_run_defaults_demo_calibrate_false():
+def test_create_run_defaults_validate_true():
     run_id = client.post("/api/runs", json=VALID_BODY).json()["run_id"]
-    assert main._RUNS[run_id]["demo_calibrate"] is False
+    assert main._RUNS[run_id]["validate"] is True
 
 
 def test_result_404_for_unknown_run():
@@ -67,9 +53,9 @@ def test_result_425_when_not_finished():
 
 def test_result_returns_payload_when_ready():
     main._RUNS["fixed"] = {"result": {"recommended": {"scenario": "led_lighting"},
-                                      "review": {"approved": True},
-                                      "demo_calibration": True}}
+                                      "review": {"approved": True, "within_cohort": True},
+                                      "cohort_validated": True}}
     body = client.get("/api/runs/fixed/result").json()
     assert body["recommended"]["scenario"] == "led_lighting"
-    assert body["demo_calibration"] is True
+    assert body["cohort_validated"] is True
     del main._RUNS["fixed"]

@@ -26,7 +26,14 @@ from verification.pydantic_schemas import (
 )
 
 LLMFn = Callable[[str, str], str]
-MIN_RETROFITS = 2   # ModelingOutput needs ≥3 scenarios total (baseline + 2)
+# The demo's three headline measures — LED lighting, efficient equipment, AND double
+# glazing — all genuinely apply to the reference office IDF. Floor the count at 3 so
+# that if the LLM under-selects (it has picked just 2), the backfill below tops the
+# scenario set back up to the full applicable catalog. Each is still a REAL EnergyPlus
+# run — this guarantees coverage, it does not fabricate a measure. (baseline + 3 = 4
+# scenarios total.) Backfill only adds measures whose target object_type exists in the
+# model, so this never invents a scenario the building can't support.
+MIN_RETROFITS = 3
 
 _SELECT_SYSTEM = (
     "You are a building-energy retrofit advisor. From the catalog, pick the 2–3 "

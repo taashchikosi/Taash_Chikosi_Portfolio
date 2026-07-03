@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 754" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/>
+    </marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="900" height="754" fill="#0d1117"/>
+
+  <!-- ===== edges (drawn first, under the nodes) ===== -->
+  <g stroke="#8b949e" stroke-width="1.5" fill="none">
+    <line x1="450" y1="136" x2="450" y2="180" marker-end="url(#arrow)"/>
+    <line x1="450" y1="296" x2="450" y2="340" marker-end="url(#arrow)"/>
+    <line x1="450" y1="434" x2="450" y2="478" marker-end="url(#arrow)"/>
+    <line x1="450" y1="572" x2="450" y2="616" marker-end="url(#arrow)"/>
+  </g>
+  <g font-size="12.5" fill="#8b949e" text-anchor="middle">
+    <text x="450" y="162">text (web form &#183; SMS) or browser voice</text>
+    <text x="450" y="322">ranks the lead &#183; steers to a booking</text>
+    <text x="450" y="460">books a real slot</text>
+    <text x="450" y="598">writes the booking + lead row</text>
+  </g>
+
+  <!-- ===== nodes ===== -->
+  <!-- A &#183; input -->
+  <rect x="140" y="40" width="620" height="96" rx="14" fill="#13283f" stroke="#4c8dff" stroke-width="2"/>
+  <text x="450" y="78" text-anchor="middle" font-size="17" font-weight="600" fill="#dce9ff">&#128100; Patient reaches Northside Dental</text>
+  <text x="450" y="104" text-anchor="middle" font-size="13" font-style="italic" fill="#dce9ff" opacity="0.82">text &#183; SMS &#183; or browser voice (Web Speech) &#8212; Next.js site</text>
+
+  <!-- B &#183; brain (one /chat service) -->
+  <rect x="140" y="182" width="620" height="114" rx="14" fill="#241a3d" stroke="#a371f7" stroke-width="2"/>
+  <text x="450" y="216" text-anchor="middle" font-size="17" font-weight="600" fill="#ecdfff">&#128717;&#65039; Iris &#8212; one brain, both channels</text>
+  <text x="450" y="242" text-anchor="middle" font-size="13" font-style="italic" fill="#ecdfff" opacity="0.85">FastAPI POST /chat &#183; Claude Sonnet 4.6 &#8212; triage + reply (temp 0)</text>
+  <text x="450" y="264" text-anchor="middle" font-size="13" font-style="italic" fill="#ecdfff" opacity="0.85">browser voice &#8212; simulates a call, no separate engine</text>
+
+  <!-- C &#183; decision / guardrails -->
+  <rect x="140" y="342" width="620" height="92" rx="14" fill="#3a2412" stroke="#f0883e" stroke-width="2"/>
+  <text x="450" y="378" text-anchor="middle" font-size="17" font-weight="600" fill="#ffd9b3">&#128737;&#65039; Booking policy + guardrails</text>
+  <text x="450" y="404" text-anchor="middle" font-size="13" font-style="italic" fill="#ffd9b3" opacity="0.9">rank-once &#183; injection deflect &#183; read-back &#183; no double-book</text>
+
+  <!-- D &#183; actions -->
+  <rect x="140" y="480" width="620" height="92" rx="14" fill="#13301d" stroke="#3fb950" stroke-width="2"/>
+  <text x="450" y="516" text-anchor="middle" font-size="17" font-weight="600" fill="#caf0d2">&#128197; Cal.com &#8212; books a real appointment</text>
+  <text x="450" y="542" text-anchor="middle" font-size="13" font-style="italic" fill="#caf0d2" opacity="0.85">isolated demo event 6007325</text>
+
+  <!-- E &#183; infra / storage -->
+  <rect x="140" y="618" width="620" height="96" rx="14" fill="#332813" stroke="#d6a01f" stroke-width="2"/>
+  <text x="450" y="654" text-anchor="middle" font-size="17" font-weight="600" fill="#f3e3b0">&#128450;&#65039; Airtable &#8212; one leads board (every channel)</text>
+  <text x="450" y="680" text-anchor="middle" font-size="13" font-style="italic" fill="#f3e3b0" opacity="0.85">source=website-demo &#183; Hetzner VPS &#183; Docker &#183; Caddy</text>
+</svg>

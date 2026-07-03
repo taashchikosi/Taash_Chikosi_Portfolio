@@ -175,9 +175,9 @@ def test_clone_error_marks_scenario_failed():
     assert fake.count("run_simulation") == 0   # never reached the sim
 
 
-def test_short_monthly_profile_fails_calibration_guard():
+def test_short_monthly_profile_fails_guard():
     """Sim 'succeeds' but the monthly profile isn't 12 values → failed, so the
-    Reviewer's GL14 calibration can't be fed garbage."""
+    Reviewer's realism gate + guardrail can't be fed a garbage (partial) profile."""
     fake = FakeCaller(monthly=[1_000.0] * 6)   # only 6 months
     out = sim_runner(_state(_three()), caller=fake)["sim_output"]
     assert all(r.simulation_status == "failed" for r in out.results)

@@ -41,12 +41,12 @@ def _energyplus_version() -> str:
         return "not installed"
 
 
-# ── Register tool groups (all 20 core tools live) ──────────────────
-register_idf_tools(mcp)          # 5 tools
+# ── Register tool groups (24 tools across 5 modules) ──────────────────
+register_idf_tools(mcp)          # 9 tools  (+ scale_floor_area, set_construction_u_value, localize_idf)
 register_simulation_tools(mcp)   # 2 tools
-register_results_tools(mcp)      # 5 tools
+register_results_tools(mcp)      # 6 tools  (+ get_building_area, Bug #12 fix)
 register_reference_tools(mcp)    # 4 tools
-register_analysis_tools(mcp)     # 4 tools  → 20 total
+register_analysis_tools(mcp)     # 3 tools  → 24 total
 
 
 if __name__ == "__main__":

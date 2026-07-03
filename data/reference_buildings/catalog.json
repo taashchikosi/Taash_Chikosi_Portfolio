@@ -1,0 +1,71 @@
+{
+  "_doc": "Single source of truth for the Agentic Energy Modeller demo: which buildings + cities the user can pick, and the deterministic facts attached to each. Backend (api/main.py) resolves a (building_key, city_key) pair to an IDF + EPW + state + carbon factor from THIS file. The frontend mirror lives at frontend/lib/energy-modeller-catalog.ts and MUST stay in sync. Floor areas are the DOE prototype NOMINAL gross floor area for display; the retriever still reads the AUTHORITATIVE area from the IDF at run time. NCC zones and grid factors are deterministic lookups, never LLM-authored.",
+  "version": "2026-06-25",
+  "buildings": [
+    {
+      "key": "medium_office",
+      "label": "Medium Office",
+      "idf": "RefBldgMediumOffice.idf",
+      "type": "office",
+      "nominal_floor_area_m2": 4982,
+      "storeys": 3,
+      "benchmarked": true,
+      "blurb": "DOE Commercial Reference Medium Office — 3 storeys, ~4,982 m². Mandatory-disclosure size band; has a real CBD whole-building office cohort in every city.",
+      "source": "DOE Commercial Reference Buildings (energy.gov) — geometry reused with Australian weather."
+    }
+  ],
+  "cities": [
+    {
+      "key": "sydney",
+      "label": "Sydney",
+      "state": "NSW",
+      "epw": "AUS_NSW_Sydney.epw",
+      "ncc_climate_zone": 5,
+      "ncc_zone_descriptor": "Warm temperate",
+      "grid": "NSW grid",
+      "electricity_scope2_kgco2e_per_kwh": 0.64,
+      "postcode_band": [2000, 2249],
+      "emission_factor_source": "NGA 2025 NSW",
+      "weather_source": "climate.onebuilding.org TMYx (Sydney Airport, WMO 947670)"
+    },
+    {
+      "key": "melbourne",
+      "label": "Melbourne",
+      "state": "VIC",
+      "epw": "AUS_VIC_Melbourne.epw",
+      "ncc_climate_zone": 6,
+      "ncc_zone_descriptor": "Mild temperate",
+      "grid": "VIC grid",
+      "electricity_scope2_kgco2e_per_kwh": 0.78,
+      "postcode_band": [3000, 3207],
+      "emission_factor_source": "NGA 2025 VIC",
+      "weather_source": "climate.onebuilding.org TMYx (Melbourne Airport, WMO 948660)"
+    },
+    {
+      "key": "brisbane",
+      "label": "Brisbane",
+      "state": "QLD",
+      "epw": "AUS_QLD_Brisbane.epw",
+      "ncc_climate_zone": 2,
+      "ncc_zone_descriptor": "Warm humid summer, mild winter",
+      "grid": "QLD grid",
+      "electricity_scope2_kgco2e_per_kwh": 0.67,
+      "postcode_band": [4000, 4179],
+      "emission_factor_source": "NGA 2025 QLD",
+      "weather_source": "climate.onebuilding.org TMYx (Brisbane Airport, WMO 945780)"
+    },
+    {
+      "key": "perth",
+      "label": "Perth",
+      "state": "WA",
+      "epw": "AUS_WA_Perth.epw",
+      "ncc_climate_zone": 5,
+      "ncc_zone_descriptor": "Warm temperate",
+      "grid": "WA SWIS grid",
+      "electricity_scope2_kgco2e_per_kwh": 0.50,
+      "postcode_band": [6000, 6199],
+      "emission_factor_source": "NGA 2025 WA (SWIS)",
+      "weather_source": "climate.onebuilding.org TMYx (Perth Airport, WMO 946100)"
+    }
+  ]
+}

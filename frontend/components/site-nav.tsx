@@ -1,61 +1,132 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Zap, Github } from "lucide-react";
 import { SITE } from "@/lib/site";
 
-const LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/#projects", label: "Projects" },
-  { href: "/#about", label: "About" },
-];
+const Caret = () => (
+  <svg className="caret" viewBox="0 0 24 24">
+    <path d="M6 9l6 6 6-6" />
+  </svg>
+);
 
 export function SiteNav() {
   const pathname = usePathname();
+  const [open, setOpen] = useState<string | null>(null);
   const onHome = pathname === "/";
-  // Point the nav's demo CTA at whichever project the visitor is currently reading.
-  const demoHref = pathname.startsWith("/auditagent")
-    ? "/auditagent/demo"
-    : "/retrofitgpt/demo";
+  const onProjects = pathname === "/projects" || isCaseRoute(pathname);
+
+  // Close dropdowns on outside click / Escape (mirrors the mockup).
+  useEffect(() => {
+    const close = () => setOpen(null);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(null);
+    document.addEventListener("click", close);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("click", close);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, []);
+
+  const toggle = (id: string, e: React.MouseEvent) => {
+    // Stop the NATIVE event too — the outside-click "close" handler is a native
+    // document listener, which React's synthetic stopPropagation won't reach,
+    // so without this the menu opens and instantly closes on the same click.
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+    setOpen((cur) => (cur === id ? null : id));
+  };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-surface-border bg-surface/80 backdrop-blur">
-      <nav className="mx-auto flex max-w-5xl items-center gap-6 px-6 py-3.5">
-        <Link href="/" className="flex items-center gap-2 text-white">
-          <Zap className="h-5 w-5 text-accent" />
-          <span className="font-semibold tracking-tight">{SITE.name}</span>
+    <nav>
+      <div className="nav-in">
+        <Link href="/" className="brand">
+          <span className="mk">T</span>
+          <span>{SITE.name}</span>
         </Link>
+        <div className="links">
+          <Link href="/" className={onHome ? "active" : ""}>
+            Home
+          </Link>
 
-        <div className="ml-auto flex items-center gap-1 text-sm">
-          {LINKS.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="rounded-lg px-3 py-1.5 text-zinc-400 transition-colors hover:bg-surface-raised hover:text-white"
+          <div className={`dd${open === "proj" ? " open" : ""}`}>
+            <button
+              onClick={(e) => toggle("proj", e)}
+              className={onProjects ? "active" : ""}
             >
-              {l.label}
-            </Link>
-          ))}
-          {!onHome && (
-            <Link
-              href={demoHref}
-              className="ml-1 rounded-lg bg-accent px-3 py-1.5 font-medium text-black transition-opacity hover:opacity-90"
-            >
-              Live demo
-            </Link>
-          )}
-          <a
-            href={SITE.github}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="GitHub"
-            className="ml-1 rounded-lg p-2 text-zinc-400 transition-colors hover:bg-surface-raised hover:text-white"
-          >
-            <Github className="h-4 w-4" />
+              Projects
+              <Caret />
+            </button>
+            <div className="menu" role="menu">
+              <Link href="/projects?lane=agentic">
+                <span className="dot" style={{ background: "var(--acc)" }} />
+                <span>
+                  Agentic AI<span className="sub">2 projects</span>
+                </span>
+              </Link>
+              <Link href="/projects?lane=automation">
+                <span className="dot" style={{ background: "var(--cyan)" }} />
+                <span>
+                  Agents<span className="sub">2 projects</span>
+                </span>
+              </Link>
+            </div>
+          </div>
+
+          <div className={`dd${open === "res" ? " open" : ""}`}>
+            <button onClick={(e) => toggle("res", e)}>
+              Résumé
+              <Caret />
+            </button>
+            <div className="menu" role="menu">
+              <a href={SITE.resume} target="_blank" rel="noopener noreferrer">
+                <svg className="icn" viewBox="0 0 24 24">
+                  <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <span>
+                  View<span className="sub">opens in a new tab</span>
+                </span>
+              </a>
+              <a href={SITE.resume} download>
+                <svg className="icn" viewBox="0 0 24 24">
+                  <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" />
+                </svg>
+                <span>
+                  Download<span className="sub">PDF</span>
+                </span>
+              </a>
+              <Link href="/certifications">
+                <svg className="icn" viewBox="0 0 24 24">
+                  <circle cx="12" cy="9" r="5" />
+                  <path d="M8.5 13.2L7 22l5-3 5 3-1.5-8.8" />
+                </svg>
+                <span>
+                  Certifications<span className="sub">credentials &amp; badges</span>
+                </span>
+              </Link>
+            </div>
+          </div>
+
+          <a className="nav-social" href={SITE.linkedin} target="_blank" rel="noopener noreferrer">
+            LinkedIn
+          </a>
+          <a className="nav-social" href={SITE.github} target="_blank" rel="noopener noreferrer">
+            GitHub
           </a>
         </div>
-      </nav>
-    </header>
+      </div>
+    </nav>
   );
+}
+
+function isCaseRoute(path: string) {
+  const slugs = [
+    "energy-modeller",
+    "auditagent",
+    "vera",
+    "margo",
+  ];
+  return slugs.some((s) => path === `/${s}`);
 }

@@ -1,0 +1,219 @@
+{
+  "status": "REAL",
+  "generated": "2026-06-26",
+  "provenance": "Built by scripts/build_cbd_cohorts.py from the CBD register. Whole-building offices only; per-city metro postcode band; EUI = AnnualConsumption/RatedArea; deduped to most recent certificate per building.",
+  "cities": {
+    "sydney": {
+      "state": "NSW",
+      "postcode_band": [
+        2000,
+        2249
+      ],
+      "rows_after_filter": 261,
+      "cohorts": [
+        {
+          "building_type": "office",
+          "size_band": "medium",
+          "location": "Sydney",
+          "scope": "whole_building",
+          "n": 96,
+          "eui_kwh_m2_yr": {
+            "min": 60.8,
+            "p25": 166.1,
+            "median": 212.9,
+            "p75": 305.8,
+            "max": 836.9
+          },
+          "typical_star": 4.0,
+          "size_filter_m2": [
+            2500,
+            10000
+          ],
+          "source": "Commercial Building Disclosure (CBD) register \u2014 NABERS Energy whole-building offices, Sydney metro",
+          "verified": true
+        },
+        {
+          "building_type": "office",
+          "size_band": "large",
+          "location": "Sydney",
+          "scope": "whole_building",
+          "n": 4,
+          "eui_kwh_m2_yr": {
+            "min": 92.2,
+            "p25": 133.7,
+            "median": 165.0,
+            "p75": 198.2,
+            "max": 245.3
+          },
+          "typical_star": 5.2,
+          "size_filter_m2": [
+            30000,
+            200000
+          ],
+          "source": "Commercial Building Disclosure (CBD) register \u2014 NABERS Energy whole-building offices, Sydney metro",
+          "verified": false,
+          "warning": "cohort too small (n=4 < 30); verified=false"
+        }
+      ]
+    },
+    "melbourne": {
+      "state": "VIC",
+      "postcode_band": [
+        3000,
+        3207
+      ],
+      "rows_after_filter": 341,
+      "cohorts": [
+        {
+          "building_type": "office",
+          "size_band": "medium",
+          "location": "Melbourne",
+          "scope": "whole_building",
+          "n": 130,
+          "eui_kwh_m2_yr": {
+            "min": 66.1,
+            "p25": 126.2,
+            "median": 182.8,
+            "p75": 300.0,
+            "max": 975.8
+          },
+          "typical_star": 3.5,
+          "size_filter_m2": [
+            2500,
+            10000
+          ],
+          "source": "Commercial Building Disclosure (CBD) register \u2014 NABERS Energy whole-building offices, Melbourne metro",
+          "verified": true
+        },
+        {
+          "building_type": "office",
+          "size_band": "large",
+          "location": "Melbourne",
+          "scope": "whole_building",
+          "n": 2,
+          "eui_kwh_m2_yr": {
+            "min": 149.2,
+            "p25": 165.3,
+            "median": 181.5,
+            "p75": 197.7,
+            "max": 213.9
+          },
+          "typical_star": 4.0,
+          "size_filter_m2": [
+            30000,
+            200000
+          ],
+          "source": "Commercial Building Disclosure (CBD) register \u2014 NABERS Energy whole-building offices, Melbourne metro",
+          "verified": false,
+          "warning": "cohort too small (n=2 < 30); verified=false"
+        }
+      ]
+    },
+    "brisbane": {
+      "state": "QLD",
+      "postcode_band": [
+        4000,
+        4179
+      ],
+      "rows_after_filter": 195,
+      "cohorts": [
+        {
+          "building_type": "office",
+          "size_band": "medium",
+          "location": "Brisbane",
+          "scope": "whole_building",
+          "n": 78,
+          "eui_kwh_m2_yr": {
+            "min": 78.9,
+            "p25": 136.7,
+            "median": 189.3,
+            "p75": 261.3,
+            "max": 737.2
+          },
+          "typical_star": 4.0,
+          "size_filter_m2": [
+            2500,
+            10000
+          ],
+          "source": "Commercial Building Disclosure (CBD) register \u2014 NABERS Energy whole-building offices, Brisbane metro",
+          "verified": true
+        },
+        {
+          "building_type": "office",
+          "size_band": "large",
+          "location": "Brisbane",
+          "scope": "whole_building",
+          "n": 0,
+          "eui_kwh_m2_yr": {
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          },
+          "typical_star": null,
+          "size_filter_m2": [
+            30000,
+            200000
+          ],
+          "source": "Commercial Building Disclosure (CBD) register \u2014 NABERS Energy whole-building offices, Brisbane metro",
+          "verified": false,
+          "warning": "cohort too small (n=0 < 30); verified=false"
+        }
+      ]
+    },
+    "perth": {
+      "state": "WA",
+      "postcode_band": [
+        6000,
+        6199
+      ],
+      "rows_after_filter": 175,
+      "cohorts": [
+        {
+          "building_type": "office",
+          "size_band": "medium",
+          "location": "Perth",
+          "scope": "whole_building",
+          "n": 61,
+          "eui_kwh_m2_yr": {
+            "min": 66.9,
+            "p25": 133.3,
+            "median": 192.8,
+            "p75": 273.1,
+            "max": 819.4
+          },
+          "typical_star": 3.0,
+          "size_filter_m2": [
+            2500,
+            10000
+          ],
+          "source": "Commercial Building Disclosure (CBD) register \u2014 NABERS Energy whole-building offices, Perth metro",
+          "verified": true
+        },
+        {
+          "building_type": "office",
+          "size_band": "large",
+          "location": "Perth",
+          "scope": "whole_building",
+          "n": 0,
+          "eui_kwh_m2_yr": {
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          },
+          "typical_star": null,
+          "size_filter_m2": [
+            30000,
+            200000
+          ],
+          "source": "Commercial Building Disclosure (CBD) register \u2014 NABERS Energy whole-building offices, Perth metro",
+          "verified": false,
+          "warning": "cohort too small (n=0 < 30); verified=false"
+        }
+      ]
+    }
+  }
+}

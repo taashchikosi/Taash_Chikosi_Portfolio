@@ -1,7 +1,8 @@
 import { ImageResponse } from "next/og";
 import { SITE } from "@/lib/site";
 
-export const alt = `${SITE.name} — ${SITE.role}`;
+const TAGLINE = "Energy → Agentic AI → Agents";
+export const alt = `${SITE.name} — ${TAGLINE}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -17,43 +18,45 @@ export default function OpengraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          backgroundColor: "#0a0a0b",
+          backgroundColor: "#08090B",
           padding: "80px",
           position: "relative",
         }}
       >
-        {/* green glow */}
+        {/* blue glow */}
         <div
           style={{
             position: "absolute",
             top: -160,
-            left: 380,
-            width: 700,
+            left: 420,
+            width: 720,
             height: 460,
             borderRadius: "9999px",
-            background: "#10b981",
+            background: "#5B9CFF",
             opacity: 0.18,
             filter: "blur(120px)",
             display: "flex",
           }}
         />
-        <div style={{ display: "flex", alignItems: "center", marginBottom: 28 }}>
+        <div style={{ display: "flex", alignItems: "center", marginBottom: 30 }}>
           <div
             style={{
-              width: 44,
-              height: 44,
-              borderRadius: 10,
-              backgroundColor: "#10b98122",
-              border: "1px solid #10b98155",
+              width: 46,
+              height: 46,
+              borderRadius: 12,
+              backgroundColor: "#5B9CFF",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               marginRight: 16,
+              color: "#04173A",
+              fontSize: 26,
+              fontWeight: 700,
             }}
           >
-            <div style={{ display: "flex", fontSize: 26 }}>⚡</div>
+            T
           </div>
-          <div style={{ display: "flex", color: "#10b981", fontSize: 26, fontWeight: 600 }}>
+          <div style={{ display: "flex", color: "#F2F3F5", fontSize: 28, fontWeight: 600 }}>
             {SITE.name}
           </div>
         </div>
@@ -61,26 +64,28 @@ export default function OpengraphImage() {
         <div
           style={{
             display: "flex",
-            color: "#ffffff",
-            fontSize: 64,
-            fontWeight: 700,
-            lineHeight: 1.1,
-            maxWidth: 920,
-            letterSpacing: -1,
+            color: "#F2F3F5",
+            fontSize: 66,
+            fontWeight: 600,
+            lineHeight: 1.08,
+            maxWidth: 960,
+            letterSpacing: -1.5,
           }}
         >
-          Autonomous AI systems for the built environment — shipped live.
+          <span style={{ display: "flex", color: "#5B9CFF" }}>AI Systems&nbsp;</span>
+          that Survive Contact With Reality
         </div>
 
         <div
           style={{
             display: "flex",
-            color: "#a1a1aa",
-            fontSize: 30,
+            color: "#9aa3b2",
+            fontSize: 28,
             marginTop: 30,
+            fontFamily: "monospace",
           }}
         >
-          {SITE.role}
+          {TAGLINE}
         </div>
 
         <div
@@ -88,7 +93,7 @@ export default function OpengraphImage() {
             display: "flex",
             alignItems: "center",
             marginTop: 44,
-            color: "#71717a",
+            color: "#626977",
             fontSize: 24,
           }}
         >
@@ -97,12 +102,12 @@ export default function OpengraphImage() {
               width: 10,
               height: 10,
               borderRadius: "9999px",
-              backgroundColor: "#10b981",
+              backgroundColor: "#5BE38B",
               marginRight: 12,
               display: "flex",
             }}
           />
-          RetrofitGPT · live multi-agent demo
+          Live, verified demos · real backends
         </div>
       </div>
     ),

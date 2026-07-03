@@ -4,8 +4,8 @@
     {
       "name": "portfolio",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "/Users/taashchikosi/Documents/Claude/Projects/Agentic AI Portfolio/retrofitgpt/frontend", "run", "dev"],
-      "port": 3000
+      "runtimeArgs": ["--prefix", "/Users/taashchikosi/Documents/Claude/Projects/Agentic AI Portfolio/retrofitgpt/frontend", "run", "dev", "--", "-p", "3120"],
+      "port": 3120
     }
   ]
 }

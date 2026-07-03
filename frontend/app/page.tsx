@@ -1,131 +1,87 @@
 import Link from "next/link";
-import { ArrowRight, Github, Cpu, Building2, ShieldCheck } from "lucide-react";
-import { PROJECTS } from "@/lib/projects";
 import { SITE } from "@/lib/site";
-import { ProjectCard } from "@/components/project-card";
-import { Reveal } from "@/components/reveal";
+import { IntroVideo } from "@/components/intro-video";
 
-const HIGHLIGHTS = [
-  {
-    icon: Building2,
-    title: "Building-energy domain",
-    body: "IESVE / EnergyPlus modelling background — I build AI that understands the physics, not just the prompt.",
-  },
-  {
-    icon: Cpu,
-    title: "Agentic systems",
-    body: "Multi-agent pipelines with a clean tool boundary (MCP), eval-gated model routing, and cost discipline.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Governed & verified",
-    body: "Calibration gates, guardrails, and real code-compliance checks — green ticks backed by evidence, not vibes.",
-  },
-];
-
+// Home view — ported from mockups/portfolio-v3: hero + intro video (sanctioned
+// placeholder) + About Me + Lets Talk. No project grid (that lives at /projects).
 export default function HomePage() {
   return (
-    <div className="mx-auto max-w-5xl px-6">
-      {/* ── Hero ─────────────────────────────────────────────── */}
-      <section className="pt-24 pb-16">
-        <p className="animate-rise text-sm font-medium text-accent">{SITE.role}</p>
-        <h1
-          className="animate-rise mt-3 max-w-3xl text-4xl font-semibold leading-[1.1] tracking-tight text-white sm:text-5xl"
-          style={{ animationDelay: "80ms" }}
-        >
-          I build <span className="text-accent">autonomous AI systems</span> for the
-          built environment — and ship them live.
+    <div id="view-home">
+      <header className="hero wrap">
+        <span className="eyebrow" data-reveal>
+          {SITE.eyebrow}
+        </span>
+        <h1 data-reveal>
+          {SITE.headlineLead}
+          <br />
+          <span className="hl">{SITE.headlineHl}</span>
         </h1>
-        <p
-          className="animate-rise mt-5 max-w-2xl text-base leading-relaxed text-zinc-400"
-          style={{ animationDelay: "160ms" }}
-        >
-          {SITE.name.split(" ")[0]} here. I pair a building-energy engineering
-          background with agentic-AI engineering: physics-in-the-loop pipelines,
-          verified against real standards, deployed end to end. Everything below is a
-          working demo, not a slide.
-        </p>
-        <div
-          className="animate-rise mt-8 flex flex-wrap gap-3"
-          style={{ animationDelay: "240ms" }}
-        >
-          <Link
-            href="/retrofitgpt"
-            className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-black transition-opacity hover:opacity-90"
-          >
-            See RetrofitGPT <ArrowRight className="h-4 w-4" />
+        <div className="cta" data-reveal>
+          <Link className="btn pri" href="/projects">
+            View live demos
+            <svg className="icn" viewBox="0 0 24 24" style={{ stroke: "var(--acc-ink)" }}>
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
           </Link>
-          <a
-            href={SITE.github}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-surface-border bg-surface-raised px-5 py-2.5 text-sm font-medium text-zinc-200 transition-colors hover:border-accent/50"
-          >
-            <Github className="h-4 w-4" /> GitHub
-          </a>
-        </div>
-      </section>
-
-      {/* ── Projects ─────────────────────────────────────────── */}
-      <section id="projects" className="scroll-mt-20 border-t border-surface-border pt-14">
-        <Reveal>
-          <p className="text-xs font-medium uppercase tracking-wider text-accent">
-            Projects
-          </p>
-          <h2 className="mt-1 text-2xl font-semibold tracking-tight text-white">
-            Things I&apos;ve built
-          </h2>
-        </Reveal>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {PROJECTS.map((p, i) => (
-            <Reveal key={p.slug} delay={i * 90}>
-              <ProjectCard project={p} />
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* ── About ────────────────────────────────────────────── */}
-      <section id="about" className="scroll-mt-20 pt-20">
-        <Reveal>
-          <p className="text-xs font-medium uppercase tracking-wider text-accent">
-            About
-          </p>
-          <h2 className="mt-1 text-2xl font-semibold tracking-tight text-white">
-            Engineering the physics, not just the prompt
-          </h2>
-          <p className="mt-5 max-w-2xl text-sm leading-relaxed text-zinc-400">
-            {/* TODO: personalise this paragraph. */}
-            I&apos;m a building-energy engineer moving into agentic-AI engineering and
-            solution architecture, focused on the Australian market — NABERS, NCC
-            Section J, and decarbonisation. My work sits where domain rigour meets
-            modern AI: systems that run real simulations, cite real codes, and are
-            honest about what they can and can&apos;t yet prove.
-          </p>
-        </Reveal>
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-3">
-          {HIGHLIGHTS.map((h, i) => (
-            <Reveal key={h.title} delay={i * 90}>
-              <div className="h-full rounded-xl border border-surface-border bg-surface-raised p-5">
-                <h.icon className="h-5 w-5 text-accent" />
-                <p className="mt-3 text-sm font-medium text-zinc-100">{h.title}</p>
-                <p className="mt-1.5 text-sm leading-relaxed text-zinc-400">{h.body}</p>
-              </div>
-            </Reveal>
-          ))}
         </div>
 
-        <Reveal>
-          <div className="mt-8 flex flex-wrap gap-3 text-sm">
-            <a
-              href={`mailto:${SITE.email}`}
-              className="inline-flex items-center gap-2 rounded-lg border border-surface-border bg-surface-raised px-4 py-2 text-zinc-200 transition-colors hover:border-accent/50"
+        <div className="stage" data-reveal>
+          {SITE.introVideoReady ? (
+            /* Intro video — v3 final (see Intro_Video_v3_Build_Plan.md). */
+            <IntroVideo />
+          ) : (
+            /* Placeholder — sanctioned until the real video ships. */
+            <div
+              className="video"
+              role="img"
+              aria-label="Intro video — coming soon"
+              title="Intro video — coming soon"
             >
-              Get in touch
-            </a>
+              <span className="vtag">{SITE.videoTag}</span>
+              <div className="play" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+              <span className="vmeta">{SITE.videoMeta}</span>
+            </div>
+          )}
+        </div>
+      </header>
+
+      <section className="wrap about">
+        <div className="home-block">
+          <div className="about-single" data-reveal>
+            <h2>About Me</h2>
+            {SITE.about.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
           </div>
-        </Reveal>
+        </div>
+      </section>
+
+      <section className="wrap" style={{ paddingTop: 44 }}>
+        <div className="home-block">
+          <h2 style={{ marginBottom: "22px" }} data-reveal>
+            Let&apos;s Talk
+          </h2>
+          <div className="contact" data-reveal>
+            <a className="ct" href={`mailto:${SITE.email}`}>
+            <svg className="icn" viewBox="0 0 24 24">
+              <path d="M3 7l9 6 9-6M3 7v10a1 1 0 001 1h16a1 1 0 001-1V7" />
+            </svg>
+            {SITE.email}
+          </a>
+          <a className="ct" href={SITE.linkedin} target="_blank" rel="noopener noreferrer">
+            <svg className="icn" viewBox="0 0 24 24">
+              <path d="M16 8a6 6 0 016 6v6h-4v-6a2 2 0 00-4 0v6h-4v-10h4v2" />
+              <circle cx="4" cy="4" r="2" />
+              <path d="M2 9h4v11H2z" />
+            </svg>
+            LinkedIn
+          </a>
+          </div>
+        </div>
       </section>
     </div>
   );

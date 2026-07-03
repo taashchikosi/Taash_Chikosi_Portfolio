@@ -1,7 +1,7 @@
 """Fold the golden-case eval harness into the test suite (CI regression gate).
 
 `pytest` now fails if any golden building drifts outside its expected savings /
-payback / carbon bands or its GL14 + NCC verdicts change. This is the gate that
+payback / carbon bands or its cohort-realism + NCC verdicts change. This is the gate that
 keeps the DeepSeek↔Claude swap honest at the deterministic layer.
 """
 from __future__ import annotations
@@ -24,13 +24,13 @@ def test_golden_case_passes(case):
 
 
 def test_negative_control_actually_exercises_the_gate():
-    """The uncalibrated case must FAIL calibration and route back to the Modeler —
-    proving the GL14 gate isn't a rubber stamp."""
-    case = next(c for c in CASES if c["id"] == "uncalibrated_office_must_fail")
+    """The out-of-cohort case must FAIL the realism gate and route back to the
+    INPUTS — proving the CBD-cohort gate isn't a rubber stamp."""
+    case = next(c for c in CASES if c["id"] == "baseline_outside_cohort_must_fail")
     result = run_case(case)
     checks = {c.name: c for c in result.checks}
     assert checks["reviewer.approved"].actual is False
-    assert checks["reviewer.route_to"].actual == "modeler"
+    assert checks["reviewer.route_to"].actual == "inputs"
 
 
 def test_every_case_file_has_required_fields():

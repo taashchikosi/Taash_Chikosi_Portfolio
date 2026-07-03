@@ -2,66 +2,364 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-
-body {
-  @apply bg-surface text-zinc-200 antialiased;
+/* ───────────────────────────────────────────────────────────────────────────
+   Ported VERBATIM from mockups/portfolio-v3/index.html (the design source of
+   truth). Fonts are wired by next/font in app/layout.tsx (--font-display/body/
+   mono); the :root mirror below points the mockup's --disp/--body/--mono at them.
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --bg:#08090B; --s1:#0E1014; --s2:#14171C; --s3:#1B1F26;
+  --line:rgba(255,255,255,0.07); --line2:rgba(255,255,255,0.13);
+  --tx:#F2F3F5; --mut:#F2F3F5; --dim:#D9DDE3;  /* --dim was a low-contrast grey (#626977); brightened to near-white for legibility */
+  --acc:#5B9CFF; --acc-ink:#04173A;
+  --green:#5BE38B; --cyan:#2DD4BF; --amber:#E6B45B;
+  --diag:#0d1117;
+  --disp:var(--font-display),"Space Grotesk",sans-serif;
+  --body:var(--font-body),"Inter",system-ui,sans-serif;
+  --mono:var(--font-mono),"JetBrains Mono",monospace;
+  --max:1100px;
+  /* ── Type scale ───────────────────────────────────────────────────────────
+     One rational ladder used site-wide so sizes never drift. Display = headings
+     (Space Grotesk), body/ui = reading + controls (Inter), label = mono caps.
+     Readability floor: primary copy ≥16px, dense copy 15px, smallest cap 11.5px. */
+  --fs-display-xl:54px;  /* home hero h1 */
+  --fs-display-lg:40px;  /* page / case-study h1 */
+  --fs-display-md:30px;  /* section h2 */
+  --fs-display-sm:24px;  /* panel titles, big metric numbers */
+  --fs-h3:20px;          /* sub-headings, card titles */
+  --fs-lede:18px;        /* intro / lead paragraphs */
+  --fs-body:16px;        /* primary reading copy */
+  --fs-body-sm:15px;     /* dense copy: cards, pills, demo panels, tables */
+  --fs-ui:14px;          /* buttons, tabs, nav links, contact */
+  --fs-label:12px;       /* mono eyebrows / labels (uppercase) */
+  --fs-label-sm:11.5px;  /* smallest mono sub-labels */
+  /* Line-heights: reading text breathes, dense/UI text is tighter. */
+  --lh-read:1.65;
+  --lh-dense:1.6;
+  /* Comfortable reading measure for body paragraphs inside wide panels. */
+  --measure:68ch;
 }
-
-html {
-  scroll-behavior: smooth;
-}
-
-/* Faint grid for hero depth (masked to fade out near the fold). */
-.bg-grid {
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  background:var(--bg); color:var(--tx); font-family:var(--body); font-size:var(--fs-body); line-height:var(--lh-read);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  /* Backdrop tokens — overridden per lane on case pages via body:has() below.
+     Default (home/projects/nav) stays neutral: azure glow + faint white grid. */
+  --glow:rgba(91,156,255,0.12);
+  --grid-ln:rgba(91,156,255,0.08);
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 56px 56px;
+    radial-gradient(1000px 460px at 78% -10%, var(--glow), transparent 62%),
+    linear-gradient(var(--grid-ln) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-ln) 1px,transparent 1px);
+  background-size:auto,52px 52px,52px 52px;
+  background-attachment:fixed;
+}
+::selection{background:rgba(91,156,255,0.28)}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 32px}
+/* Home About/Contact: centered 920px column, left edge aligned with the video stage. */
+.home-block{max-width:920px;margin:0 auto}
+.home-block .about-single p{max-width:none}
+.mono{font-family:var(--mono)}
+.eyebrow{font-family:var(--mono);font-size:var(--fs-label);letter-spacing:.12em;text-transform:uppercase;color:var(--acc)}
+h1,h2,h3{font-family:var(--disp);font-weight:600;letter-spacing:-0.02em;line-height:1.08;text-wrap:balance}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:4px}
+
+[data-reveal]{opacity:0;transform:translateY(16px);animation:rise .56s cubic-bezier(.2,0,0,1) both}
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(91,227,139,0.45)}70%{box-shadow:0 0 0 7px rgba(91,227,139,0)}100%{box-shadow:0 0 0 0 rgba(91,227,139,0)}}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(91,156,255,0.32)}70%{box-shadow:0 0 0 18px rgba(91,156,255,0)}100%{box-shadow:0 0 0 0 rgba(91,156,255,0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.d.live{animation:pulse 2.4s infinite}
+.play{animation:ring 3s ease-out infinite}
+.video:hover .play{animation:none}
+.lede,.about p,.phead p,.cs-hero .one,.card p,.expl p,.pill p{text-wrap:pretty}
+@media(prefers-reduced-motion:reduce){[data-reveal],.d.live,.play{animation:none!important;opacity:1!important;transform:none!important}}
+
+/* nav */
+nav{position:sticky;top:0;z-index:60;background:rgba(8,9,11,0.72);backdrop-filter:blur(14px);border-bottom:0.5px solid var(--line)}
+.nav-in{max-width:var(--max);margin:0 auto;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--disp);font-weight:600;font-size:var(--fs-body-sm);cursor:pointer;letter-spacing:-0.01em}
+.mk{width:24px;height:24px;border-radius:7px;background:var(--acc);display:grid;place-items:center;color:var(--acc-ink);font-family:var(--disp);font-weight:700;font-size:13px}
+.links{display:flex;align-items:center;gap:4px}
+.links a,.dd>button{padding:8px 13px;border-radius:8px;font-size:var(--fs-ui);color:var(--mut);cursor:pointer;transition:.16s;background:none;border:none;font-family:var(--body)}
+.links a:hover,.dd>button:hover{color:var(--tx);background:var(--s2)}
+.links a.active,.dd>button.active{color:var(--tx)}
+.dd{position:relative}
+.dd>button{display:inline-flex;align-items:center;gap:6px}
+.caret{width:12px;height:12px;stroke:currentColor;stroke-width:1.8;fill:none;transition:transform .18s}
+.dd.open .caret{transform:rotate(180deg)}
+.menu{position:absolute;top:calc(100% + 8px);left:0;min-width:210px;background:var(--s2);border:0.5px solid var(--line2);border-radius:12px;padding:6px;box-shadow:0 24px 60px -30px rgba(0,0,0,0.8);opacity:0;transform:translateY(-6px) scale(0.97);transform-origin:top left;pointer-events:none;transition:opacity .18s cubic-bezier(.165,.84,.44,1),transform .18s cubic-bezier(.165,.84,.44,1)}
+.dd.open .menu{opacity:1;transform:none;pointer-events:auto}
+.menu a{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;font-size:var(--fs-ui);color:var(--mut);cursor:pointer}
+.menu a:hover{background:var(--s3);color:var(--tx)}
+.menu .dot{width:7px;height:7px;border-radius:50%}
+.menu .sub{display:block;font-family:var(--mono);font-size:var(--fs-label-sm);color:var(--dim);margin-top:1px}
+.icn{width:16px;height:16px;stroke:currentColor;stroke-width:1.7;fill:none;vertical-align:-3px}
+
+/* hero */
+.hero{padding:60px 0 24px;text-align:center}
+.hero h1{font-size:var(--fs-display-xl);margin:18px auto 0;max-width:17ch}
+.hero h1 .hl{color:var(--acc)}
+.hero .cta{display:flex;gap:11px;justify-content:center;margin-top:30px;flex-wrap:wrap}
+/* Buttons carry their project's colour: --btn-acc is scoped per case page (falls back to
+   the global accent elsewhere). Secondary = a tint; primary = a solid fill. */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;font-size:var(--fs-ui);font-weight:600;font-family:var(--body);border:0.5px solid color-mix(in srgb, var(--btn-acc, var(--acc)) 38%, transparent);color:var(--tx);cursor:pointer;transition:.16s;background:color-mix(in srgb, var(--btn-acc, var(--acc)) 15%, transparent)}
+.btn:hover{background:color-mix(in srgb, var(--btn-acc, var(--acc)) 26%, transparent);border-color:color-mix(in srgb, var(--btn-acc, var(--acc)) 60%, transparent);transform:translateY(-1px)}
+.btn.pri{background:var(--btn-acc,var(--acc));color:var(--acc-ink);border-color:var(--btn-acc,var(--acc));font-weight:600}
+.btn.pri:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.gh{opacity:.92}
+
+.stage{margin:44px auto 0;max-width:920px;position:relative}
+.video{position:relative;aspect-ratio:16/9;border-radius:18px;background:linear-gradient(165deg,#15191F,#0B0E12);border:0.5px solid var(--line2);overflow:hidden;display:grid;place-items:center;cursor:pointer;box-shadow:0 40px 120px -50px rgba(91,156,255,0.45)}
+.video::before{content:"";position:absolute;inset:0;background:radial-gradient(520px 280px at 50% 34%,rgba(91,156,255,0.16),transparent 70%)}
+.video::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:40px 40px}
+.video .play{position:relative;z-index:2;width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,0.07);border:0.5px solid var(--line2);display:grid;place-items:center;transition:.22s cubic-bezier(.2,0,0,1)}
+.video:hover .play{background:var(--acc);transform:scale(1.07)}
+.video .play svg{width:26px;height:26px;margin-left:4px;fill:var(--tx)}
+.video:hover .play svg{fill:var(--acc-ink)}
+.vmeta{position:absolute;z-index:2;left:18px;bottom:16px;font-family:var(--mono);font-size:var(--fs-label);color:var(--mut);text-align:left}
+.vtag{position:absolute;z-index:2;top:16px;left:18px;font-family:var(--mono);font-size:var(--fs-label-sm);letter-spacing:.08em;text-transform:uppercase;color:var(--acc);background:rgba(91,156,255,0.12);border:0.5px solid rgba(91,156,255,0.32);padding:5px 10px;border-radius:20px}
+/* Real intro video — same 16:9 framed look as the placeholder, native controls. */
+.introvid-wrap{position:relative}
+.introvid{display:block;width:100%;aspect-ratio:16/9;border-radius:18px;border:1.5px solid rgba(91,156,255,0.6);background:#0B0E12;object-fit:cover;box-shadow:0 40px 120px -50px rgba(91,156,255,0.45)}
+/* Big blue play affordance over the poster (before first play). */
+.introvid-play{position:absolute;inset:0;margin:auto;width:96px;height:96px;display:grid;place-items:center;background:none;border:0;padding:0;cursor:pointer;z-index:3}
+.introvid-play>*{grid-area:1/1}
+.introvid-btn{position:relative;z-index:2;width:88px;height:88px;border-radius:50%;background:var(--acc);display:grid;place-items:center;box-shadow:0 10px 34px -6px rgba(91,156,255,0.65),inset 0 0 0 1px rgba(255,255,255,0.18);transition:transform .22s cubic-bezier(.2,0,0,1),background .22s ease-out,box-shadow .22s ease-out;animation:introvid-breathe 2.6s ease-in-out infinite}
+.introvid-btn svg{width:34px;height:34px;margin-left:5px;fill:#fff}
+/* Constant motion: rings pulse outward on a loop to invite the click. */
+.introvid-ring{width:88px;height:88px;border-radius:50%;background:rgba(91,156,255,0.4);z-index:1;animation:introvid-pulse 2.6s ease-out infinite}
+.introvid-ring-2{animation-delay:1.3s}
+/* Light up on hover: brighter, larger, stronger glow (and the breathing pauses). */
+.introvid-play:hover .introvid-btn,.introvid-play:focus-visible .introvid-btn{background:#7db0ff;transform:scale(1.1);box-shadow:0 14px 44px 0 rgba(91,156,255,0.9),inset 0 0 0 1px rgba(255,255,255,0.3);animation-play-state:paused}
+.introvid-play:focus-visible{outline:2px solid var(--acc);outline-offset:6px;border-radius:50%}
+@keyframes introvid-pulse{0%{transform:scale(1);opacity:.55}70%{opacity:0}100%{transform:scale(2.15);opacity:0}}
+@keyframes introvid-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@media(prefers-reduced-motion:reduce){.introvid-btn,.introvid-ring{animation:none!important}}
+
+/* proof (unused on home v3 but kept) */
+.proof{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:0.5px solid var(--line);border-radius:14px;overflow:hidden;margin-top:40px}
+.metric{background:var(--bg);padding:20px 22px;text-align:left}
+.metric .n{font-family:var(--disp);font-weight:600;font-size:var(--fs-display-sm);letter-spacing:-0.02em}
+.metric .n.g{color:var(--acc)}
+.metric .l{font-family:var(--mono);font-size:var(--fs-label);letter-spacing:.07em;text-transform:uppercase;color:var(--dim);margin-top:4px}
+
+/* sections */
+section{padding:60px 0;border-top:0.5px solid var(--line);margin-top:46px}
+.sk{font-family:var(--mono);font-size:var(--fs-label);letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin-bottom:20px}
+.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start}
+h2{font-size:var(--fs-display-md)}
+.about p{color:var(--mut);font-size:var(--fs-body);margin-top:16px;max-width:54ch}
+.contact{display:flex;gap:12px;flex-wrap:wrap}
+.ct{display:inline-flex;align-items:center;gap:11px;background:var(--s1);border:0.5px solid var(--line);border-radius:12px;padding:15px 20px;font-size:var(--fs-ui);transition:.16s;cursor:pointer}
+.ct:hover{border-color:var(--line2);background:var(--s2)}
+.ct svg{stroke:var(--acc)}
+
+footer{border-top:0.5px solid var(--line);padding:28px 0;margin-top:20px}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:var(--dim);font-size:13px;font-family:var(--mono)}
+
+/* projects */
+.phead{padding:56px 0 0;text-align:center}
+.phead h1{font-size:var(--fs-display-lg);margin-top:16px}
+.phead p{color:var(--mut);margin-top:14px;font-size:var(--fs-body);max-width:56ch;margin-left:auto;margin-right:auto}
+.tabs{display:flex;gap:8px;justify-content:center;margin:34px 0 30px;flex-wrap:wrap}
+.tab{display:inline-flex;align-items:center;gap:10px;padding:11px 18px;border-radius:11px;font-size:var(--fs-ui);font-weight:500;background:var(--s1);border:0.5px solid var(--line);color:var(--mut);cursor:pointer;transition:.16s}
+.tab:hover{color:var(--tx);border-color:var(--line2)}
+.tab .dot{width:7px;height:7px;border-radius:50%}
+.tab .cnt{font-family:var(--mono);font-size:var(--fs-label);color:var(--dim)}
+.tab.on{color:var(--tx);background:var(--s2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;padding-bottom:72px}
+
+.card{position:relative;background:var(--s1);border:0.5px solid var(--line);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .22s cubic-bezier(.2,0,0,1),border-color .22s,box-shadow .22s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-4px);border-color:var(--ca);box-shadow:0 24px 60px -36px var(--ca)}
+.card-imgwrap{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--s2)}
+.card-imgwrap img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,0,0,1)}
+.card:hover .card-imgwrap img{transform:scale(1.04)}
+.card-imgwrap::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(14,16,20,0.55))}
+.card-body{padding:20px 22px 22px;display:flex;flex-direction:column;flex:1}
+.card .row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.card .ix{font-family:var(--mono);font-size:var(--fs-label);color:var(--dim)}
+.card .lane{font-family:var(--mono);font-size:var(--fs-label-sm);letter-spacing:.06em;text-transform:uppercase;color:var(--ca)}
+.card h3{font-size:var(--fs-h3);margin-bottom:9px}
+.card p{color:var(--mut);font-size:var(--fs-body-sm);line-height:var(--lh-dense);flex:1}
+.tagrow{display:flex;flex-wrap:wrap;gap:6px;margin:15px 0 16px}
+.tg{font-family:var(--mono);font-size:var(--fs-label);font-weight:600;letter-spacing:.01em;color:var(--mut);background:var(--s3);border:0.5px solid var(--line);padding:5px 11px;border-radius:8px}
+/* colour is set inline per chip in StackRow — bold text on a tint of its category hue. */
+.cfoot{display:flex;align-items:center;justify-content:space-between;border-top:0.5px solid var(--line);padding-top:15px}
+.status{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:var(--fs-label-sm);color:var(--mut)}
+.status .d{width:7px;height:7px;border-radius:50%}
+.golive{display:inline-flex;align-items:center;gap:6px;font-size:var(--fs-ui);font-weight:500;color:var(--ca)}
+.card .arr{transition:transform .2s}
+.card:hover .arr{transform:translateX(3px)}
+
+/* case study */
+.back{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:13px;color:var(--mut);cursor:pointer;margin:34px 0 22px}
+.back:hover{color:var(--tx)}
+.cs-banner{aspect-ratio:21/8;border-radius:18px;overflow:hidden;border:0.5px solid var(--line2);position:relative;margin-bottom:26px}
+.cs-banner img{width:100%;height:100%;object-fit:cover}
+.cs-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,11,0.1),rgba(8,9,11,0.75))}
+.cs-hero h1{font-size:var(--fs-display-lg);margin:12px 0 0}
+.cs-hero .one{color:var(--mut);font-size:var(--fs-lede);margin-top:14px;max-width:62ch}
+.cs-cta{display:flex;gap:11px;margin-top:22px;flex-wrap:wrap;align-items:center}
+.offline{font-family:var(--mono);font-size:var(--fs-label-sm);letter-spacing:.06em;text-transform:uppercase;color:var(--amber);border:0.5px solid rgba(230,180,91,0.4);background:rgba(230,180,91,0.1);padding:5px 10px;border-radius:20px}
+
+.cs-body{display:flex;flex-direction:column;gap:22px;margin-top:36px}
+.panel{background:var(--s1);border:0.5px solid var(--line);border-radius:16px;padding:26px}
+.panel>.kk{font-family:var(--disp);font-weight:600;font-size:var(--fs-display-sm);letter-spacing:-0.02em;color:var(--tx);margin-bottom:18px}
+.panel h3{font-size:var(--fs-h3);margin-bottom:12px}
+.expl p{color:var(--mut);font-size:var(--fs-body);line-height:var(--lh-read);margin-bottom:0;max-width:var(--measure)}
+.applies{margin-top:18px;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.applies .lbl{font-family:var(--mono);font-size:var(--fs-label-sm);text-transform:uppercase;letter-spacing:.06em;color:var(--dim);margin-right:4px}
+.chip{font-family:var(--mono);font-size:var(--fs-label-sm);color:var(--mut);background:var(--s3);border:0.5px solid var(--line);padding:5px 10px;border-radius:20px}
+.ov-block{margin-bottom:20px}
+.ov-block:last-child{margin-bottom:0}
+.ov-label{font-family:var(--mono);font-size:var(--fs-label);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--oc,var(--acc));margin-bottom:8px}
+.ov-block>p{color:var(--mut);font-size:var(--fs-body);line-height:var(--lh-read);margin:0}
+.ov-block>p+p{margin-top:12px}
+.ov-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin:0;padding:0}
+.ov-list li{position:relative;padding-left:18px;color:var(--mut);font-size:var(--fs-body);line-height:var(--lh-read)}
+.ov-list li::before{content:"";position:absolute;left:1px;top:8px;width:5px;height:5px;border-radius:50%;background:var(--oc,var(--acc))}
+.ov .applies{margin-top:22px}
+/* (White "paper" case-study panels were removed — every project's case page is dark again.
+   The AuditAgent live-demo's white contract viewer is separate, in app/auditagent/demo.module.css.) */
+
+.figure{margin-top:6px}
+.figure img{width:100%;height:auto;border-radius:12px;border:0.5px solid var(--line2);background:var(--diag)}
+.figcap{font-family:var(--mono);font-size:var(--fs-label);color:var(--dim);margin-top:10px;line-height:1.5}
+
+.stack-row{display:flex;flex-wrap:wrap;gap:7px}
+
+.demo-blurb{color:var(--mut);font-size:var(--fs-body-sm);line-height:var(--lh-read);margin:0 0 18px}
+.demo-embed{aspect-ratio:16/9;border-radius:12px;background:linear-gradient(165deg,#15191F,#0B0E12);border:0.5px solid var(--line2);display:grid;place-items:center;color:var(--mut);font-family:var(--mono);font-size:var(--fs-ui);text-align:center;padding:0 24px}
+.lvp{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:0.5px solid var(--line);border-radius:12px;overflow:hidden;margin-top:4px}
+.lvp>div{background:var(--s1);padding:18px 20px}
+.lvp .h{font-family:var(--mono);font-size:var(--fs-label);letter-spacing:.08em;text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.lvp .h .d{width:7px;height:7px;border-radius:50%}
+.lvp p{color:var(--mut);font-size:var(--fs-body-sm);line-height:var(--lh-dense)}
+
+.pills{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pill{background:var(--bg);border:0.5px solid var(--line);border-radius:13px;padding:18px 20px}
+.pill .pt{display:flex;align-items:center;gap:9px;font-family:var(--disp);font-weight:600;font-size:var(--fs-body);margin-bottom:7px}
+.pill .pt .sq{width:9px;height:9px;border-radius:3px;flex:none}
+.pill p{color:var(--mut);font-size:var(--fs-body-sm);line-height:var(--lh-dense)}
+.pill.caveat{border-color:rgba(230,180,91,0.32)}
+.pill.caveat .pt .sq{background:var(--amber)}
+
+table.ml{width:100%;border-collapse:collapse;font-size:var(--fs-body-sm);margin-top:4px}
+table.ml th,table.ml td{text-align:left;padding:11px 14px;border-bottom:0.5px solid var(--line)}
+table.ml th{font-family:var(--mono);font-size:var(--fs-label-sm);text-transform:uppercase;letter-spacing:.06em;color:var(--dim);font-weight:400}
+table.ml td{color:var(--mut)}
+table.ml td.big{font-family:var(--disp);font-weight:600;color:var(--acc);font-size:var(--fs-body)}
+table.ml tr:last-child td{border-bottom:none}
+
+.note{font-family:var(--mono);font-size:var(--fs-label);color:var(--dim);line-height:1.6;margin-top:14px;border-left:2px solid var(--line2);padding-left:14px}
+.toolctx{color:var(--mut);font-size:var(--fs-body);line-height:var(--lh-read);max-width:var(--measure)}
+.result-lead{font-size:var(--fs-lede);line-height:var(--lh-read);color:var(--tx);margin:0;max-width:var(--measure)}
+.certgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;padding-bottom:72px}
+.cert{background:var(--s1);border:0.5px solid var(--line);border-radius:16px;overflow:hidden;transition:transform .22s cubic-bezier(.2,0,0,1),border-color .22s,box-shadow .22s}
+.cert:hover{transform:translateY(-4px);border-color:var(--line2);box-shadow:0 24px 60px -36px rgba(91,156,255,0.4)}
+.cert-img{aspect-ratio:4/3;background:var(--s2);display:grid;place-items:center;color:var(--dim);font-family:var(--mono);font-size:var(--fs-label);border-bottom:0.5px solid var(--line)}
+.cert-img img{width:100%;height:100%;object-fit:cover}
+.cert-body{padding:16px 18px}
+.cert-body b{font-family:var(--disp);font-weight:600;font-size:var(--fs-body);display:block}
+.cert-body span{color:var(--mut);font-size:var(--fs-body-sm);display:block;margin-top:4px}
+code{font-family:var(--mono);font-size:.86em;background:var(--s3);border:0.5px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--tx)}
+
+@media(max-width:820px){
+  .pills,.lvp{grid-template-columns:1fr 1fr}
+  .hero h1{font-size:36px}.cs-hero h1{font-size:30px}.cs-banner{aspect-ratio:16/9}
+  .about-grid{grid-template-columns:1fr;gap:28px}
+}
+@media(max-width:600px){
+  .nav-in{padding:12px 18px;gap:8px}
+  .brand span:not(.mk){display:none}
+  .links{gap:0}
+  .links a,.dd>button{padding:7px 9px;font-size:13px}
+  .wrap{padding:0 18px}
+  .hero h1{font-size:32px}
+  /* LinkedIn/GitHub also live in the footer + contact; drop them from the nav on
+     small screens so Home/Projects/Résumé fit without clipping. */
+  .nav-social{display:none}
+  /* Right-anchor dropdowns so they open leftward and stay on-screen. */
+  .menu{left:auto;right:0;transform-origin:top right}
+  .dd.open .menu{transform:none}
+}
+@media(max-width:520px){.pills,.lvp{grid-template-columns:1fr}}
+
+/* Case-study pages: no grey body copy — all text reads white. Redefining the muted
+   token on the case-page root recolors every descendant that uses var(--dim),
+   including the live-demo widgets' inline styles, without affecting home/nav/footer.
+   Accent/semantic colours (green/amber/accent badges, eyebrows) are untouched. */
+.case-page{--dim:var(--tx)}
+
+/* ── Lane-coloured ambient glow around the case-study boxes ──────────────────
+   blue = agentic · aqua = agents · gold = machine-learning (via --btn-acc, scoped
+   per lane on .case-page). A soft downward pool + faint halo, like light behind glass. */
+.case-page .panel{box-shadow:0 30px 80px -38px color-mix(in srgb, var(--btn-acc, var(--acc)) 70%, transparent), 0 0 46px -10px color-mix(in srgb, var(--btn-acc, var(--acc)) 44%, transparent)}
+.case-page .cs-banner{box-shadow:0 34px 88px -46px color-mix(in srgb, var(--btn-acc, var(--acc)) 60%, transparent), 0 0 44px -12px color-mix(in srgb, var(--btn-acc, var(--acc)) 38%, transparent)}
+
+/* ── Clickable affordance: everything interactive lifts + glows on hover ─────
+   Mirrors the project cards (translateY + a colour-matched glow). Colour follows
+   --btn-acc (lane accent on case pages) or --acc elsewhere. Motion off under
+   prefers-reduced-motion; the colour stays. */
+.btn:hover{box-shadow:0 12px 28px -14px color-mix(in srgb, var(--btn-acc, var(--acc)) 55%, transparent)}
+.btn.pri:hover{box-shadow:0 14px 32px -12px color-mix(in srgb, var(--btn-acc, var(--acc)) 70%, transparent)}
+.tab:hover{transform:translateY(-2px);border-color:color-mix(in srgb, var(--acc) 55%, transparent);box-shadow:0 12px 28px -16px color-mix(in srgb, var(--acc) 50%, transparent)}
+.ct:hover{transform:translateY(-3px);border-color:color-mix(in srgb, var(--acc) 50%, transparent);box-shadow:0 16px 38px -20px color-mix(in srgb, var(--acc) 50%, transparent)}
+.golive{transition:transform .18s cubic-bezier(.2,0,0,1),filter .18s,text-shadow .18s}
+.golive .arr{transition:transform .2s cubic-bezier(.2,0,0,1)}
+.golive:hover{transform:translateY(-1px);filter:brightness(1.12);text-shadow:0 0 20px color-mix(in srgb, var(--ca, var(--btn-acc, var(--acc))) 60%, transparent)}
+.golive:hover .arr{transform:translateX(3px)}
+.links a:hover,.dd>button:hover{transform:translateY(-1px)}
+.back .icn{transition:transform .18s cubic-bezier(.2,0,0,1)}
+.back:hover .icn{transform:translateX(-3px)}
+.menu a{transition:background .14s,color .14s,transform .14s}
+.menu a:hover{transform:translateX(2px)}
+.brand{transition:filter .16s}
+.brand:hover{filter:brightness(1.12)}
+@media(prefers-reduced-motion:reduce){
+  .card:hover,.cert:hover,.btn:hover,.btn.pri:hover,.tab:hover,.ct:hover,.golive:hover,.golive:hover .arr,.links a:hover,.dd>button:hover,.menu a:hover,.back:hover .icn{transform:none!important}
 }
 
-/* On-mount entrance for above-the-fold content (no JS, no flash). */
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.animate-rise {
-  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
+/* ── Lane-coloured separator lines (outside AND inside) ─────────────────────
+   On a case-study page EVERY separator takes the lane hue (blue = agentic ·
+   aqua = agents · gold = machine-learning) instead of neutral grey: section
+   rules, card/panel borders, table rows, grid gaps, AND every inline
+   border:…var(--line) in the live-demo components.
 
-/* Sequential "flow" pulse for the agent pipeline cards. */
-@keyframes flowPulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-    border-color: #26262b;
-  }
-  50% {
-    box-shadow: 0 0 20px -2px rgba(16, 185, 129, 0.18);
-    border-color: rgba(16, 185, 129, 0.45);
-  }
+   The trick: retint the base --line / --line2 tokens on the .case-page root
+   rather than listing selectors. Inline styles like style="border:0.5px solid
+   var(--line)" resolve var(--line) against the element's INHERITED custom
+   properties, so overriding the tokens here cascades to everything inside —
+   CSS classes, Tailwind's border-line, and inline styles alike. Nav / footer /
+   home / projects sit outside .case-page and keep the neutral :root tokens.
+   --line-lane-grid runs a touch stronger for the 1px metric-grid gaps. */
+.case-page{
+  --line:color-mix(in srgb, var(--btn-acc, var(--acc)) 24%, transparent);
+  --line2:color-mix(in srgb, var(--btn-acc, var(--acc)) 40%, transparent);
+  --line-lane-grid:color-mix(in srgb, var(--btn-acc, var(--acc)) 34%, transparent);
 }
+.case-page .proof{background:var(--line-lane-grid);border-color:var(--line-lane-grid)}
+.case-page .lvp{background:var(--line-lane-grid);border-color:var(--line-lane-grid)}
 
-@keyframes flowArrow {
-  0%,
-  100% {
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 1;
-  }
-}
+/* ── Lane-coloured backdrop grid ─────────────────────────────────────────────
+   The fixed background grid + ambient glow live on <body> (an ancestor of the
+   page), so no variable set on .case-page can reach them — inheritance only flows
+   downward. body:has() lets the body react to which lane's case page is mounted
+   (data-lane on .case-page) and recolour the grid lines + glow to that lane.
+   Home / projects / certifications keep the neutral default above. */
+body:has(.case-page[data-lane="agentic"]){--glow:color-mix(in srgb,var(--acc) 15%,transparent);--grid-ln:color-mix(in srgb,var(--acc) 11%,transparent)}
+body:has(.case-page[data-lane="automation"]){--glow:color-mix(in srgb,var(--cyan) 15%,transparent);--grid-ln:color-mix(in srgb,var(--cyan) 11%,transparent)}
+/* ml lane (GridLoadForecaster) shelved 2 Jul 2026 — restore its data-lane="ml" rule to bring back the amber backdrop. */
 
-@media (prefers-reduced-motion: reduce) {
-  .animate-rise,
-  .flow-card,
-  .flow-arrow {
-    animation: none !important;
-  }
-}
+/* ── Margo starter-question chips ────────────────────────────────────────────
+   Base styling lives here (not inline) so :hover can actually fire — inline styles
+   would win over a hover rule. On hover they light up in the lane colour (--btn-acc,
+   aqua on Margo) with a lift + soft glow, like every other clickable on the site. */
+.qchip{background:var(--s1);border:0.5px solid var(--line);border-radius:20px;padding:8px 14px;font-size:12px;font-family:inherit;color:var(--tx);cursor:pointer;transition:transform .16s cubic-bezier(.2,0,0,1),border-color .16s,color .16s,background .16s,box-shadow .16s}
+.qchip:hover:not(:disabled){transform:translateY(-1px);color:var(--btn-acc,var(--acc));border-color:color-mix(in srgb,var(--btn-acc,var(--acc)) 60%,transparent);background:color-mix(in srgb,var(--btn-acc,var(--acc)) 8%,var(--s1));box-shadow:0 10px 26px -16px color-mix(in srgb,var(--btn-acc,var(--acc)) 60%,transparent),0 0 16px -8px color-mix(in srgb,var(--btn-acc,var(--acc)) 45%,transparent)}
+@media(prefers-reduced-motion:reduce){.qchip:hover:not(:disabled){transform:none}}

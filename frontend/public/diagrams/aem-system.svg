@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 850" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/>
+    </marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="900" height="850" fill="#0d1117"/>
+
+  <!-- ===== edges ===== -->
+  <g stroke="#8b949e" stroke-width="1.5" fill="none">
+    <line x1="450" y1="126" x2="450" y2="172" marker-end="url(#arrow)"/>
+    <line x1="450" y1="262" x2="450" y2="308" marker-end="url(#arrow)"/>
+    <line x1="450" y1="398" x2="450" y2="444" marker-end="url(#arrow)"/>
+    <line x1="450" y1="534" x2="450" y2="580" marker-end="url(#arrow)"/>
+    <line x1="450" y1="670" x2="450" y2="716" marker-end="url(#arrow)"/>
+  </g>
+  <g font-size="12.5" fill="#8b949e" text-anchor="middle">
+    <text x="450" y="153">HTTPS &#183; one click</text>
+    <text x="450" y="289">starts the run &#8212; streamed back as SSE</text>
+    <text x="450" y="425">agents call typed tools</text>
+    <text x="450" y="561">simulate the physics + read AU data</text>
+    <text x="450" y="697">checkpoint run state &#183; ship traces</text>
+  </g>
+
+  <!-- ===== nodes ===== -->
+  <!-- 1 · browser -->
+  <rect x="140" y="36" width="620" height="90" rx="14" fill="#13283f" stroke="#4c8dff" stroke-width="2"/>
+  <text x="450" y="74" text-anchor="middle" font-size="17" font-weight="600" fill="#dce9ff">&#128421;&#65039; Browser &#8212; the demoer</text>
+  <text x="450" y="100" text-anchor="middle" font-size="13" font-style="italic" fill="#dce9ff" opacity="0.82">Vercel &#183; Next.js 15 &#8212; one click runs it live, streamed as an agent trace</text>
+
+  <!-- 2 · FastAPI -->
+  <rect x="140" y="172" width="620" height="90" rx="14" fill="#241a3d" stroke="#a371f7" stroke-width="2"/>
+  <text x="450" y="210" text-anchor="middle" font-size="17" font-weight="600" fill="#ecdfff">&#9889; FastAPI agent service</text>
+  <text x="450" y="236" text-anchor="middle" font-size="13" font-style="italic" fill="#ecdfff" opacity="0.85">Caddy TLS &#183; REST + SSE &#183; per-IP rate-limit + daily token-budget gate</text>
+
+  <!-- 3 · LangGraph supervisor -->
+  <rect x="140" y="308" width="620" height="90" rx="14" fill="#3a2412" stroke="#f0883e" stroke-width="2"/>
+  <text x="450" y="346" text-anchor="middle" font-size="17" font-weight="600" fill="#ffd9b3">&#129504; LangGraph supervisor &#8212; 5 agents</text>
+  <text x="450" y="372" text-anchor="middle" font-size="13" font-style="italic" fill="#ffd9b3" opacity="0.9">Retriever &#8594; Modeler &#8594; Sim Runner &#8594; Analyzer &#8594; Reviewer</text>
+
+  <!-- 4 · FastMCP tools -->
+  <rect x="140" y="444" width="620" height="90" rx="14" fill="#0f2b2a" stroke="#2dd4bf" stroke-width="2"/>
+  <text x="450" y="482" text-anchor="middle" font-size="17" font-weight="600" fill="#ccfbf1">&#128295; FastMCP tool layer &#8212; 24 typed tools</text>
+  <text x="450" y="508" text-anchor="middle" font-size="13" font-style="italic" fill="#ccfbf1" opacity="0.85">IDF &#183; simulation &#183; results &#183; reference &#183; analysis (typed Pydantic I/O)</text>
+
+  <!-- 5 · EnergyPlus + AU data -->
+  <rect x="140" y="580" width="620" height="90" rx="14" fill="#13301d" stroke="#3fb950" stroke-width="2"/>
+  <text x="450" y="618" text-anchor="middle" font-size="17" font-weight="600" fill="#caf0d2">&#9881;&#65039; EnergyPlus 24.2 + AU grounding data</text>
+  <text x="450" y="644" text-anchor="middle" font-size="13" font-style="italic" fill="#caf0d2" opacity="0.85">real physics &#183; NCC Section J &#183; NGA 2025 factors &#183; CBD / NABERS cohort</text>
+
+  <!-- 6 · storage / traces -->
+  <rect x="140" y="716" width="620" height="90" rx="14" fill="#332813" stroke="#d6a01f" stroke-width="2"/>
+  <text x="450" y="754" text-anchor="middle" font-size="17" font-weight="600" fill="#f3e3b0">&#128451;&#65039; Run store &#183; Langfuse traces</text>
+  <text x="450" y="780" text-anchor="middle" font-size="13" font-style="italic" fill="#f3e3b0" opacity="0.85">graph checkpoints (in-memory) &#183; per-agent spans &#8594; Langfuse Cloud &#183; Hetzner VPS &#183; Docker</text>
+</svg>

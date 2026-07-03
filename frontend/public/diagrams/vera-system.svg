@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1168" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/>
+    </marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" width="900" height="1168" fill="#0d1117"/>
+
+  <!-- ===== edges (drawn first, under the nodes) ===== -->
+  <g stroke="#8b949e" stroke-width="1.5" fill="none">
+    <line x1="450" y1="132" x2="450" y2="176" marker-end="url(#arrow)"/>
+    <line x1="450" y1="270" x2="450" y2="314" marker-end="url(#arrow)"/>
+    <line x1="450" y1="420" x2="450" y2="464" marker-end="url(#arrow)"/>
+    <line x1="450" y1="558" x2="450" y2="602" marker-end="url(#arrow)"/>
+    <line x1="450" y1="696" x2="450" y2="740" marker-end="url(#arrow)"/>
+    <line x1="450" y1="834" x2="450" y2="878" marker-end="url(#arrow)"/>
+    <line x1="450" y1="984" x2="450" y2="1036" stroke-dasharray="5 5" marker-end="url(#arrow)"/>
+  </g>
+  <g font-size="12.5" fill="#8b949e" text-anchor="middle">
+    <text x="450" y="158">supplier bills (PDF / PNG / JPG)</text>
+    <text x="450" y="296">clean files</text>
+    <text x="450" y="446">fields + line items</text>
+    <text x="450" y="584">checked vs 6-month history</text>
+    <text x="450" y="722">findings + $ impact</text>
+    <text x="450" y="860">decision</text>
+    <text x="450" y="1016">all hosted on</text>
+  </g>
+
+  <!-- ===== nodes ===== -->
+  <!-- A · input -->
+  <rect x="140" y="40" width="620" height="92" rx="14" fill="#13283f" stroke="#4c8dff" stroke-width="2"/>
+  <text x="450" y="76" text-anchor="middle" font-size="17" font-weight="600" fill="#dce9ff">👤 Owner uploads the month&apos;s supplier bills</text>
+  <text x="450" y="102" text-anchor="middle" font-size="13" font-style="italic" fill="#dce9ff" opacity="0.78">Next.js site on Vercel</text>
+
+  <!-- B · tools / guardrail -->
+  <rect x="140" y="178" width="620" height="92" rx="14" fill="#13301d" stroke="#3fb950" stroke-width="2"/>
+  <text x="450" y="214" text-anchor="middle" font-size="17" font-weight="600" fill="#caf0d2">🛡️ Security guard</text>
+  <text x="450" y="240" text-anchor="middle" font-size="13" font-style="italic" fill="#caf0d2" opacity="0.85">file type &amp; size check · prompt-injection screen</text>
+
+  <!-- C · brain · read + extract -->
+  <rect x="140" y="316" width="620" height="104" rx="14" fill="#241a3d" stroke="#a371f7" stroke-width="2"/>
+  <text x="450" y="352" text-anchor="middle" font-size="17" font-weight="600" fill="#ecdfff">👁️ VERA reads &amp; extracts every bill</text>
+  <text x="450" y="378" text-anchor="middle" font-size="13" font-style="italic" fill="#ecdfff" opacity="0.85">pdfplumber → RapidOCR OCR (CPU)</text>
+  <text x="450" y="398" text-anchor="middle" font-size="13" font-style="italic" fill="#ecdfff" opacity="0.85">DeepSeek — 6 header fields + line items</text>
+
+  <!-- D · brain · memory (the moat) -->
+  <rect x="140" y="466" width="620" height="92" rx="14" fill="#241a3d" stroke="#a371f7" stroke-width="2"/>
+  <text x="450" y="502" text-anchor="middle" font-size="17" font-weight="600" fill="#ecdfff">🧠 Six months of memory, per supplier</text>
+  <text x="450" y="528" text-anchor="middle" font-size="13" font-style="italic" fill="#ecdfff" opacity="0.85">item normalisation · per-supplier price history — the moat</text>
+
+  <!-- E · decision · the catch -->
+  <rect x="140" y="604" width="620" height="92" rx="14" fill="#3a2412" stroke="#f0883e" stroke-width="2"/>
+  <text x="450" y="640" text-anchor="middle" font-size="17" font-weight="600" fill="#ffd9b3">🔍 Catches the leak before the owner pays</text>
+  <text x="450" y="666" text-anchor="middle" font-size="13" font-style="italic" fill="#ffd9b3" opacity="0.9">price-creep · quote-mismatch · duplicate</text>
+
+  <!-- F · decision · gate -->
+  <rect x="140" y="742" width="620" height="92" rx="14" fill="#3a2412" stroke="#f0883e" stroke-width="2"/>
+  <text x="450" y="778" text-anchor="middle" font-size="17" font-weight="600" fill="#ffd9b3">✅ Validation &amp; confidence gate</text>
+  <text x="450" y="804" text-anchor="middle" font-size="13" font-style="italic" fill="#ffd9b3" opacity="0.9">maths · date · grounding → approve or escalate</text>
+
+  <!-- G · output -->
+  <rect x="140" y="878" width="620" height="106" rx="14" fill="#0f3733" stroke="#2dd4bf" stroke-width="2"/>
+  <text x="450" y="914" text-anchor="middle" font-size="17" font-weight="600" fill="#b6f0e8">📤 Approved bills cleared to pay · exceptions flagged</text>
+  <text x="450" y="940" text-anchor="middle" font-size="13" font-style="italic" fill="#b6f0e8" opacity="0.85">told in dollars &amp; hours, never &quot;F1&quot;</text>
+  <text x="450" y="960" text-anchor="middle" font-size="13" font-style="italic" fill="#b6f0e8" opacity="0.85">duplicate-payment &amp; prompt-injection escalated to a human</text>
+
+  <!-- VPS · infra -->
+  <rect x="140" y="1036" width="620" height="84" rx="14" fill="#332813" stroke="#d6a01f" stroke-width="2"/>
+  <text x="450" y="1070" text-anchor="middle" font-size="17" font-weight="600" fill="#f3e3b0">🖥️ Runs on one VPS</text>
+  <text x="450" y="1096" text-anchor="middle" font-size="13" font-style="italic" fill="#f3e3b0" opacity="0.85">Hetzner CX43 (CPU-only) · Docker · Caddy TLS</text>
+</svg>

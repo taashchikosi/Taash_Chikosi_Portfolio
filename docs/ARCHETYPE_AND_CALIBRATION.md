@@ -1,24 +1,67 @@
 # 🏢 Building Archetype & Calibration — what model we use, why, and how we'd calibrate for real
 
-> **TL;DR** — RetrofitGPT's demo runs on the **DOE Commercial Reference Small
-> Office** prototype, re-located to Sydney. It is a *representative archetype*,
-> not a model of any specific building. Our calibration gate (ASHRAE Guideline 14)
-> therefore can't pass on real metered bills until the model is **tuned to a
-> specific building**. The `--calibrate-demo` flag produces a green run by
-> synthesising bills from the baseline sim — a **pipeline proof, not a real
-> calibration**. This doc explains the decision and the real tuning workflow.
+> **TL;DR** — the demo opens with a **Step-1 selector**: pick a **building**
+> (Medium or Large Office) and the **city** it runs against (Perth · Sydney ·
+> Melbourne · Brisbane). Each is a DOE Commercial Reference **office** prototype,
+> re-pointed to that city's weather (which fixes its NCC climate zone and grid
+> carbon factor) and benchmarked against that city's **real CBD whole-building
+> office cohort**. They're *representative archetypes*, not models of a specific
+> building — so the calibration gate (ASHRAE Guideline 14) still can't pass on real
+> metered bills until the model is **tuned to a specific building**. The
+> `--calibrate-demo` flag produces a green run by synthesising bills from the
+> baseline sim — a **pipeline proof, not a real calibration**.
+>
+> **Why offices only:** the CBD register that gives our baseline its credibility is
+> office-only (mandatory NABERS disclosure, ≥1,000 m²). Non-office types have
+> geometry + weather but **no per-city disclosed cohort** to benchmark against —
+> see §1.5. The DOE **Small Office** (Sydney) remains our reproducible *validation*
+> archetype (NMBE +0.02% / CV-RMSE 5.07% vs the reference run).
 
 ---
 
-## 1. 🧩 The model we use
+## 1. 🧩 The models we use
 
 | | |
 |---|---|
-| **Archetype** | DOE Commercial Prototype — **Small Office** (`RefBldgSmallOffice.idf`) |
-| **Floor area** | ~511 m² (single storey, 5 thermal zones + plenum) |
+| **Archetypes** | DOE Commercial Prototypes — **Medium Office** (`RefBldgMediumOffice.idf`, ~4,982 m², 3 storeys) and **Large Office** (`RefBldgLargeOffice.idf`, ~46,320 m², 12 storeys) |
 | **Source** | US DOE / PNNL commercial reference building set (public, EnergyPlus-native) |
-| **Climate** | Re-pointed to **Sydney** via `AUS_NSW_Sydney.epw`; NCC climate zone 5 |
-| **Baseline result** | EUI **133.1 kWh/m²·yr** (~68,003 kWh/yr) from a real EnergyPlus run |
+| **Climate** | Re-pointed per selected city via `AUS_<STATE>_<City>.epw`; the EPW fixes the NCC zone + grid factor (Perth 5 · Sydney 5 · Melbourne 6 · Brisbane 2) |
+| **Benchmark** | Each baseline is compared to that city's **real CBD whole-building office cohort** (`scripts/build_cbd_cohorts.py` → `data/benchmarks/cbd_office_cohorts.json`) |
+| **Validation archetype** | DOE **Small Office** (Sydney) — reproducible reference run, EUI **133.1 kWh/m²·yr**, NMBE +0.02% / CV-RMSE 5.07% |
+
+> Single source of truth for the selector + paths: `data/reference_buildings/catalog.json`
+> (backend) and `frontend/lib/energy-modeller-catalog.ts` (UI mirror).
+
+---
+
+## 1.5 🗺️ Selectable buildings & cities — the locked scope (and why)
+
+**Locked:** Medium Office + Large Office × {Perth, Sydney, Melbourne, Brisbane}.
+
+The three data layers and what's gettable:
+
+| Layer | Source | Coverage |
+|---|---|---|
+| Geometry | DOE prototypes | ✅ small/medium/large office (+16 types exist) |
+| Weather (EPW) | climate.onebuilding.org TMYx | ✅ all four cities |
+| **Real AU benchmark** | CBD / NABERS register | ⚠️ **offices ≥1,000 m² only** |
+
+- **Medium + Large Office** clear all three layers in every city → shipped.
+- **Small Office** has geometry + weather but is **below** the 1,000 m² mandatory-
+  disclosure threshold, so it has **no CBD cohort** → kept only as the validation
+  archetype, never sold as benchmarked.
+- **Non-office types** (retail, hotel, hospital, school, warehouse, apartments)
+  have geometry + weather but **no per-city disclosed cohort** — CBD expansion to
+  these types is a 2026 *roadmap/consultation*, not live. Adding them would force
+  us to drop from a real per-city cohort to a national sector-average line
+  (DCCEEW Commercial Buildings Baseline Study 2022), which breaks the headline
+  "benchmarked against real disclosed buildings" claim. Deliberately excluded.
+
+> 🔑 **Interview line:** *"The sharp axis is the city, not the building type. The
+> same office re-baselines against Perth, Sydney, Melbourne or Brisbane — different
+> climate zone, different grid carbon factor, different real disclosed-office
+> cohort. I left non-office types out because there's no honest per-city benchmark
+> for them yet."*
 
 ---
 

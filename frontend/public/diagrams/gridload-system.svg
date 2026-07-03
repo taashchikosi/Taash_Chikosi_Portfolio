@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 778" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="778" fill="#0d1117"/>
+
+  <!-- ===== edges ===== -->
+  <g stroke="#8b949e" stroke-width="1.5" fill="none">
+    <line x1="450" y1="130" x2="450" y2="182" marker-end="url(#arrow)"/>
+    <line x1="450" y1="302" x2="290" y2="356" marker-end="url(#arrow)"/>
+    <line x1="450" y1="302" x2="610" y2="356" marker-end="url(#arrow)"/>
+    <line x1="290" y1="448" x2="450" y2="506" marker-end="url(#arrow)"/>
+    <line x1="610" y1="448" x2="450" y2="506" marker-end="url(#arrow)"/>
+    <line x1="450" y1="614" x2="450" y2="660" marker-end="url(#arrow)"/>
+  </g>
+  <g font-size="12.5" fill="#8b949e" text-anchor="middle">
+    <text x="450" y="162">question &#183; page load &#183; daily 06:00 trigger</text>
+    <text x="226" y="332">region + date range</text>
+    <text x="676" y="332">lat / lon + dates</text>
+    <text x="450" y="486">as-of-safe features &#8594; model &#8594; forecast JSON</text>
+    <text x="450" y="644">served forecast + plain-English explanation</text>
+  </g>
+
+  <!-- ===== nodes ===== -->
+  <!-- input -->
+  <rect x="140" y="42" width="620" height="88" rx="14" fill="#13283f" stroke="#4c8dff" stroke-width="2"/>
+  <text x="450" y="80" text-anchor="middle" font-size="17" font-weight="600" fill="#dce9ff">&#128100; Operator / recruiter on the demo</text>
+  <text x="450" y="106" text-anchor="middle" font-size="13" font-style="italic" fill="#dce9ff" opacity="0.82">a question, a page load, or the daily 06:00 scheduler</text>
+
+  <!-- brain / forecast service -->
+  <rect x="140" y="182" width="620" height="120" rx="14" fill="#241a3d" stroke="#a371f7" stroke-width="2"/>
+  <text x="450" y="214" text-anchor="middle" font-size="17" font-weight="600" fill="#ecdfff">&#9889; Forecast service &#8212; FastAPI</text>
+  <text x="450" y="240" text-anchor="middle" font-size="13" font-style="italic" fill="#ecdfff" opacity="0.85">LightGBM quantile model &#183; decomposition (operational = underlying &#8722; rooftop PV)</text>
+  <text x="450" y="262" text-anchor="middle" font-size="13" font-style="italic" fill="#ecdfff" opacity="0.85">+ thin NL skin &#8212; every number comes from the model</text>
+  <text x="450" y="284" text-anchor="middle" font-size="12.5" font-style="italic" fill="#a371f7">the ML forecasts &#183; the LLM only explains</text>
+
+  <!-- two data APIs, side by side -->
+  <rect x="140" y="356" width="296" height="92" rx="14" fill="#13301d" stroke="#3fb950" stroke-width="2"/>
+  <text x="288" y="392" text-anchor="middle" font-size="16" font-weight="600" fill="#caf0d2">&#128225; AEMO NEMWEB</text>
+  <text x="288" y="416" text-anchor="middle" font-size="12.5" font-style="italic" fill="#caf0d2" opacity="0.85">demand &#183; rooftop PV &#183; POE50 forecast</text>
+
+  <rect x="464" y="356" width="296" height="92" rx="14" fill="#13301d" stroke="#3fb950" stroke-width="2"/>
+  <text x="612" y="392" text-anchor="middle" font-size="16" font-weight="600" fill="#caf0d2">&#127780;&#65039; Open-Meteo</text>
+  <text x="612" y="416" text-anchor="middle" font-size="12.5" font-style="italic" fill="#caf0d2" opacity="0.85">ERA5 actual &#183; ECMWF forecast weather</text>
+
+  <!-- infra / cache -->
+  <rect x="140" y="506" width="620" height="108" rx="14" fill="#332813" stroke="#d6a01f" stroke-width="2"/>
+  <text x="450" y="540" text-anchor="middle" font-size="17" font-weight="600" fill="#f3e3b0">&#128450;&#65039; Parquet cache + forecast JSON</text>
+  <text x="450" y="566" text-anchor="middle" font-size="13" font-style="italic" fill="#f3e3b0" opacity="0.85">as-of leakage guards &#8212; only data available at forecast time</text>
+  <text x="450" y="588" text-anchor="middle" font-size="13" font-style="italic" fill="#f3e3b0" opacity="0.85">Docker &#183; VPS :8003 &#183; Caddy TLS &#183; Vercel</text>
+
+  <!-- output -->
+  <rect x="140" y="660" width="620" height="88" rx="14" fill="#0f2b2a" stroke="#2dd4bf" stroke-width="2"/>
+  <text x="450" y="698" text-anchor="middle" font-size="17" font-weight="600" fill="#ccfbf1">&#128202; Forecast delivered &#8212; P10 / P50 / P90</text>
+  <text x="450" y="724" text-anchor="middle" font-size="13" font-style="italic" fill="#ccfbf1" opacity="0.85">conformal interval + a plain-English explanation</text>
+</svg>
