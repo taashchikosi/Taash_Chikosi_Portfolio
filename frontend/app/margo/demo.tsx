@@ -353,8 +353,8 @@ function DigestCardRow({ card, apiBase, acc }: { card: DigestCard; apiBase: stri
         type="button"
         onClick={toggle}
         aria-expanded={open}
+        className="digest-row"
         style={{
-          display: "flex",
           alignItems: "center",
           gap: 14,
           width: "100%",
@@ -367,8 +367,8 @@ function DigestCardRow({ card, apiBase, acc }: { card: DigestCard; apiBase: stri
           font: "inherit",
         }}
       >
-        <span style={{ fontSize: 21, flexShrink: 0 }}>{CARD_ICON[card.key] ?? "📊"}</span>
-        <span style={{ flex: 1, minWidth: 0 }}>
+        <span className="digest-icon" style={{ fontSize: 21, flexShrink: 0 }}>{CARD_ICON[card.key] ?? "📊"}</span>
+        <span className="digest-mid" style={{ flex: 1, minWidth: 0 }}>
           <span style={{ display: "block", fontSize: 14, fontWeight: 700, color: "var(--tx)", letterSpacing: "-0.01em" }}>
             {card.title}
           </span>
@@ -387,7 +387,7 @@ function DigestCardRow({ card, apiBase, acc }: { card: DigestCard; apiBase: stri
             ))}
           </span>
         </span>
-        <span style={{ flexShrink: 0, textAlign: "right" }}>
+        <span className="digest-stat" style={{ flexShrink: 0, textAlign: "right" }}>
           <span style={{ display: "block", fontFamily: "var(--mono)", fontSize: 13, color: "var(--green)" }}>
             {fmtMoney(card.dollar_value)}
           </span>

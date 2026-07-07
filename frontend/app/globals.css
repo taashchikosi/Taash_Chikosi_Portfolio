@@ -326,6 +326,24 @@ code{font-family:var(--mono);font-size:.86em;background:var(--s3);border:0.5px s
   .cohort-strip{margin-top:26px}
 }
 
+/* Retail Analyst Agent — digest cards (the Monday-morning insight list). Desktop:
+   icon · title+bullets · $ value+"see receipts" CTA, one flex row. The CTA column
+   doesn't shrink, so on a phone it crushes the title/bullets into a one-word-per-
+   line sliver. Below 700px the CTA drops to its own full-width row beneath the
+   icon+title row, as a small receipt-style footer (value left, link right). */
+.digest-row{display:flex}
+@media(max-width:700px){
+  .digest-row{display:grid;grid-template-columns:auto 1fr;column-gap:12px;row-gap:10px;grid-template-areas:"icon mid" "stat stat"}
+  .digest-icon{grid-area:icon}
+  .digest-mid{grid-area:mid}
+  .digest-stat{
+    grid-area:stat;text-align:left!important;display:flex!important;
+    justify-content:space-between;align-items:center;
+    padding-top:10px;border-top:0.5px solid var(--line);
+  }
+  .digest-stat>span{text-align:left!important;margin-top:0!important}
+}
+
 /* Case-study pages: no grey body copy — all text reads white. Redefining the muted
    token on the case-page root recolors every descendant that uses var(--dim),
    including the live-demo widgets' inline styles, without affecting home/nav/footer.
