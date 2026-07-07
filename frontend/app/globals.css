@@ -62,6 +62,8 @@ img{display:block;max-width:100%}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 32px}
 /* Home About/Contact: centered 920px column, left edge aligned with the video stage. */
 .home-block{max-width:920px;margin:0 auto}
+/* Breathing room below the intro picture, before "About Me". */
+section.wrap.about{padding-top:64px}
 .home-block .about-single p{max-width:none}
 .mono{font-family:var(--mono)}
 .eyebrow{font-family:var(--mono);font-size:var(--fs-label);letter-spacing:.12em;text-transform:uppercase;color:var(--acc)}
