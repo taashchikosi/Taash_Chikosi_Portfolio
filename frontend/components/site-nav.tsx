@@ -109,11 +109,24 @@ export function SiteNav() {
             </div>
           </div>
 
-          <a className="nav-social" href={SITE.linkedin} target="_blank" rel="noopener noreferrer">
-            LinkedIn
+          <a className="nav-social" href={SITE.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <svg className="icn nav-social-icn" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M16 8a6 6 0 016 6v6h-4v-6a2 2 0 00-4 0v6h-4v-10h4v2" />
+              <circle cx="4" cy="4" r="2" />
+              <path d="M2 9h4v11H2z" />
+            </svg>
+            <span className="nav-social-txt">LinkedIn</span>
           </a>
-          <a className="nav-social" href={SITE.github} target="_blank" rel="noopener noreferrer">
-            GitHub
+          <a className="nav-social" href={SITE.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <svg
+              className="icn nav-social-icn"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              style={{ fill: "currentColor", stroke: "none" }}
+            >
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.5a3 3 0 00-.8-2.3c2.7-.3 5.5-1.3 5.5-6a4.6 4.6 0 00-1.3-3.2 4.3 4.3 0 00-.1-3.2s-1-.3-3.5 1.3a12 12 0 00-6.3 0C6 1.6 5 1.9 5 1.9a4.3 4.3 0 00-.1 3.2A4.6 4.6 0 003.5 8.3c0 4.6 2.8 5.7 5.5 6a3 3 0 00-.8 2.2V21" />
+            </svg>
+            <span className="nav-social-txt">GitHub</span>
           </a>
         </div>
       </div>

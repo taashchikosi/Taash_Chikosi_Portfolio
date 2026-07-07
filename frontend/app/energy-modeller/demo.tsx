@@ -1501,24 +1501,22 @@ function AgentRow({
 
   return (
     <div
+      className="agent-row"
       style={{
-        display: "grid",
-        gridTemplateColumns: "46px 184px 1fr 22px",
-        alignItems: "flex-start",
-        gap: 14,
         background: active ? "var(--s2)" : "var(--s1)",
-        padding: "15px 16px",
         position: "relative",
         transition: "background 0.25s ease",
       }}
     >
-      {/* the vertical thread connecting the emblems down the pipeline */}
+      {/* the vertical thread connecting the emblems down the pipeline (desktop only —
+          the mobile layout stacks rows without the connector, see globals.css) */}
       {!isLast && (
-        <span style={{ position: "absolute", left: 38, top: 34, bottom: -1, width: 1, background: "var(--line)", zIndex: 0 }} />
+        <span className="agent-thread" style={{ position: "absolute", left: 38, top: 34, bottom: -1, width: 1, background: "var(--line)", zIndex: 0 }} />
       )}
 
       {/* emblem */}
       <div
+        className="agent-emblem"
         style={{
           width: 38, height: 38, borderRadius: 11, display: "grid", placeItems: "center",
           fontSize: 19, background: "var(--s2)", border: `0.5px solid ${emBorder}`, zIndex: 1,
@@ -1529,7 +1527,7 @@ function AgentRow({
       </div>
 
       {/* name · role · LLM/no-LLM tag */}
-      <div style={{ paddingTop: 2 }}>
+      <div className="agent-meta" style={{ paddingTop: 2 }}>
         <div style={{ fontFamily: "var(--disp)", fontWeight: 600, fontSize: 14, color: nameColor }}>{agent.name}</div>
         <div style={{ fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--dim)", marginTop: 2 }}>{agent.role}</div>
         <span
@@ -1542,8 +1540,8 @@ function AgentRow({
         </span>
       </div>
 
-      {/* explanation beside the agent */}
-      <div style={{ paddingTop: 1 }}>
+      {/* explanation beside the agent (below it, full-width, on mobile) */}
+      <div className="agent-expl" style={{ paddingTop: 1 }}>
         <div style={{ fontSize: 12, color: "var(--tx)", lineHeight: 1.45, fontWeight: 700 }}>{agent.purpose}</div>
         <ExBlock label="✓ Does" labelColor="var(--acc)" items={agent.does} />
         <ExBlock label="✕ Doesn't" labelColor="var(--acc)" items={agent.doesnt} />
@@ -1555,7 +1553,7 @@ function AgentRow({
       </div>
 
       {/* status indicator */}
-      <div style={{ justifySelf: "center", paddingTop: 4 }}>
+      <div className="agent-status" style={{ paddingTop: 4 }}>
         {active && <Loader2 className="h-4 w-4" style={{ color: accent, animation: "spin 1s linear infinite" }} />}
         {done && <CheckCircle2 className="h-4 w-4" style={{ color: "var(--green)" }} />}
         {failed && <XCircle className="h-4 w-4" style={{ color: "var(--amber)" }} />}
@@ -1946,6 +1944,7 @@ function CohortStrips({
           return (
             <div
               key={ci.key}
+              className="cohort-row"
               style={{
                 display: "grid",
                 gridTemplateColumns: "160px 1fr",
@@ -1969,7 +1968,7 @@ function CohortStrips({
               </div>
 
               {/* the strip */}
-              <div style={{ position: "relative", height: 40 }}>
+              <div className="cohort-strip" style={{ position: "relative", height: 40 }}>
                 {/* axis */}
                 <div style={{ position: "absolute", top: 22, left: 0, right: 0, height: 6, borderRadius: 3, background: "var(--s2)" }} />
                 {/* IQR band */}
@@ -2085,7 +2084,7 @@ function MeasureBars({ result, baseEui, accent }: { result: RunResult; baseEui: 
               ? "linear-gradient(90deg,#1f7a4d,var(--green))"
               : "linear-gradient(90deg,#7a5a1f,var(--amber))";
         return (
-          <div key={row.scenario} style={{ display: "grid", gridTemplateColumns: "150px 1fr 190px", alignItems: "center", gap: 14 }}>
+          <div key={row.scenario} className="measure-row" style={{ display: "grid", gridTemplateColumns: "150px 1fr 190px", alignItems: "center", gap: 14 }}>
             <div style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--tx)" }}>
               {row.scenario}
             </div>

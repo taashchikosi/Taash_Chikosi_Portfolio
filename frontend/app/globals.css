@@ -62,8 +62,9 @@ img{display:block;max-width:100%}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 32px}
 /* Home About/Contact: centered 920px column, left edge aligned with the video stage. */
 .home-block{max-width:920px;margin:0 auto}
-/* Breathing room below the intro picture, before "About Me". */
-section.wrap.about{padding-top:64px}
+/* Breathing room below the intro picture, before "About Me" — matches the
+   site's normal section-gap rhythm (Let's Talk section uses the same 44px). */
+section.wrap.about{padding-top:44px}
 .home-block .about-single p{max-width:none}
 .mono{font-family:var(--mono)}
 .eyebrow{font-family:var(--mono);font-size:var(--fs-label);letter-spacing:.12em;text-transform:uppercase;color:var(--acc)}
@@ -101,6 +102,8 @@ nav{position:sticky;top:0;z-index:60;background:rgba(8,9,11,0.72);backdrop-filte
 .menu .dot{width:7px;height:7px;border-radius:50%}
 .menu .sub{display:block;font-family:var(--mono);font-size:var(--fs-label-sm);color:var(--dim);margin-top:1px}
 .icn{width:16px;height:16px;stroke:currentColor;stroke-width:1.7;fill:none;vertical-align:-3px}
+.nav-social{display:inline-flex;align-items:center;gap:6px}
+.nav-social-icn{flex-shrink:0}
 
 /* hero */
 .hero{padding:60px 0 24px;text-align:center}
@@ -283,14 +286,45 @@ code{font-family:var(--mono);font-size:.86em;background:var(--s3);border:0.5px s
   .links a,.dd>button{padding:7px 9px;font-size:13px}
   .wrap{padding:0 18px}
   .hero h1{font-size:32px}
-  /* LinkedIn/GitHub also live in the footer + contact; drop them from the nav on
-     small screens so Home/Projects/Résumé fit without clipping. */
-  .nav-social{display:none}
+  /* LinkedIn/GitHub stay visible on small screens (so every nav option can be
+     reached from the bar itself) — just icon-only, no text label, so
+     Home/Projects/Résumé still fit without clipping. */
+  .nav-social{padding:7px 8px}
+  .nav-social-txt{display:none}
   /* Right-anchor dropdowns so they open leftward and stay on-screen. */
   .menu{left:auto;right:0;transform-origin:top right}
   .dd.open .menu{transform:none}
 }
 @media(max-width:520px){.pills,.lvp{grid-template-columns:1fr}}
+
+/* Energy Modeller — agent-run rows (Retriever/Modeler/Sim Runner/Analyzer/Reviewer).
+   Desktop: emblem · name+role+tag (fixed 184px) · explanation · status, in one row.
+   The 184px meta column + emblem + status leave almost nothing for the explanation
+   text on a phone, so below 700px the row becomes a 2-row layout: emblem/meta/status
+   on top, the full-width explanation (Does/Doesn't) below it. */
+.agent-row{display:grid;grid-template-columns:46px 184px 1fr 22px;align-items:flex-start;gap:14px;padding:15px 16px}
+.agent-status{justify-self:center}
+@media(max-width:700px){
+  .agent-row{grid-template-columns:38px 1fr 20px;grid-template-areas:"emblem meta status" "expl expl expl";column-gap:12px;row-gap:10px;padding:14px}
+  .agent-thread{display:none}
+  .agent-emblem{grid-area:emblem}
+  .agent-meta{grid-area:meta}
+  .agent-expl{grid-area:expl}
+  .agent-status{grid-area:status;justify-self:end;padding-top:2px!important}
+}
+
+/* Energy Modeller — CBD cohort comparison strip + what-if measure bars. Both use a
+   fixed left label column that, combined with the bar/stat column, is wider than a
+   phone viewport. Below 700px they stack: label above, bar/stat below. */
+@media(max-width:700px){
+  .cohort-row{grid-template-columns:1fr!important;row-gap:8px!important}
+  .measure-row{grid-template-columns:1fr!important;row-gap:6px!important}
+  .measure-row>*:last-child{text-align:left!important}
+  /* Room for the floating "you · <EUI>" marker pill (~24px above the strip) — on
+     desktop it floats over empty space beside the label column; stacked on mobile
+     it would otherwise overlap the label text directly above it. */
+  .cohort-strip{margin-top:26px}
+}
 
 /* Case-study pages: no grey body copy — all text reads white. Redefining the muted
    token on the case-page root recolors every descendant that uses var(--dim),
