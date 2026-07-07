@@ -125,7 +125,7 @@ nav{position:sticky;top:0;z-index:60;background:rgba(8,9,11,0.72);backdrop-filte
 .vtag{position:absolute;z-index:2;top:16px;left:18px;font-family:var(--mono);font-size:var(--fs-label-sm);letter-spacing:.08em;text-transform:uppercase;color:var(--acc);background:rgba(91,156,255,0.12);border:0.5px solid rgba(91,156,255,0.32);padding:5px 10px;border-radius:20px}
 /* Real intro video — same 16:9 framed look as the placeholder, native controls. */
 .introvid-wrap{position:relative}
-.introvid{display:block;width:100%;aspect-ratio:16/9;border-radius:18px;border:1.5px solid rgba(91,156,255,0.6);background:#0B0E12;object-fit:cover;box-shadow:0 40px 120px -50px rgba(91,156,255,0.45)}
+.introvid{display:block;width:100%;aspect-ratio:16/9;border-radius:18px;border:1.5px solid rgba(91,156,255,0.6);background:#0B0E12;object-fit:cover;box-shadow:0 0 30px rgba(91,156,255,0.5),0 0 70px rgba(91,156,255,0.28),0 26px 80px -44px rgba(91,156,255,0.5)}
 /* Big blue play affordance over the poster (before first play). */
 .introvid-play{position:absolute;inset:0;margin:auto;width:96px;height:96px;display:grid;place-items:center;background:none;border:0;padding:0;cursor:pointer;z-index:3}
 .introvid-play>*{grid-area:1/1}
