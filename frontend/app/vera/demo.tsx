@@ -278,7 +278,7 @@ function VeraTrace({
       <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "11px 14px", borderBottom: "0.5px solid var(--line)" }}>
         <Activity className="h-3.5 w-3.5" style={{ color: acc }} />
         <span style={{ fontFamily: "var(--mono)", fontSize: 11.5, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--dim)" }}>
-          the pipeline Vera runs on every bill
+          the pipeline the Document Intelligence Agent runs on every bill
         </span>
       </div>
       <div>
@@ -296,7 +296,7 @@ function VeraTrace({
         })}
       </div>
       <div style={{ padding: "10px 14px", borderTop: "0.5px solid var(--line)", fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--dim)", lineHeight: 1.55 }}>
-        The shape of Vera&apos;s per-bill pipeline. The day run above replays seeded results (its catches,
+        The shape of the Document Intelligence Agent&apos;s per-bill pipeline. The day run above replays seeded results (its catches,
         counts and dollars are computed live by the backend); BYO uploads below run this pipeline for
         real — live DeepSeek extraction, recorded in Langfuse.
       </div>
@@ -438,9 +438,9 @@ export function Demo({ apiBase, accent }: { apiBase: string; accent?: string }) 
       <div className="rounded-2xl border border-line bg-s1 p-6">
         <p className="text-sm leading-relaxed text-dim">
           The demo opens with six months of Lola&apos;s Café bills already in memory — that history is
-          what lets Vera flag a price that quietly crept up and catch a bill above its agreed quote.
+          what lets the Document Intelligence Agent flag a price that quietly crept up and catch a bill above its agreed quote.
           Press play and watch a full month of <strong className="text-tx">50 supplier bills</strong> come in:
-          most clear automatically, and Vera catches the ones that don&apos;t.
+          most clear automatically, and the Document Intelligence Agent catches the ones that don&apos;t.
         </p>
         <p className="mt-2 text-xs leading-relaxed text-dim" style={{ opacity: 0.8 }}>
           Lola&apos;s Café is a sample business built for this demo — the 50 bills and the six-month
@@ -462,7 +462,7 @@ export function Demo({ apiBase, accent }: { apiBase: string; accent?: string }) 
           </a>
         </div>
         <p className="mt-2 font-mono text-[11px] text-dim">
-          the exact files Vera reads · and the price history she remembers
+          the exact files the Document Intelligence Agent reads · and the price history it remembers
         </p>
       </div>
     );
@@ -474,7 +474,7 @@ export function Demo({ apiBase, accent }: { apiBase: string; accent?: string }) 
 
       {/* ══ Section 1 — Vera catches money across the month's 50 bills ══ */}
       <h3 className="mb-4" style={{ fontFamily: "var(--disp)", fontSize: "var(--fs-display-sm, 24px)", fontWeight: 700, letterSpacing: "-0.01em", color: acc }}>
-        <span style={{ color: acc }}>①</span> Vera catches money in 50 supplier bills
+        <span style={{ color: acc }}>①</span> The Document Intelligence Agent catches money in 50 supplier bills
       </h3>
 
       {/* ── HUD: memory + running money, counts up as the real bills land ── */}
@@ -580,7 +580,7 @@ export function Demo({ apiBase, accent }: { apiBase: string; accent?: string }) 
           <div className="mb-3 flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
             <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em]" style={{ color: "var(--amber)" }}>
               <span style={{ width: 6, height: 6, borderRadius: 99, background: "var(--amber)" }} />
-              What Vera caught
+              What the Document Intelligence Agent caught
             </span>
             <span className="font-mono text-[11px] text-dim">
               {catches.length} leak{catches.length === 1 ? "" : "s"} in {inbox.length || 50} bills · flagged for you, not paid
@@ -681,7 +681,7 @@ export function Demo({ apiBase, accent }: { apiBase: string; accent?: string }) 
           </div>
           <p className="mt-1.5 text-sm text-tx">
             <strong>Approve this month before anything is paid.</strong>{" "}
-            <span className="text-dim">Vera cleared {handoff?.approved_bills.length ?? 0} bills and is holding {catches.length} for you — here is exactly what it flagged and why:</span>
+            <span className="text-dim">The Document Intelligence Agent cleared {handoff?.approved_bills.length ?? 0} bills and is holding {catches.length} for you — here is exactly what it flagged and why:</span>
           </p>
 
           {/* hard evidence, per flag */}
@@ -746,7 +746,7 @@ export function Demo({ apiBase, accent }: { apiBase: string; accent?: string }) 
               aria-expanded={traceOpen}
             >
               <Activity className="h-4 w-4" style={{ color: acc }} />
-              {traceOpen ? "Hide the pipeline" : "See how Vera reads a bill"}
+              {traceOpen ? "Hide the pipeline" : "See how the Document Intelligence Agent reads a bill"}
             </button>
             {traceOpen && (
               <VeraTrace

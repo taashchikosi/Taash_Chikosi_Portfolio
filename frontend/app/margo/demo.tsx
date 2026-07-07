@@ -160,12 +160,12 @@ export function Demo({ apiBase, accent }: { apiBase: string; accent?: string }) 
       </div>
 
       {/* Step 1 — see the data (the realism proof) */}
-      <Step n={1} title="See the data Margo is reading">
+      <Step n={1} title="See the data the Retail Analyst Agent is reading">
         <VerifyDownload />
       </Step>
 
       {/* Step 2 — Margo reads it (connection strip + the Monday digest) */}
-      <Step n={2} title="Margo reads it and tells you what matters">
+      <Step n={2} title="The Retail Analyst Agent reads it and tells you what matters">
         {loadState === "loading" && (
           <div className="status">
             <span className="d live" style={{ background: acc }} />
@@ -174,7 +174,7 @@ export function Demo({ apiBase, accent }: { apiBase: string; accent?: string }) 
         )}
         {loadState === "error" && (
           <OfflineNote>
-            Couldn&apos;t reach Margo&apos;s engine to load the live digest. The demo talks to a real
+            Couldn&apos;t reach the Retail Analyst Agent&apos;s engine to load the live digest. The demo talks to a real
             backend; if it&apos;s cold, retry in a moment.
           </OfflineNote>
         )}
@@ -206,7 +206,7 @@ export function Demo({ apiBase, accent }: { apiBase: string; accent?: string }) 
       <Step
         n={4}
         title="Bring your own file"
-        lead="Upload your own Square or QuickBooks export — Margo reads it in-session and answers from your rows."
+        lead="Upload your own Square or QuickBooks export — the Retail Analyst Agent reads it in-session and answers from your rows."
         last
       >
         <ByoCloser apiBase={apiBase} acc={acc} />
@@ -295,7 +295,7 @@ function VerifyDownload() {
       <span style={{ display: "flex", flexDirection: "column", lineHeight: 1.4 }}>
         <b style={{ fontSize: 14, color: "var(--tx)" }}>Download the full dataset</b>
         <span style={{ fontSize: 12, color: "var(--dim)" }}>
-          20,960 sales · 1,201 products · every row Margo queries — check it in Excel
+          20,960 sales · 1,201 products · every row the Retail Analyst Agent queries — check it in Excel
         </span>
       </span>
       <span style={{ marginLeft: "auto", color: "var(--green)", fontSize: 17 }}>⬇</span>
@@ -526,7 +526,7 @@ function AskPanel({ apiBase, acc }: { apiBase: string; acc: string }) {
       {/* how to get an accurate answer — Margo answers from the shop's real tables */}
       <p style={{ fontSize: 12, lineHeight: 1.55, color: "var(--dim)", marginBottom: 10 }}>
         💡 <strong style={{ color: "var(--tx)" }}>For the best answer, be specific</strong> — name a metric and,
-        if it matters, a timeframe (e.g. &ldquo;top 5 products by <em>profit</em> last month&rdquo;). Margo answers
+        if it matters, a timeframe (e.g. &ldquo;top 5 products by <em>profit</em> last month&rdquo;). The Retail Analyst Agent answers
         questions about this shop&apos;s products, categories, sales and stock — ask about those and it returns the
         exact rows behind the number.
       </p>
@@ -545,7 +545,7 @@ function AskPanel({ apiBase, acc }: { apiBase: string; acc: string }) {
           maxLength={300}
           disabled={limitReached}
           placeholder={limitReached ? "Demo question limit reached — refresh to ask more" : "Ask about the shop…"}
-          aria-label="Ask Margo about the shop"
+          aria-label="Ask the Retail Analyst Agent about the shop"
           style={{ ...inputStyle, opacity: limitReached ? 0.5 : 1 }}
         />
         <button
@@ -554,7 +554,7 @@ function AskPanel({ apiBase, acc }: { apiBase: string; acc: string }) {
           disabled={!valid || busy || limitReached}
           style={{ opacity: !valid || busy || limitReached ? 0.5 : 1, cursor: !valid || busy || limitReached ? "not-allowed" : "pointer" }}
         >
-          {busy ? "Thinking…" : "Ask Margo"}
+          {busy ? "Thinking…" : "Ask Retail Analyst Agent"}
         </button>
       </form>
       <div style={{ marginTop: 8, fontFamily: "var(--mono)", fontSize: 11.5, color: "var(--mut)" }}>
@@ -652,7 +652,7 @@ function AnswerCard({ data, acc }: { data: AskResponse; acc: string }) {
         <p style={cardBodyStyle}>{data.note ?? "Refused: destructive intent in request."}</p>
         <p style={{ ...cardBodyStyle, fontSize: 12, marginTop: 10 }}>
           The AST allow-list caught this before any SQL ran — no query was generated and the database
-          was never touched. Margo refuses what it can&apos;t safely run, rather than obeying it.
+          was never touched. The Retail Analyst Agent refuses what it can&apos;t safely run, rather than obeying it.
         </p>
       </StatusCard>
     );
@@ -668,7 +668,7 @@ function AnswerCard({ data, acc }: { data: AskResponse; acc: string }) {
 
   if (data.status === "clarify") {
     return (
-      <StatusCard tone="acc" icon="🤔" title="Margo needs a metric" badge="clarify" acc={acc}>
+      <StatusCard tone="acc" icon="🤔" title="The Retail Analyst Agent needs a metric" badge="clarify" acc={acc}>
         <p style={cardBodyStyle}>{data.note ?? "That question is ambiguous — which measure did you mean?"}</p>
       </StatusCard>
     );
@@ -678,7 +678,7 @@ function AnswerCard({ data, acc }: { data: AskResponse; acc: string }) {
     return (
       <StatusCard tone="amber" icon="⚠️" title="Couldn't produce a query" badge="failed">
         <p style={cardBodyStyle}>
-          {data.note ?? "Margo couldn't build a working query for that — try rephrasing."}
+          {data.note ?? "The Retail Analyst Agent couldn't build a working query for that — try rephrasing."}
         </p>
       </StatusCard>
     );
@@ -805,7 +805,7 @@ function ByoCloser({ apiBase, acc }: { apiBase: string; acc: string }) {
     } catch {
       setUploadMsg({
         tone: "warn",
-        text: "Couldn't reach Margo to read that file. The upload talks to a real backend — retry in a moment.",
+        text: "Couldn't reach the Retail Analyst Agent to read that file. The upload talks to a real backend — retry in a moment.",
       });
     } finally {
       clearTimeout(timer);

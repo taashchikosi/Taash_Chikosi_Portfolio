@@ -134,7 +134,7 @@ export function Byo({ apiBase, accent }: { apiBase: string; accent?: string }) {
   return (
     <div>
       <p className="text-sm leading-relaxed text-dim">
-        Upload a supplier bill (PDF or photo) and watch Vera read the key fields straight off it — vendor,
+        Upload a supplier bill (PDF or photo) and watch the Document Intelligence Agent read the key fields straight off it — vendor,
         invoice number, date and totals — no typing, no templates. It&apos;s processed in memory and forgotten
         when you leave.
       </p>
