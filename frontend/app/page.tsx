@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { SITE } from "@/lib/site";
-import { IntroVideo } from "@/components/intro-video";
 
 // Home view — ported from mockups/portfolio-v3: hero + intro video (sanctioned
 // placeholder) + About Me + Lets Talk. No project grid (that lives at /projects).
@@ -26,26 +25,11 @@ export default function HomePage() {
         </div>
 
         <div className="stage" data-reveal>
-          {SITE.introVideoReady ? (
-            /* Intro video — v3 final (see Intro_Video_v3_Build_Plan.md). */
-            <IntroVideo />
-          ) : (
-            /* Placeholder — sanctioned until the real video ships. */
-            <div
-              className="video"
-              role="img"
-              aria-label="Intro video — coming soon"
-              title="Intro video — coming soon"
-            >
-              <span className="vtag">{SITE.videoTag}</span>
-              <div className="play" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-              <span className="vmeta">{SITE.videoMeta}</span>
-            </div>
-          )}
+          {/* Video removed for now (Taash's call) — showing the poster image only.
+              To restore the player: swap this <img> back to <IntroVideo /> and
+              re-import it. The component + /intro.mp4 are kept on disk. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="introvid" src={SITE.introPoster} alt="Taashira Chikosi — portfolio intro" />
         </div>
       </header>
 
