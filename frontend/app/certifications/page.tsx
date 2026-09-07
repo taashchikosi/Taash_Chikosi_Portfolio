@@ -18,6 +18,9 @@ export default function CertificationsPage() {
       <div className="wrap" style={{ marginTop: 34 }}>
         <div className="certgrid">
           {SITE.certifications.map((c) => {
+            const verifyLabel = c.url?.includes("coursera.org")
+              ? "Verify on Coursera ↗"
+              : "Verify credential ↗";
             const body = (
               <>
                 <div className="cert-img">
@@ -38,7 +41,7 @@ export default function CertificationsPage() {
                         letterSpacing: "0.04em",
                       }}
                     >
-                      Verify on Coursera ↗
+                      {verifyLabel}
                     </span>
                   )}
                 </div>

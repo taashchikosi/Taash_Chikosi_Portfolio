@@ -23,8 +23,21 @@ export const SITE = {
   // Résumé PDF lives in frontend/public/ → served at this root path.
   resume: "/Taash_Chikosi_Resume.pdf",
   resumeReady: true,
-  // Verified Coursera credentials — surfaced under Résumé ▾ → Certifications.
+  // Verified credentials — surfaced under Résumé ▾ → Certifications.
   certifications: [
+    {
+      name: "Google Cloud Certified – Generative AI Leader",
+      issuer: "Google Cloud",
+      year: "2026",
+      img: "/certs/google-cloud-generative-ai-leader.png",
+    },
+    {
+      name: "Applied Agentic AI for Organizational Transformation",
+      issuer: "MIT Professional Education",
+      year: "2026",
+      url: "https://www.credential.net/yhyccg2t",
+      img: "/certs/mit-applied-agentic-ai.png",
+    },
     {
       name: "AI Product Management",
       issuer: "Duke University",
@@ -47,7 +60,7 @@ export const SITE = {
       url: "https://www.coursera.org/account/accomplishments/verify/J09ZALMIIWUJ",
       img: "/certs/management-consulting.png",
     },
-  ],
+  ] as { name: string; issuer: string; year: string; url?: string; img?: string }[],
   // Intro video — v3 final (35.5s, 1080p web embed). Build plan: Intro_Video_v3_Build_Plan.md.
   introVideoReady: true,
   introVideo: "/intro.mp4",
